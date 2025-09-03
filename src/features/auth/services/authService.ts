@@ -1,7 +1,16 @@
 import api from "../../../services/api";
 
-export interface LoginPayload { email: string; password: string; }
-export interface ResetPayload { token: string; email: string; password: string; password_confirmation: string; }
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface ResetPayload {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
 
 export const loginApi = async (payload: LoginPayload) => {
   const { data } = await api.post("/auth/login", payload);

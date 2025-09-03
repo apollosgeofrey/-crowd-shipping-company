@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
-import Login from "../../features/auth/pages/Login";
-import ForgotPassword from "../../features/auth/pages/ForgotPassword";
-import ResetPassword from "../../features/auth/pages/ResetPassword";
-import VerifyEmail from "../../features/auth/pages/VerifyEmail";
-import Dashboard from "../../features/dashboard/pages/Dashboard";
-import ProtectedRoute from "../../components/ProtectedRoute";
+import Login from "../features/auth/pages/Login";
+import ForgotPassword from "../features/auth/pages/ForgotPassword";
+import ResetPassword from "../features/auth/pages/ResetPassword";
+import VerifyEmail from "../features/auth/pages/VerifyEmail";
+import Dashboard from "../features/dashboard/pages/Dashboard";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export default function AppRoutes() {
   return (

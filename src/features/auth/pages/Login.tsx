@@ -2,8 +2,9 @@ import { useState } from "react";
 import AuthLayout from "../../../layouts/AuthLayout";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
-import { loginApi, LoginPayload, meApi } from "../services/authService";
-import { useAppDispatch } from "../../../app/store";
+import { loginApi, meApi } from "../services/authService";
+import type { LoginPayload } from "../services/authService";
+import { useAppDispatch } from "../../../store/index.ts";
 import { setAuth } from "../store/authSlice";
 
 export default function Login() {

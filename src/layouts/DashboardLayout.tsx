@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../app/store";
+import { useAppDispatch } from "../store/index.ts";
 import { clearAuth } from "../features/auth/store/authSlice";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {

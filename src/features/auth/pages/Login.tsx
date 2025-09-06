@@ -22,35 +22,43 @@ export default function Login() {
       dispatch(setAuth({ token, user }));
       Swal.fire("Success", "Login successful", "success");
       nav("/dashboard");
-    } catch (e:any) {
+    } catch (e: any) {
       Swal.fire("Error", e?.response?.data?.message || "Invalid credentials", "error");
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <AuthLayout>
+      <h4 className="text-center mb-4 text-dark mt-2">You are welcome!</h4>
       <form onSubmit={submit}>
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input className="form-control" type="email"
-            value={form.email}
-            onChange={(e)=>setForm({...form, email:e.target.value})}
-            required />
+        <p className="text-center text-dark small mt-4 mb-3">Please Login</p>
+        
+        <div className="mb-4">
+          <input className="form-control rounded border-primary" type="email" placeholder="Enter Email" value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })} required
+          />
         </div>
         <div className="mb-4">
-          <label className="form-label">Password</label>
-          <input className="form-control" type="password"
-            value={form.password}
-            onChange={(e)=>setForm({...form, password:e.target.value})}
-            required />
+          <input className="form-control rounded border-primary" type="password" placeholder="Enter Password"
+            value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required
+          />
         </div>
-        <button className="btn btn-primary w-100" disabled={loading}>
+
+        <button className="btn w-100 rounded text-white fw-bold btn-primary" disabled={loading}>
           {loading ? "Signing in..." : "Login"}
         </button>
+
+        <div className="form-check form-switch mt-2">
+          <input className="form-check-input" type="checkbox" id="rememberMe" />
+          <label className="form-check-label small" htmlFor="rememberMe">Remember me</label>
+        </div>
+
+        <div className="text-center mt-5 small">
+          Forgot Password? <Link to="/forgot-password" className="text-primary fw-bold">Reset Password</Link>
+        </div>
       </form>
-      <div className="text-center mt-3">
-        <Link to="/forgot-password" className="text-sm text-blue-600">Forgot password?</Link>
-      </div>
     </AuthLayout>
   );
 }

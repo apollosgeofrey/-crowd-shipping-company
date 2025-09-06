@@ -1,1 +1,1 @@
-export const APP_NAME = "Crowed Shipping Admin";
+export const APP_NAME = "CROWDSHIPPING";

@@ -22,14 +22,19 @@ export default function VerifyEmail() {
   return (
     <AuthLayout>
       <form onSubmit={submit}>
+        <p className="text-center fw-bold text-dark small mt-5 mb-4">Enter OTP</p>
         <div className="mb-4">
-          <label className="form-label">Verification Code</label>
-        <input className="form-control" value={code} onChange={(e)=>setCode(e.target.value)} required />
+          <label className="form-label small mb-3 text-center">
+            A code has been sent to your mail, check your inbox and input it below to continue
+          </label>
+          <input className="form-control border-primary" value={code} onChange={(e)=>setCode(e.target.value)} required
+            placeholder="Enter OTP Code"
+          />
         </div>
-        <button className="btn btn-primary w-100">Verify</button>
+        <button className="mt-3 btn btn-primary w-100 rounded-pill">Verify and Proceed</button>
       </form>
-      <div className="text-center mt-3">
-        <Link to="/login" className="text-sm text-blue-600">Back to login</Link>
+      <div className="small text-center mt-3">
+        Don't get code? <Link to="/forgot-password" className="text-sm text-primary text-decoration-none">Resend</Link>
       </div>
     </AuthLayout>
   );

@@ -20,15 +20,20 @@ export default function ForgotPassword() {
   return (
     <AuthLayout>
       <form onSubmit={submit}>
-        <div className="mb-4">
-          <label className="form-label">Email</label>
-          <input className="form-control" type="email" value={email}
-                 onChange={(e)=>setEmail(e.target.value)} required />
+        <p className="text-center fw-bold text-dark small mt-5 mb-4">Reset Password</p>
+        <div className="mb-5">
+          <label className="form-label text-justify small mb-3">
+            Please enter the email address attached to your account
+          </label>
+          <input className="form-control border-primary" type="email" placeholder="Enter Email Address"
+            value={email} onChange={(e)=>setEmail(e.target.value)} required />
         </div>
-        <button className="btn btn-primary w-100">Send Reset Link</button>
+        <button className="btn btn-primary w-100 rounded-pill">Send Reset Link</button>
       </form>
-      <div className="text-center mt-3">
-        <Link to="/login" className="text-sm text-blue-600">Back to login</Link>
+      <div className="text-left small mt-3">
+        <Link to="/login" className="text-sm text-primary text-decoration-none">
+          <span className="fas fa-angle-double-left"></span>Back to login
+        </Link>
       </div>
     </AuthLayout>
   );

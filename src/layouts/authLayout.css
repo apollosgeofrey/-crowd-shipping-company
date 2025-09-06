@@ -1,0 +1,141 @@
+/* === Bootstrap Primary Overrides (Brand Orange) === */
+
+/* Core CSS variables (used across Bootstrap components) */
+:root {
+  --bs-primary: #E75B3B;
+  --bs-bg-primary: #FDEFEB;
+  --bs-primary-rgb: 231, 91, 59;
+
+  --bs-primary-text-emphasis: #000000;  /* darker text emphasis */
+  --bs-primary-bg-subtle: #000000;      /* light background variant */
+  --bs-primary-border-subtle: #000000;  /* light border variant */
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--bs-bg-primary) !important;  /* sets full page background */
+  min-height: 100vh;          /* full height */
+  display: flex;              /* optional: center contents */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Text utilities */
+.text-primary {
+  color: var(--bs-primary) !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #cc4d2f !important; /* slightly darker */
+}
+
+/* Background utilities */
+.bg-primary {
+  background-color: var(--bs-primary) !important;
+}
+
+.bg-primary-subtle {
+  background-color: var(--bs-primary-bg-subtle) !important;
+}
+
+/* Border utilities */
+.btn-outline-primary, .border-primary {
+  border-color: var(--bs-primary) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  color: #fff !important;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #cc4d2f !important;
+  border-color: #cc4d2f !important;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: #b84329 !important;
+  border-color: #b84329 !important;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background-color: #e68f78 !important;
+  border-color: #e68f78 !important;
+}
+
+/* Alerts */
+.alert-primary {
+  color: #fff;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+/* Badges */
+.badge-primary {
+  background-color: var(--bs-primary) !important;
+}
+
+/* List groups */
+.list-group-item-primary {
+  color: var(--bs-primary-text-emphasis) !important;
+  background-color: var(--bs-primary-bg-subtle) !important;
+  border-color: var(--bs-primary-border-subtle) !important;
+}
+
+/* Pagination */
+.page-link {
+  color: var(--bs-primary);
+}
+
+.page-item.active .page-link {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+
+/* Progress bar */
+.progress-bar {
+  background-color: var(--bs-primary) !important;
+}
+
+/* Default background when checked */
+.form-check-input:checked {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+/* Optional: tweak focus glow */
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(231, 91, 59, 0.25) !important;
+}
+
+/* Override Bootstrap outline-primary to use brand color */
+.btn-outline-primary {
+  color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show {
+  color: #fff !important;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+
+}
+
+.btn-outline-primary:disabled,
+.btn-outline-primary.disabled {
+  color: var(--bs-primary) !important;
+  background-color: transparent !important;
+}
+
+

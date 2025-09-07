@@ -11,15 +11,6 @@
   --bs-primary-border-subtle: #000000;  /* light border variant */
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: var(--bs-bg-primary) !important;  /* sets full page background */
-  min-height: 100vh;          /* full height */
-  display: flex;              /* optional: center contents */
-  justify-content: center;
-  align-items: center;
-}
-
 /* Text utilities */
 .text-primary {
   color: var(--bs-primary) !important;

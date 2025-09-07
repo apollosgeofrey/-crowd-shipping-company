@@ -1,31 +1,132 @@
+// // DashboardLayout.tsx (Updated)
+// import { PropsWithChildren } from "react";
+// import Navbar from "../components/Navbar";
+// import Sidebar from "../components/Sidebar";
+// import { useNavigate } from "react-router-dom";
+// import { useAppDispatch } from "../store/index";
+// import { clearAuth } from "../features/auth/store/authSlice";
+// import "./dashboardLayout.css";
+
+// export default function DashboardLayout({ children }: PropsWithChildren) {
+//   const dispatch = useAppDispatch();
+//   const nav = useNavigate();
+
+//   const logout = () => { 
+//     dispatch(clearAuth()); 
+//     nav("/login"); 
+//   };
+
+//   return (
+//     <div className="flex min-h-screen bg-gray-100">
+//       <Sidebar onLogout={logout} />
+//       <main className="flex-1 flex flex-col">
+//         <Navbar />
+//         <div className="flex-1 overflow-y-auto bg-gray-50">
+//           <div className="p-6">
+//             {children}
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }
+
+
+// CLAUSD CSS DASHBOARD
+// // DashboardLayout.tsx (Updated)
+// import { PropsWithChildren } from "react";
+// import Navbar from "../components/Navbar";
+// import Sidebar from "../components/Sidebar";
+// import { useNavigate } from "react-router-dom";
+// import { useAppDispatch } from "../store/index";
+// import { clearAuth } from "../features/auth/store/authSlice";
+
+// const layoutStyle: React.CSSProperties = {
+//   display: 'flex',
+//   minHeight: '100vh',
+//   backgroundColor: '#f3f4f6'
+// };
+
+// const mainStyle: React.CSSProperties = {
+//   flex: 1,
+//   display: 'flex',
+//   flexDirection: 'column'
+// };
+
+// const contentStyle: React.CSSProperties = {
+//   flex: 1,
+//   overflowY: 'auto',
+//   backgroundColor: '#f9fafb'
+// };
+
+// const contentInnerStyle: React.CSSProperties = {
+//   padding: '24px'
+// };
+
+// export default function DashboardLayout({ children }: PropsWithChildren) {
+//   const dispatch = useAppDispatch();
+//   const nav = useNavigate();
+
+//   const logout = () => { 
+//     dispatch(clearAuth()); 
+//     nav("/login"); 
+//   };
+
+//   return (
+//     <div style={layoutStyle}>
+//       <Sidebar onLogout={logout} />
+//       <main style={mainStyle}>
+//         <Navbar />
+//         <div style={contentStyle}>
+//           <div style={contentInnerStyle}>
+//             {children}
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }
+
+
+
+// DashboardLayout.tsx (Updated)
 import { PropsWithChildren } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/index.ts";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../store/index";
 import { clearAuth } from "../features/auth/store/authSlice";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
 
-  const logout = () => { dispatch(clearAuth()); nav("/login"); };
+  const logout = () => { 
+    dispatch(clearAuth()); 
+    nav("/login"); 
+  };
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 bg-gray-800 text-white p-4">
-        <h2 className="text-lg font-bold mb-6">Admin</h2>
-        <ul>
-          <li><Link to="/dashboard" className="block py-2">Dashboard</Link></li>
-          <li><Link to="/shipments" className="block py-2">Shipments</Link></li>
-          <li><Link to="/tax" className="block py-2">Tax</Link></li>
-          <li><button className="mt-4 btn btn-danger w-full" onClick={logout}>Logout</button></li>
-        </ul>
-      </aside>
-      <main className="flex-1 bg-gray-50">
-        <nav className="bg-white border-b p-4 flex justify-end">
-          <span className="mr-4"><i className="fa-regular fa-bell"></i></span>
-          <span className="font-medium">Hi, Admin</span>
-        </nav>
-        <div className="p-6">{children}</div>
+    <div className="d-flex" style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+      <Sidebar onLogout={logout} />
+      
+      <main 
+        className="flex-grow-1 d-flex flex-column"
+        style={{ marginLeft: window.innerWidth >= 992 ? '0' : '0' }}
+      >
+        <Navbar />
+        
+        <div 
+          className="flex-grow-1"
+          style={{ 
+            overflowY: 'auto',
+            backgroundColor: '#f8f9fa' 
+          }}
+        >
+          <div className="container-fluid p-3 p-lg-4" style={{ maxWidth: '1400px' }}>
+            {children}
+          </div>
+        </div>
       </main>
     </div>
   );

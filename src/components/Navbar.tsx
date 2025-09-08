@@ -1,17 +1,47 @@
-// components/Navbar.tsx
+// components/Navbar.tsx (Updated)
 import { Bell, Search, ChevronDown, User } from "lucide-react";
 
-export default function Navbar() {
+interface NavbarProps {
+  sidebarWidth: number;
+  sidebarCollapsed: boolean;
+  isMobile: boolean;
+}
+
+export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: NavbarProps) {
+  const getNavbarStyles = () => {
+    if (isMobile) {
+      return {
+        left: '0',
+        width: '100%',
+        marginLeft: '0'
+      };
+    }
+    
+    return {
+      left: `${sidebarWidth}px`,
+      width: `calc(100% - ${sidebarWidth}px)`,
+      marginLeft: '0'
+    };
+  };
+
   return (
     <header 
-      className="bg-white border-bottom shadow-sm"
-      style={{ borderBottomColor: '#e5e7eb' }}
+      className="bg-white border-bottom shadow-sm position-fixed"
+      style={{ 
+        borderBottomColor: '#e5e7eb',
+        top: 0,
+        zIndex: 1030,
+        transition: 'left 0.3s ease, width 0.3s ease',
+        ...getNavbarStyles()
+      }}
     >
       <div className="container-fluid px-3 px-lg-4 py-3">
         <div className="d-flex align-items-center justify-content-between">
           {/* Left side - Greeting */}
           <div className="d-flex align-items-center">
-            <div style={{ marginLeft: window.innerWidth >= 992 ? 0 : '48px' }}>
+            <div style={{ 
+              marginLeft: isMobile ? '48px' : '0' // Account for mobile menu button
+            }}>
               <h1 className="h4 h3-lg fw-semibold text-dark mb-1 d-flex align-items-center">
                 Hello Admin 
                 <span className="ms-2">👋</span>
@@ -42,8 +72,9 @@ export default function Navbar() {
                   backgroundColor: '#f8f9fa',
                   border: '1px solid #e9ecef',
                   borderRadius: '8px',
-                  width: '200px',
-                  fontSize: '14px'
+                  width: sidebarCollapsed ? '250px' : '200px', // Wider when sidebar collapsed
+                  fontSize: '14px',
+                  transition: 'width 0.3s ease'
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = '#f97316';
@@ -123,7 +154,7 @@ export default function Navbar() {
             </div>
 
             {/* Action Buttons - Desktop */}
-            <div className="d-none d-lg-flex align-items-center gap-2 border-start ps-3 ms-2">
+            {/*<div className="d-none d-lg-flex align-items-center gap-2 border-start ps-3 ms-2">
               <button className="btn btn-sm btn-light">Comments</button>
               <button className="btn btn-sm btn-light">Properties</button>
               <span className="small text-muted px-2">64%</span>
@@ -135,10 +166,10 @@ export default function Navbar() {
               >
                 Share
               </button>
-            </div>
+            </div>*/}
 
             {/* Mobile Action Menu */}
-            <div className="d-lg-none">
+            {/*<div className="d-lg-none">
               <button 
                 className="btn btn-sm text-white"
                 style={{ backgroundColor: '#f97316' }}
@@ -147,7 +178,7 @@ export default function Navbar() {
               >
                 Share
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

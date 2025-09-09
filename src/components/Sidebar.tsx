@@ -1,12 +1,12 @@
 // components/Sidebar.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Map, 
-  FileText, 
-  LogOut, 
+import {
+  LayoutDashboard,
+  Users,
+  Map,
+  FileText,
+  LogOut,
   Settings,
   Calendar,
   CreditCard,
@@ -25,6 +25,7 @@ import {
   Bookmark,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Menu,
   X,
   Sun,
@@ -39,15 +40,58 @@ interface SidebarProps {
 
 
 export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: SidebarProps) {
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("light");
-  const location = useLocation();
+  const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
+  const isActive = (path?: string) => path ? location.pathname.startsWith(path) : false;
+
+  // Open parent dropdown if current route matches any child
+  useEffect(() => {
+    const newState: { [key: string]: boolean } = {};
+    menuItems.forEach((item) => {
+      if (item.children) {
+        newState[item.id] = item.children.some((child) =>
+          location.pathname.startsWith(child.path)
+        );
+      }
+    });
+    setOpenDropdowns((prev) => ({ ...prev, ...newState }));
+  }, [location.pathname]);
+
+  const toggleDropdown = (id: string) => {
+    setOpenDropdowns((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { id: 'manage-driver', icon: Users, label: 'Manage Driver', path: '/drivers' },
-    { id: 'manage-pathfinders', icon: Route, label: 'Manage Pathfinders', path: '/pathfinders' },
-    { id: 'company-mgt', icon: Building2, label: 'Company MGT', path: '/company' },
+    {
+      id: 'manage-driver',
+      icon: Users,
+      label: 'Manage Driver',
+      children: [
+        { id: 'drivers-list', label: 'Drivers List', path: '/drivers' },
+        { id: 'driver-requests', label: 'Driver Requests', path: '/drivers/requests' },
+      ]
+    },
+    {
+      id: 'manage-pathfinders',
+      icon: Route,
+      label: 'Manage Pathfinders',
+      children: [
+        { id: 'pathfinders-list', label: 'Pathfinders List', path: '/pathfinders' },
+        { id: 'pathfinder-reports', label: 'Reports', path: '/pathfinders/reports' },
+      ]
+    },
+    {
+      id: 'company-mgt',
+      icon: Building2,
+      label: 'Company MGT',
+      children: [
+        { id: 'company-profile', label: 'Profile', path: '/company/profile' },
+        { id: 'company-branches', label: 'Branches', path: '/company/branches' },
+      ]
+    },
     { id: 'manage-users', icon: UserCheck, label: 'Manage Users', path: '/users' },
     { id: 'manage-admin', icon: Settings, label: 'Manage Admin', path: '/admin' },
     { id: 'live-map', icon: Map, label: 'Live Map', path: '/live-map' },
@@ -60,18 +104,6 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
     { id: 'support-data', icon: MessageCircle, label: 'Support Data', path: '/support' },
     { id: 'notifications', icon: Bell, label: 'Notifications', path: '/notifications' },
   ];
-
-  const bottomMenuItems = [
-    // { id: 'filters', icon: Filter, label: 'Filters', path: '/filters' },
-    // { id: 'promo-code', icon: Gift, label: 'Promo Code', path: '/promo' },
-    // { id: 'trip-charges-bottom', icon: CreditCard, label: 'Trip Charges', path: '/charges' },
-    // { id: 'support', icon: HelpCircle, label: 'Support', path: '/help' },
-    // { id: 'live-tracking', icon: MapPin, label: 'Live tracking', path: '/tracking' },
-    // { id: 'company-bottom', icon: Building2, label: 'Company', path: '/company-info' },
-    // { id: 'pathfinder-details', icon: Route, label: 'Pathfinder Details', path: '/pathfinder-details' },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
 
   const closeMobile = () => setMobileOpen(false);
 
@@ -117,36 +149,38 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
       )}
 
 
-        {/* Sidebar */}
-        <div className="position-fixed position-lg-static h-100 d-flex flex-column shadow-lg"
-          style={{ 
-            backgroundColor: current.sidebarBg, 
-            color: current.sidebarText, 
-            width: collapsed ? '64px' : '256px', 
-            minHeight: '100vh', 
-            top: 0,
-            left: mobileOpen ? 0 : (window.innerWidth >= 992 ? 0 : '-256px'), 
-            zIndex: 1042, 
-            transition: 'all 0.3s ease', 
-            overflowY: 'auto'
-          }}
-        >      
-          
+      {/* Sidebar */}
+      <div className="position-fixed position-lg-static h-100 d-flex flex-column shadow-lg"
+        style={{
+          backgroundColor: current.sidebarBg,
+          color: current.sidebarText,
+          width: collapsed ? '64px' : '256px',
+          minHeight: '100vh',
+          top: 0,
+          left: mobileOpen ? 0 : (window.innerWidth >= 992 ? 0 : '-256px'),
+          zIndex: 1042,
+          transition: 'all 0.3s ease',
+          overflowY: 'auto'
+        }}
+      >
+
         {/* Header */}
         <div className="p-3 d-flex align-items-center justify-content-between border-bottom" style={{ borderBottomColor: current.border }}>
           {!collapsed && (
-            <h5 className="mb-0 fw-semibold" style={{ color: current.headerText }}>CROWDSHIPPING</h5>
+            <h6 className="mb-0 fw-semibold text-primary" style={{ color: current.headerText }}>
+              {/* Theme toggle button */}
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="btn btn-sm p-1 text-primary"
+                style={{ backgroundColor: "transparent", border: "none", color: current.sidebarText }}
+                title="Toggle theme"
+                >
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+              </button>
+              CROWDSHIPPING
+            </h6>
           )}
           <div className="d-flex gap-2">
-            {/* Theme toggle button */}
-            <button 
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="btn btn-sm p-1"
-              style={{ backgroundColor: "transparent", border: "none", color: current.sidebarText }}
-              title="Toggle theme"
-            >
-              {theme === "dark" ? <Sun size={16}/> : <Moon size={16}/>}
-            </button>
 
             {/* Collapse toggle */}
             <button onClick={() => onToggleCollapse(!collapsed)} className="btn btn-sm p-1 d-none d-lg-block"
@@ -175,99 +209,115 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
                 MAIN
               </p>
             )}
-            <nav className="d-flex flex-column gap-1">
-              {menuItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.path);
-                return (
-                  <Link
-                    key={item.id}
-                    to={item.path}
-                    onClick={closeMobile}
-                    className="btn text-decoration-none d-flex align-items-center p-2"
-                    style={{
-                      backgroundColor: active ? '#f97316' : 'transparent',
-                      color: active ? 'white' : current.sidebarText,
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      transition: 'all 0.2s ease',
-                      textAlign: 'left',
-                      justifyContent: collapsed ? 'center' : 'flex-start',
-                      boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.backgroundColor = current.hoverBg;
-                        e.currentTarget.style.color = current.hoverText;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = current.sidebarText;
-                      }
-                    }}
-                    title={collapsed ? item.label : ''}
-                  >
-                    <Icon size={20} className="flex-shrink-0" />
-                    {!collapsed && (<span className="ms-3 text-truncate">{item.label}</span>)}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
 
-          {/* Bottom Menu Items */}
-          <div className="mt-4 border-top" style={{ borderTopColor: current.border }}>
-            <nav className="d-flex flex-column gap-1">
-              {bottomMenuItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.path);
-                return (
-                  <Link
-                    key={item.id}
-                    to={item.path}
-                    onClick={closeMobile}
-                    className="btn text-decoration-none d-flex align-items-center p-2"
-                    style={{
-                      backgroundColor: active ? '#f97316' : 'transparent',
-                      color: active ? 'white' : current.sidebarText,
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      transition: 'all 0.2s ease',
-                      textAlign: 'left',
-                      justifyContent: collapsed ? 'center' : 'flex-start',
-                      boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.backgroundColor = current.hoverBg;
-                        e.currentTarget.style.color = current.hoverText;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = current.sidebarText;
-                      }
-                    }}
-                    title={collapsed ? item.label : ''}
-                  >
-                    <Icon size={20} className="flex-shrink-0" />
-                    {!collapsed && (
-                      <span className="ms-3 text-truncate">{item.label}</span>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
+            {menuItems.length > 0 ? (
+              <nav className="d-flex flex-column gap-1">
+                {menuItems.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.path);
+                  const hasChildren = !!item.children;
+                  const isDropdownOpen = openDropdowns[item.id];
+
+                  return (
+                    <div key={item.id}>
+                      <button
+                        type="button"
+                        className="btn text-decoration-none d-flex align-items-center p-2 w-100"
+                        style={{
+                          backgroundColor: active ? '#FDEFEB' : 'transparent',
+                          color: active ? '#f97316' : current.sidebarText,
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          transition: 'all 0.2s ease',
+                          textAlign: 'left',
+                          justifyContent: collapsed ? 'center' : 'flex-start',
+                          boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+                        }}
+                        onClick={() => {
+                          if (hasChildren) {
+                            toggleDropdown(item.id);
+                          } else {
+                            closeMobile();
+                          }
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!active) {
+                            e.currentTarget.style.backgroundColor = current.hoverBg;
+                            e.currentTarget.style.color = current.hoverText;
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!active) {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.color = current.sidebarText;
+                          }
+                        }}
+                        title={collapsed ? item.label : ''}
+                      >
+                        <Icon size={20} className="flex-shrink-0" />
+                        {!collapsed && (
+                          <>
+                            <span className="ms-3 text-truncate">{item.label}</span>
+                            {hasChildren && (
+                              <span className="ms-auto">
+                                {isDropdownOpen ? <ChevronDown size={16} /> : <ChevronLeft size={16} />}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </button>
+                      {/* Render children if open */}
+                      {hasChildren && isDropdownOpen && !collapsed && (
+                        <div className="ms-4 d-flex flex-column gap-1">
+                          {item.children.map((child) => {
+                            const childActive = isActive(child.path);
+                            return (
+                              <Link
+                                key={child.id}
+                                to={child.path}
+                                onClick={closeMobile}
+                                className="btn text-decoration-none d-flex align-items-center p-2"
+                                style={{
+                                  backgroundColor: childActive ? '#f97316' : 'transparent',
+                                  color: childActive ? 'white' : current.sidebarText,
+                                  border: 'none',
+                                  borderRadius: '8px',
+                                  fontSize: '13px',
+                                  transition: 'all 0.2s ease',
+                                  textAlign: 'left',
+                                  marginLeft: '8px'
+                                }}
+                                onMouseEnter={(e) => {
+                                  if (!childActive) {
+                                    e.currentTarget.style.backgroundColor = current.hoverBg;
+                                    e.currentTarget.style.color = current.hoverText;
+                                  }
+                                }}
+                                onMouseLeave={(e) => {
+                                  if (!childActive) {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = current.sidebarText;
+                                  }
+                                }}
+                                title={child.label}
+                              >
+                                <span className="ms-1">{child.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </nav>
+            ) : null}
           </div>
         </div>
 
         {/* Logout Button */}
-        <div className="p-2 border-top" style={{ borderTopColor: current.border }}>
+        <div className="p-2 pt-0 border-top" style={{ borderTopColor: current.border }}>
           <button
             onClick={() => {
               onLogout();

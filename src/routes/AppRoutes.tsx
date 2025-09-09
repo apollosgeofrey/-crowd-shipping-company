@@ -4,7 +4,8 @@ import ForgotPassword from "../features/auth/pages/ForgotPassword";
 import ResetPassword from "../features/auth/pages/ResetPassword";
 import VerifyEmail from "../features/auth/pages/VerifyEmail";
 import Dashboard from "../features/dashboard/pages/Dashboard";
-import ProtectedRoute from "../components/ProtectedRoute";
+// import Users from "../features/users/pages/Users";
+import NotFoundPage from "../features/errors/pages/NotFoundPage";
 
 export default function AppRoutes() {
   return (
@@ -17,9 +18,13 @@ export default function AppRoutes() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/dashboard" element={
           <Dashboard />
-          // <ProtectedRoute><Dashboard /></ProtectedRoute>
+          // <Users />
+          // <ProtectedRoute>
+          //   <Dashboard />
+          //   <Users />
+          // </ProtectedRoute>
         } />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

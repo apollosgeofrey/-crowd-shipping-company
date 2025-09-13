@@ -96,8 +96,8 @@ export default function BookingOverview() {
                       role="progressbar"
                       style={{ width: `${trip.progress}%` }}
                       aria-valuenow={trip.progress}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
                     />
                   </div>
                   <small className="text-muted">{trip.progress}%</small>

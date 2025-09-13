@@ -41,7 +41,7 @@ export default function UserTable() {
                   </button>
 
                   {/* Divider applied to subsequent items */}
-                  <div className="d-flex align-items-center border-start px-3">
+                  <div className="d-flex align-items-center border-start px-2">
                     <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
                       <option>Date</option>
                     </select>
@@ -68,12 +68,15 @@ export default function UserTable() {
                 </div>
               </div>
 
+              {/* Actions */}
               <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                 <div className="d-flex gap-2">
-                  <button className="btn btn-outline-primary btn-sm fw-bold">
-                    <span className="text-dark">Export</span> <span className="fa fa-angle-down"></span>
+                  <button className="btn btn-outline-secondary btn-sm fw-bold">
+                    <span className="">Export</span> <span className="fa fa-angle-down"></span>
                   </button>
-                  <button className="btn btn-primary btn-sm fw-bold"><span className="fa fa-plus"></span> Create User</button>
+                  <button className="btn btn-primary btn-sm fw-bold">
+                    <span className="fa fa-plus"></span> Create User
+                  </button>
                 </div>
               </div>
 
@@ -108,26 +111,23 @@ export default function UserTable() {
                   </tbody>
                 </table>
               </div>
-              
+                  
               {/* Pagination */}
               <div className="d-flex justify-content-between align-items-center mt-3">
-                <select className="form-select form-select-sm rounded border-primary text-wrap fw-bold" style={{ width: "auto" }}>
+                <select className="form-select form-select-sm rounded border-primary fw-bold" style={{ width: "auto" }}>
                   <option>10</option>
                   <option>25</option>
                   <option>50</option>
                 </select>
                 <div className="d-flex align-items-center gap-2">
-                  <span className="text-dark fw-bold small">Page &nbsp;
-                    <button className="btn btn-outline-primary btn-sm rounded px-2 mx-2">
-                      <span className="fw-bold text-dark">{page}</span>
-                    </button>
-                     of &nbsp; 2 &nbsp;
+                  <span className="text-dark fw-bold small">
+                    Page <button className="btn btn-outline-primary btn-sm rounded px-2 mx-2">{page}</button> of 2
                   </span>
                   <button className="btn btn-outline-primary btn-sm rounded" disabled={page === 1} onClick={() => setPage(page - 1)}>
-                    <span className="text-dark fw-bold"><span className="fa fa-angle-left"></span> Previous</span>
+                    <i className="fa fa-angle-left me-1"></i> Previous
                   </button>
-                  <button className="btn btn-outline-primary btn-sm rounded text-dark" onClick={() => setPage(page + 1)}>
-                    <span className="text-dark fw-bold">Next <span className="fa fa-angle-right"></span></span>
+                  <button className="btn btn-outline-primary btn-sm rounded" onClick={() => setPage(page + 1)}>
+                    Next <i className="fa fa-angle-right ms-1"></i>
                   </button>
                 </div>
               </div>

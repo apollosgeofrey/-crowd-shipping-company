@@ -1,13 +1,14 @@
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Login from "../features/auth/pages/Login";
-import ForgotPassword from "../features/auth/pages/ForgotPassword";
-import ResetPassword from "../features/auth/pages/ResetPassword";
-import VerifyEmail from "../features/auth/pages/VerifyEmail";
-import Dashboard from "../features/dashboard/pages/Dashboard";
-import Users from "../features/users/pages/Users";
-import UserDetail from "../features/users/pages/UserDetail";
-import Admin from "../features/admin/pages/Admin";
+import Login from "../features/auth/pages/Login.tsx";
+import ForgotPassword from "../features/auth/pages/ForgotPassword.tsx";
+import ResetPassword from "../features/auth/pages/ResetPassword.tsx";
+import VerifyEmail from "../features/auth/pages/VerifyEmail.tsx";
+import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
+import Users from "../features/users/pages/Users.tsx";
+import UserDetail from "../features/users/pages/UserDetail.tsx";
+import Admin from "../features/admin/pages/Admin.tsx";
+import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
 export default function AppRoutes() {
@@ -30,6 +31,7 @@ export default function AppRoutes() {
 
         {/* admin management routes */}
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+        <Route path="/admin/:id" element={<ProtectedRoute><AdminDetail /></ProtectedRoute>} />
 
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />

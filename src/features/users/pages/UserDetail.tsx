@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import userMale from "../../../assets/images/user_male.png";
 import DashboardLayout from "../../../layouts/DashboardLayout";
+import {FaUser, FaCalendarAlt, FaClipboardList, FaFileAlt} from "react-icons/fa";
+import ReportTabIndex from "./userDetailPartials/reportsTab/ReportTabIndex.tsx";
 import ProfileTabIndex from "./userDetailPartials/profileTab/ProfileTabIndex.tsx";
 import PaymentTabIndex from "./userDetailPartials/paymentsTab/PaymentTabIndex.tsx"
 import BookingTabIndex from "./userDetailPartials/bookingsTab/BookingTabIndex.tsx";
-import ReportTabIndex from "./userDetailPartials/reportsTab/ReportTabIndex.tsx";
-import {FaUser, FaCalendarAlt, FaClipboardList, FaFileAlt, FaWallet, FaCreditCard, FaExchangeAlt} from "react-icons/fa";
 
 export default function UserDetail() {
   const { id } = useParams<{ id: string }>();
@@ -35,11 +35,11 @@ export default function UserDetail() {
             />
             <div>
               <h5 className="fw-bold mb-2">John Ashernine</h5>
-              <p className="mb-0 text-primary fw-semibold">
-                <span className="fa fa-id-card me-2"></span> Unverified
+              <p className="mb-0 fw-semibold">
+                <span className="fa fa-id-card me-2"></span><span className="text-primary">Unverified</span>
               </p>
-              <p className="mb-0 text-info fw-semibold">
-                <span className="fa fa-wallet me-2"></span> Basic Account
+              <p className="mb-0 fw-semibold">
+                <span className="fa fa-wallet me-2"></span><span className="text-info">Basic Account</span>
               </p>
             </div>
           </div>
@@ -75,21 +75,13 @@ export default function UserDetail() {
 
           {/* Content Area */}
           <div className="col-md-9">
-            {activeMainTab === "payments" && (
-              <PaymentTabIndex />
-            )}
+            {activeMainTab === "payments" && (<PaymentTabIndex />)}
 
-            {activeMainTab === "profile" && (
-              <ProfileTabIndex />
-            )}
+            {activeMainTab === "profile" && (<ProfileTabIndex />)}
 
-            {activeMainTab === "bookings" && (
-              <BookingTabIndex />
-            )}
+            {activeMainTab === "bookings" && (<BookingTabIndex />)}
 
-            {activeMainTab === "reports" && (
-              <ReportTabIndex />
-            )}
+            {activeMainTab === "reports" && (<ReportTabIndex />)}
           </div>
         </div>
       </div>

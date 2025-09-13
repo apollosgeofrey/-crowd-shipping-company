@@ -203,7 +203,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 
         {/* Main Menu Section */}
         <div className="flex-grow-1 p-2">
-          <div className="mb-4">
+          <div className="mb-0">
             {!collapsed && (
               <p className="text-uppercase fw-bold mb-3 px-3" style={{ fontSize: '12px', color: current.sidebarText, letterSpacing: '0.05em' }}>
                 MAIN
@@ -217,98 +217,140 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
                   const active = isActive(item.path);
                   const hasChildren = !!item.children;
                   const isDropdownOpen = openDropdowns[item.id];
+                  
+                  // Parent button for dropdown menus
+                  if(hasChildren) {
+                    return (
+                      <div key={item.id}>
+                        <button
+                          key={item.id} // <-- This is correct!
+                          type="button"
+                          className="btn text-decoration-none d-flex align-items-center p-2 w-100"
+                          style={{
+                            backgroundColor: active ? '#FDEFEB' : 'transparent',
+                            color: active ? '#f97316' : current.sidebarText,
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '14px',
+                            transition: 'all 0.2s ease',
+                            textAlign: 'left',
+                            justifyContent: collapsed ? 'center' : 'flex-start',
+                            boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+                          }}
+                          onClick={() => {
+                            if (hasChildren) {
+                              toggleDropdown(item.id);
+                            } else {
+                              closeMobile();
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = current.hoverBg;
+                              e.currentTarget.style.color = current.hoverText;
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                              e.currentTarget.style.color = current.sidebarText;
+                            }
+                          }}
+                          title={collapsed ? item.label : ''}
+                        >
+                          <Icon size={20} className="flex-shrink-0" />
+                          {!collapsed && (
+                            <>
+                              <span className="ms-3 text-truncate">{item.label}</span>
+                              {hasChildren && (
+                                <span className="ms-auto">
+                                  {isDropdownOpen ? <ChevronDown size={16} /> : <ChevronLeft size={16} />}
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </button>
+                        
+                        {/* Render children if open */}
+                        {(isDropdownOpen && !collapsed) && (
+                          <div className="ms-4 d-flex flex-column gap-1">
+                            {item.children.map((child) => {
+                              const childActive = isActive(child.path);
+                              return (
+                                <Link
+                                  key={child.id}
+                                  to={child.path}
+                                  onClick={closeMobile}
+                                  className="btn text-decoration-none d-flex align-items-center p-2"
+                                  style={{
+                                    backgroundColor: childActive ? '#f97316' : 'transparent',
+                                    color: childActive ? 'white' : current.sidebarText,
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    fontSize: '13px',
+                                    transition: 'all 0.2s ease',
+                                    textAlign: 'left',
+                                    marginLeft: '8px'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    if (!childActive) {
+                                      e.currentTarget.style.backgroundColor = current.hoverBg;
+                                      e.currentTarget.style.color = current.hoverText;
+                                    }
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    if (!childActive) {
+                                      e.currentTarget.style.backgroundColor = 'transparent';
+                                      e.currentTarget.style.color = current.sidebarText;
+                                    }
+                                  }}
+                                  title={child.label}
+                                >
+                                  <span className="ms-1">{child.label}</span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        )} 
+                      </div>
+                    );
+                  }
 
+                  // Regular menu item
                   return (
-                    <div key={item.id}>
-                      <button
-                        type="button"
-                        className="btn text-decoration-none d-flex align-items-center p-2 w-100"
-                        style={{
-                          backgroundColor: active ? '#FDEFEB' : 'transparent',
-                          color: active ? '#f97316' : current.sidebarText,
-                          border: 'none',
-                          borderRadius: '8px',
-                          fontSize: '14px',
-                          transition: 'all 0.2s ease',
-                          textAlign: 'left',
-                          justifyContent: collapsed ? 'center' : 'flex-start',
-                          boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
-                        }}
-                        onClick={() => {
-                          if (hasChildren) {
-                            toggleDropdown(item.id);
-                          } else {
-                            closeMobile();
-                          }
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!active) {
-                            e.currentTarget.style.backgroundColor = current.hoverBg;
-                            e.currentTarget.style.color = current.hoverText;
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!active) {
-                            e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = current.sidebarText;
-                          }
-                        }}
-                        title={collapsed ? item.label : ''}
-                      >
-                        <Icon size={20} className="flex-shrink-0" />
-                        {!collapsed && (
-                          <>
-                            <span className="ms-3 text-truncate">{item.label}</span>
-                            {hasChildren && (
-                              <span className="ms-auto">
-                                {isDropdownOpen ? <ChevronDown size={16} /> : <ChevronLeft size={16} />}
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </button>
-                      {/* Render children if open */}
-                      {hasChildren && isDropdownOpen && !collapsed && (
-                        <div className="ms-4 d-flex flex-column gap-1">
-                          {item.children.map((child) => {
-                            const childActive = isActive(child.path);
-                            return (
-                              <Link
-                                key={child.id}
-                                to={child.path}
-                                onClick={closeMobile}
-                                className="btn text-decoration-none d-flex align-items-center p-2"
-                                style={{
-                                  backgroundColor: childActive ? '#f97316' : 'transparent',
-                                  color: childActive ? 'white' : current.sidebarText,
-                                  border: 'none',
-                                  borderRadius: '8px',
-                                  fontSize: '13px',
-                                  transition: 'all 0.2s ease',
-                                  textAlign: 'left',
-                                  marginLeft: '8px'
-                                }}
-                                onMouseEnter={(e) => {
-                                  if (!childActive) {
-                                    e.currentTarget.style.backgroundColor = current.hoverBg;
-                                    e.currentTarget.style.color = current.hoverText;
-                                  }
-                                }}
-                                onMouseLeave={(e) => {
-                                  if (!childActive) {
-                                    e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = current.sidebarText;
-                                  }
-                                }}
-                                title={child.label}
-                              >
-                                <span className="ms-1">{child.label}</span>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
+                    <Link
+                      key={item.id} // <-- This is correct!
+                      to={item.path || '#'}
+                      onClick={closeMobile}
+                      className="btn text-decoration-none d-flex align-items-center p-2 w-100"
+                      style={{
+                        backgroundColor: active ? '#FDEFEB' : 'transparent',
+                        color: active ? '#f97316' : current.sidebarText,
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        transition: 'all 0.2s ease',
+                        textAlign: 'left',
+                        justifyContent: collapsed ? 'center' : 'flex-start',
+                        boxShadow: active ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = current.hoverBg;
+                          e.currentTarget.style.color = current.hoverText;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = current.sidebarText;
+                        }
+                      }}
+                      title={collapsed ? item.label : ''}
+                    >
+                      <Icon size={20} className="flex-shrink-0" />
+                      {!collapsed && <span className="ms-3 text-truncate">{item.label}</span>}
+                    </Link>
                   );
                 })}
               </nav>

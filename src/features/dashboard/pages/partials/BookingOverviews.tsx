@@ -49,7 +49,7 @@ export default function BookingOverview() {
   ];
 
   return (
-    <div className="card shadow rounded p-3">
+    <div className="card shadow rounded p-3" style={{ overflowX: "auto", maxWidth: "100vw" }}>
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h6 className="fw-bold fs-6">Booking Overview</h6>
@@ -60,7 +60,7 @@ export default function BookingOverview() {
 
       {/* Table */}
       <div className="table-responsive small">
-        <table className="table align-middle text-nowrap">
+        <table className="table table-striped align-middle text-wrap">
           <thead>
             <tr>
               <th>Trip ID</th>
@@ -92,8 +92,7 @@ export default function BookingOverview() {
                 </td>
                 <td style={{ width: "160px" }}>
                   <div className="progress" style={{ height: "8px" }}>
-                    <div
-                      className={`progress-bar bg-warning`}
+                    <div className={`progress-bar bg-${trip.status.color}`}
                       role="progressbar"
                       style={{ width: `${trip.progress}%` }}
                       aria-valuenow={trip.progress}

@@ -9,14 +9,14 @@ export default function Dashboard() {
     <DashboardLayout>
       <div className="row mb-4">
         <div className="col-sm-12 col-md-8">
-          <p className=""><StatisticalSummary /></p>
-          <p className=""><RevenueChart /></p>
+          <StatisticalSummary /><br />
+          <RevenueChart /><br />
         </div>
         <div className="col-sm-12 col-md-4">
-          <p className=""><BookingTrips /></p>
+          <BookingTrips /><br />
         </div>
         <div className="col-sm-12 col-md-12">
-          <p className=""><BookingOverviews /></p>
+          <BookingOverviews /><br />
         </div>
       </div>
     </DashboardLayout>

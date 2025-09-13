@@ -114,6 +114,11 @@ a.text-primary:focus {
   border-color: var(--bs-primary) !important;
 }
 
+
+.bg-primary-subtle {
+  background-color: #FDEFEB !important; /* very light orange */
+}
+
 .btn-outline-primary:hover,
 .btn-outline-primary:focus,
 .btn-outline-primary:active,

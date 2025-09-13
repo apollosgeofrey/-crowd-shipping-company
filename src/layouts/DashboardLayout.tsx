@@ -1,5 +1,5 @@
 // DashboardLayout.tsx (Updated)
-import { PropsWithChildren, useState, useEffect } from "react";
+import { type PropsWithChildren, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";

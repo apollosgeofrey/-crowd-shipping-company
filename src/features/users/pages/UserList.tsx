@@ -1,8 +1,8 @@
 import { useState } from "react";
-import DashboardLayout from "../../../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
+import DashboardLayout from "../../../layouts/DashboardLayout";
 
-export default function UserTable() {
+export default function UserList() {
   const [page, setPage] = useState(1);
 
   const users = [
@@ -74,11 +74,14 @@ export default function UserTable() {
                   <button className="btn btn-outline-secondary btn-sm fw-bold">
                     <span className="">Export</span> <span className="fa fa-angle-down"></span>
                   </button>
-                  <button className="btn btn-primary btn-sm fw-bold">
+
+                  {/* Create Admin URL */}
+                  <Link to="/users/create" className="btn btn-primary btn-sm fw-bold">
                     <span className="fa fa-plus"></span> Create User
-                  </button>
+                  </Link>
                 </div>
               </div>
+
 
               {/* Table */}
               <div className="table-responsive rounded-3 shadow-sm border">

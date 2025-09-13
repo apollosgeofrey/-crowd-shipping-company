@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 
-export default function AdminTable() {
+export default function AdminList() {
   const [page, setPage] = useState(1);
 
   const admins = [
@@ -74,9 +74,10 @@ export default function AdminTable() {
                   <button className="btn btn-outline-secondary btn-sm fw-bold">
                     <span className="">Export</span> <i className="fa fa-angle-down"></i>
                   </button>
-                  <button className="btn btn-primary btn-sm fw-bold">
-                    <i className="fa fa-plus me-1"></i> Create Admin
-                  </button>
+                  {/* Create Admin URL */}
+                  <Link to="/admin/create" className="btn btn-primary btn-sm fw-bold">
+                    <span className="fa fa-plus"></span> Create Admin
+                  </Link>
                 </div>
               </div>
 

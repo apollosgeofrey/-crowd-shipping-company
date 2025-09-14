@@ -1,19 +1,45 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import DashboardLayout from "../../../layouts/DashboardLayout";
+import { useState, useEffect } from "react";
+import PaginationBar from "../../../components/PaginationBar.tsx";
+import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 
 export default function UserList() {
   const [page, setPage] = useState(1);
-
-  const users = [
+  const [perPage, setPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(50);
+  const [users, setUsers] = useState<any[]>([
     { id: "01", name: "Christine Brooks", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 1, status: "Active" },
     { id: "02", name: "John Ashernine", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 10, status: "Inactive" },
     { id: "03", name: "Darrell Caldwell", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 3, status: "Rejected" },
     { id: "04", name: "Gilbert Johnston", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 4, status: "Active" },
     { id: "05", name: "Alan Cain", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 40, status: "Processing" },
     { id: "06", name: "Alfred Murray", email: "adedeji@gmail.com", date: "14 Feb 2019", bookings: 5, status: "Active" },
-  ];
+  ]);
 
+  // Fetch data whenever page changes
+  useEffect(() => {
+    async function fetchUsers() {
+      setIsLoading(true);
+      try {
+        // Example API call (replace with your backend endpoint)
+        const res = await fetch(`/api/users?page=${page}`);
+        // const data = await res.json();
+
+        // Laravel paginate-style response often has: data, total, per_page, current_page
+        setUsers(users);
+        // optionally update totalPages dynamically: setTotalPages(data.last_page);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchUsers();
+  }, [page, perPage]);
+
+
+  // Get status badge based on status
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active": return "badge rounded bg-success-subtle text-success fw-semibold px-3 py-2";
@@ -97,43 +123,41 @@ export default function UserList() {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((u) => (
-                      <tr key={u.id}>
-                        <td className="text-muted py-3 px-2">{u.id}</td>
-                        <td className="text-muted py-3 px-2">
-                          <Link to={`/users/${u.id}/show`} className="text-decoration-none text-primary">{u.name}</Link>
-                        </td>
-                        <td className="text-muted py-3 px-2">{u.email}</td>
-                        <td className="text-muted py-3 px-2">{u.date}</td>
-                        <td className="text-muted py-3 px-2">{u.bookings}</td>
-                        <td className="text-muted py-3 px-2">
-                          <span className={`col-sm-12 ${getStatusBadge(u.status)}`}>{u.status}</span>
+                    {isLoading ? (
+                      <tr>
+                        <td colSpan={6} className="text-center text-muted py-3">
+                          Loading...
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      // Render table rows
+                      users.length === 0 ? (
+                        <tr><td colSpan={6} className="text-center text-muted py-3">No record users found</td></tr>
+                      ) : (
+                        users.map((u) => (
+                          <tr key={u.id}>
+                            <td className="text-muted py-3 px-2">{u.id}</td>
+                            <td className="text-muted py-3 px-2">
+                              <Link to={`/users/${u.id}/show`} className="text-decoration-none text-primary">
+                                {u.name}
+                              </Link>
+                            </td>
+                            <td className="text-muted py-3 px-2">{u.email}</td>
+                            <td className="text-muted py-3 px-2">{u.date}</td>
+                            <td className="text-muted py-3 px-2">{u.bookings}</td>
+                            <td className="text-muted py-3 px-2">
+                              <span className={`col-sm-12 ${getStatusBadge(u.status)}`}>{u.status}</span>
+                            </td>
+                          </tr>
+                        ))
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>
-                  
-              {/* Pagination */}
-              <div className="d-flex justify-content-between align-items-center mt-3">
-                <select className="form-select form-select-sm rounded border-primary fw-bold" style={{ width: "auto" }}>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                <div className="d-flex align-items-center gap-2">
-                  <span className="text-dark fw-bold small">
-                    Page <button className="btn btn-outline-primary btn-sm rounded px-2 mx-2">{page}</button> of 2
-                  </span>
-                  <button className="btn btn-outline-primary btn-sm rounded" disabled={page === 1} onClick={() => setPage(page - 1)}>
-                    <i className="fa fa-angle-left me-1"></i> Previous
-                  </button>
-                  <button className="btn btn-outline-primary btn-sm rounded" onClick={() => setPage(page + 1)}>
-                    Next <i className="fa fa-angle-right ms-1"></i>
-                  </button>
-                </div>
-              </div>
+
+              {/* Pagination Bar */}
+              <PaginationBar page={page} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
             </div>
           </div>
         </div>

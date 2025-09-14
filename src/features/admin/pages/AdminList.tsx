@@ -1,19 +1,44 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import DashboardLayout from "../../../layouts/DashboardLayout";
+import PaginationBar from "../../../components/PaginationBar.tsx";
 
 export default function AdminList() {
   const [page, setPage] = useState(1);
-
-  const admins = [
+  const [perPage, setPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(50);
+  const [admins, setAdmins] = useState<any[]>([
     { id: "01", name: "Admin 1 David", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 1", status: "Active" },
     { id: "02", name: "Rosie Pearson", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 2", status: "Inactive" },
     { id: "03", name: "Darrell Caldwell", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 3", status: "Rejected" },
     { id: "04", name: "Gilbert Johnston", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 4", status: "Active" },
     { id: "05", name: "Alan Cain", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 5", status: "Processing" },
     { id: "06", name: "Alfred Murray", email: "adedeji@gmail.com", date: "14 Feb 2019", role: "Admin 6", status: "Active" },
-  ];
+  ]);
 
+  // Fetch data whenever page changes
+  useEffect(() => {
+    async function fetchAdmins() {
+      setIsLoading(true);
+      try {
+        // Example API call (replace with your backend endpoint)
+        const res = await fetch(`/api/admins?page=${page}`);
+        // const data = await res.json();
+
+        // Laravel paginate-style response often has: data, total, per_page, current_page
+        setAdmins(admins);
+        // optionally update totalPages dynamically: setTotalPages(data.last_page);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAdmins();
+  }, [page, perPage]);
+
+  // Get Status Badge Classes 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active": return "badge rounded bg-success-subtle text-success fw-semibold px-3 py-2";
@@ -95,43 +120,39 @@ export default function AdminList() {
                     </tr>
                   </thead>
                   <tbody>
-                    {admins.map((a) => (
-                      <tr key={a.id}>
-                        <td className="text-muted py-3">{a.id}</td>
-                        <td className="text-muted py-3">
-                          <Link to={`/admin/${a.id}/show`} className="text-decoration-none text-primary">{a.name}</Link>
-                        </td>
-                        <td className="text-muted py-3">{a.email}</td>
-                        <td className="text-muted py-3">{a.date}</td>
-                        <td className="text-muted py-3">{a.role}</td>
-                        <td className="py-3">
-                          <span className={`col-sm-12 ${getStatusBadge(a.status)}`}>{a.status}</span>
+                    {isLoading ? (
+                      <tr>
+                        <td colSpan={6} className="text-center text-muted py-3">
+                          Loading...
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      // Render table rows
+                      admins.length === 0 ? (
+                        <tr><td colSpan={6} className="text-center text-muted py-3">No record admins found</td></tr>
+                      ) : (
+                        admins.map((a) => (
+                          <tr key={a.id}>
+                            <td className="text-muted py-3 px-2">{a.id}</td>
+                            <td className="text-muted py-3 px-2">
+                              <Link to={`/admins/${a.id}/show`} className="text-decoration-none text-primary">{a.name}</Link>
+                            </td>
+                            <td className="text-muted py-3 px-2">{a.email}</td>
+                            <td className="text-muted py-3 px-2">{a.date}</td>
+                            <td className="text-muted py-3 px-2">{a.role}</td>
+                            <td className="text-muted py-3 px-2">
+                              <span className={`col-sm-12 ${getStatusBadge(a.status)}`}>{a.status}</span>
+                            </td>
+                          </tr>
+                        ))
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>
 
-              {/* Pagination */}
-              <div className="d-flex justify-content-between align-items-center mt-3">
-                <select className="form-select form-select-sm rounded border-primary fw-bold" style={{ width: "auto" }}>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                <div className="d-flex align-items-center gap-2">
-                  <span className="text-dark fw-bold small">
-                    Page <button className="btn btn-outline-primary btn-sm rounded px-2 mx-2">{page}</button> of 2
-                  </span>
-                  <button className="btn btn-outline-primary btn-sm rounded" disabled={page === 1} onClick={() => setPage(page - 1)}>
-                    <i className="fa fa-angle-left me-1"></i> Previous
-                  </button>
-                  <button className="btn btn-outline-primary btn-sm rounded" onClick={() => setPage(page + 1)}>
-                    Next <i className="fa fa-angle-right ms-1"></i>
-                  </button>
-                </div>
-              </div>
+              {/* Pagination Bar */}
+              <PaginationBar page={page} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
 
             </div>
           </div>

@@ -1,22 +1,36 @@
+// components
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
+
+// auth routes
 import Login from "../features/auth/pages/Login.tsx";
 import ForgotPassword from "../features/auth/pages/ForgotPassword.tsx";
 import ResetPassword from "../features/auth/pages/ResetPassword.tsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.tsx";
 
+// dashboard route
 import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
 
+// drivers management routes
+import DriverList from "../features/drivers/pages/DriverList.tsx";
+import DriverDetail from "../features/drivers/pages/DriverDetail.tsx";
+import DriverCreate from "../features/drivers/pages/DriverCreate.tsx";
+import DriverEdit from "../features/drivers/pages/DriverEdit.tsx";
+// import DriverRequests from "../features/drivers/pages/DriverRequests.tsx";
+
+// users management routes 
 import UserList from "../features/users/pages/UserList.tsx";
 import UserDetail from "../features/users/pages/UserDetail.tsx";
 import UserCreate from "../features/users/pages/UserCreate.tsx";
 import UserEdit from "../features/users/pages/UserEdit.tsx";
 
+// admin management routes
 import AdminList from "../features/admin/pages/AdminList.tsx";
 import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
 import AdminCreate from "../features/admin/pages/AdminCreate.tsx";
 import AdminEdit from "../features/admin/pages/AdminEdit.tsx";
 
+// fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
 export default function AppRoutes() {
@@ -46,6 +60,12 @@ export default function AppRoutes() {
         <Route path="/admin/:id/show" element={<ProtectedRoute><AdminDetail /></ProtectedRoute>} />
         <Route path="/admin/:id/edit" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
 
+        {/* drivers management routes */}
+        <Route path="/drivers" element={<ProtectedRoute><DriverList /></ProtectedRoute>} />
+        <Route path="/drivers/create" element={<ProtectedRoute><DriverCreate /></ProtectedRoute>} />
+        {/* <Route path="/drivers/requests" element={<ProtectedRoute><DriverRequests /></ProtectedRoute>} /> */}
+        <Route path="/drivers/:id/show" element={<ProtectedRoute><DriverDetail /></ProtectedRoute>} />
+        <Route path="/drivers/:id/edit" element={<ProtectedRoute><DriverEdit /></ProtectedRoute>} />
 
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />

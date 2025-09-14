@@ -99,7 +99,7 @@ export default function AdminList() {
                       <tr key={a.id}>
                         <td className="text-muted py-3">{a.id}</td>
                         <td className="text-muted py-3">
-                          <Link to={`/admin/${a.id}`} className="text-decoration-none text-primary">{a.name}</Link>
+                          <Link to={`/admin/${a.id}/show`} className="text-decoration-none text-primary">{a.name}</Link>
                         </td>
                         <td className="text-muted py-3">{a.email}</td>
                         <td className="text-muted py-3">{a.date}</td>

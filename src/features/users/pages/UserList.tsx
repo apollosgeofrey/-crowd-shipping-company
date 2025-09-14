@@ -101,7 +101,7 @@ export default function UserList() {
                       <tr key={u.id}>
                         <td className="text-muted py-3 px-2">{u.id}</td>
                         <td className="text-muted py-3 px-2">
-                          <Link to={`/users/${u.id}`} className="text-decoration-none text-primary">{u.name}</Link>
+                          <Link to={`/users/${u.id}/show`} className="text-decoration-none text-primary">{u.name}</Link>
                         </td>
                         <td className="text-muted py-3 px-2">{u.email}</td>
                         <td className="text-muted py-3 px-2">{u.date}</td>

@@ -25,8 +25,8 @@ export default function TripTabIndex({
 
     // event handlers (if any)
 
-    const [activeBookingTab, setActiveBookingTab] = useState("accepted");
-    const walletTabs = [
+    const [activeTripTab, setActiveTripTab] = useState("accepted");
+    const tripTabs = [
         { id: "completed", label: "Completed", icon: <FaCheckSquare /> },
         { id: "accepted", label: "Accepted", icon: <FaBriefcase /> },
         { id: "pending", label: "Pending", icon: <FaHourglassHalf /> },
@@ -38,15 +38,15 @@ export default function TripTabIndex({
     // Render
     return (
         <div className="">
-            {/* Booking Tabs */}
+            {/* Trip Tabs */}
             <ul className="nav nav-tabs mb-3">
-                {walletTabs.map((tab) => (
+                {tripTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">
                         <button
                             type="button"
-                            onClick={() => setActiveBookingTab(tab.id)}
+                            onClick={() => setActiveTripTab(tab.id)}
                             className={`nav-link fw-semibold d-inline-flex align-items-center gap-2 border-0 border-bottom
-                                ${activeBookingTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}
+                                ${activeTripTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}
                         >
                             {tab.icon} <span>{tab.label}</span>
                         </button>
@@ -55,16 +55,16 @@ export default function TripTabIndex({
             </ul>
 
             {/* Completed Tab Content */}
-            {activeBookingTab === "completed" && (<CompletedTab />)}
+            {activeTripTab === "completed" && (<CompletedTab />)}
 
             {/* Accepted Tab Content */}
-            {activeBookingTab === "accepted" && (<AcceptedTab />)}
+            {activeTripTab === "accepted" && (<AcceptedTab />)}
 
             {/* Pending Tab Content */}
-            {activeBookingTab === "pending" && (<PendingTab />)}
+            {activeTripTab === "pending" && (<PendingTab />)}
 
             {/* Declined Tab Content */}
-            {activeBookingTab === "declined" && (<DeclinedTab />)}
+            {activeTripTab === "declined" && (<DeclinedTab />)}
         </div>
     );
 }

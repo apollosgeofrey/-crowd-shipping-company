@@ -24,8 +24,8 @@ export default function PaymentTabIndex({
 
     // event handlers (if any)    
     
-    const [activeWalletTab, setActiveWalletTab] = useState("wallet");
-    const walletTabs = [
+    const [activePaymentTab, setActivePaymentTab] = useState("wallet");
+    const paymentTabs = [
         { id: "wallet", label: "Wallet", icon: <FaWallet /> },
         { id: "payment-details", label: "Payment Details", icon: <FaCreditCard /> },
         { id: "transactions", label: "Transactions", icon: <FaExchangeAlt /> },
@@ -38,14 +38,10 @@ export default function PaymentTabIndex({
         <div className="">
             {/* Wallet Tabs */}
             <ul className="nav nav-tabs mb-3">
-                {walletTabs.map((tab) => (
+                {paymentTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">
-                        <button
-                            type="button"
-                            onClick={() => setActiveWalletTab(tab.id)}
-                            className={`nav-link fw-semibold d-inline-flex align-items-center gap-2 border-0 border-bottom
-                                ${activeWalletTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}
-                        >
+                        <button type="button" onClick={() => setActivePaymentTab(tab.id)} className={`nav-link fw-semibold d-inline-flex align-items-center gap-2 border-0 border-bottom
+                        ${activePaymentTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}>
                             {tab.icon} <span>{tab.label}</span>
                         </button>
                     </li>
@@ -53,13 +49,13 @@ export default function PaymentTabIndex({
             </ul>
 
             {/* Wallet Tab Content */}
-            {activeWalletTab === "wallet" && (<WalletTab />)}
+            {activePaymentTab === "wallet" && (<WalletTab />)}
 
             {/* Payment Details Tab Content */}
-            {activeWalletTab === "payment-details" && (<PaymentDetailTab />)}
+            {activePaymentTab === "payment-details" && (<PaymentDetailTab />)}
 
             {/* Transactions Tab Content */}
-            {activeWalletTab === "transactions" && (<TransactionTab />)}
+            {activePaymentTab === "transactions" && (<TransactionTab />)}
         </div>
     );
 }

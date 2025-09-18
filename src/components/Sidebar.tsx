@@ -19,10 +19,8 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 	useEffect(() => {
 		const newState: { [key: string]: boolean } = {};
 		menuItems.forEach((item) => {
-			 if (item.children) {
-			    newState[item.id] = item.children.some((child) =>
-			     	location.pathname.startsWith(child.path)
-			    );
+			if (item.children) {
+			    newState[item.id] = item.children.some((child) => location.pathname.startsWith(child.path));
 			}
 		});
 		setOpenDropdowns((prev) => ({ ...prev, ...newState }));
@@ -39,7 +37,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 	    {
 		    id: 'manage-driver',
 	    	icon: Users,
-	    	label: 'Manage Driver',
+	    	label: 'Manage Drivers',
 	      	children: [
 	        	{ id: 'drivers-list', label: 'Drivers List', path: '/drivers' },
 	        	{ id: 'drivers-requests', label: 'Driver Requests', path: '/drivers/requests' },
@@ -55,7 +53,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 		}, {
 			id: 'company-mgt',
 			icon: Building2,
-			label: 'Company MGT',
+			label: 'Manage Companies',
 			children: [
 				{ id: 'companies-list', label: 'Companies List', path: '/companies' },
 	        	{ id: 'companies-requests', label: 'Company Requests', path: '/companies/requests' },
@@ -98,7 +96,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 			{/* Mobile Overlay */}
 			{mobileOpen && (
 				<div className="d-lg-none position-fixed w-100 h-100" onClick={closeMobile}
-				  style={{ top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1040 }}
+					style={{ top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1040 }}
 				/>
 			)}
 

@@ -26,7 +26,7 @@ export default function BookingTabIndex({
     // event handlers (if any)
 
     const [activeBookingTab, setActiveBookingTab] = useState("completed");
-    const walletTabs = [
+    const bookingTabs = [
         { id: "completed", label: "Completed", icon: <FaCheckSquare /> },
         { id: "in-progress", label: "In Progress", icon: <FaSpinner /> },
         { id: "pending", label: "Pending", icon: <FaHourglassHalf /> },
@@ -40,7 +40,7 @@ export default function BookingTabIndex({
         <div className="">
             {/* Booking Tabs */}
             <ul className="nav nav-tabs mb-3">
-                {walletTabs.map((tab) => (
+                {bookingTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">
                         <button
                             type="button"

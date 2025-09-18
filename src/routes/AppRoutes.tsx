@@ -37,6 +37,13 @@ import PathfinderCreate from "../features/pathfinders/pages/PathfinderCreate.tsx
 import PathfinderEdit from "../features/pathfinders/pages/PathfinderEdit.tsx";
 // import PathfinderRequests from "../features/pathfinders/pages/PathfinderRequests.tsx";
 
+// companies management routes
+import CompanyList from "../features/companies/pages/CompanyList.tsx";
+import CompanyDetail from "../features/companies/pages/CompanyDetail.tsx";
+import CompanyCreate from "../features/companies/pages/CompanyCreate.tsx";
+import CompanyEdit from "../features/companies/pages/CompanyEdit.tsx";
+// import CompanyRequests from "../features/companies/pages/CompanyRequests.tsx";
+
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
@@ -79,6 +86,13 @@ export default function AppRoutes() {
         {/* <Route path="/pathfinders/requests" element={<ProtectedRoute><PathfinderRequests /></ProtectedRoute>} /> */}
         <Route path="/pathfinders/:id/show" element={<ProtectedRoute><PathfinderDetail /></ProtectedRoute>} />
         <Route path="/pathfinders/:id/edit" element={<ProtectedRoute><PathfinderEdit /></ProtectedRoute>} />
+
+        {/* companies management routes */}
+        <Route path="/companies" element={<ProtectedRoute><CompanyList /></ProtectedRoute>} />
+        <Route path="/companies/create" element={<ProtectedRoute><CompanyCreate /></ProtectedRoute>} />
+        {/* <Route path="/companies/requests" element={<ProtectedRoute><CompanyRequests /></ProtectedRoute>} /> */}
+        <Route path="/companies/:id/show" element={<ProtectedRoute><CompanyDetail /></ProtectedRoute>} />
+        <Route path="/companies/:id/edit" element={<ProtectedRoute><CompanyEdit /></ProtectedRoute>} />
 
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />

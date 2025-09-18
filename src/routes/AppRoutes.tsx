@@ -11,13 +11,6 @@ import VerifyEmail from "../features/auth/pages/VerifyEmail.tsx";
 // dashboard route
 import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
 
-// drivers management routes
-import DriverList from "../features/drivers/pages/DriverList.tsx";
-import DriverDetail from "../features/drivers/pages/DriverDetail.tsx";
-import DriverCreate from "../features/drivers/pages/DriverCreate.tsx";
-import DriverEdit from "../features/drivers/pages/DriverEdit.tsx";
-// import DriverRequests from "../features/drivers/pages/DriverRequests.tsx";
-
 // users management routes 
 import UserList from "../features/users/pages/UserList.tsx";
 import UserDetail from "../features/users/pages/UserDetail.tsx";
@@ -29,6 +22,20 @@ import AdminList from "../features/admin/pages/AdminList.tsx";
 import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
 import AdminCreate from "../features/admin/pages/AdminCreate.tsx";
 import AdminEdit from "../features/admin/pages/AdminEdit.tsx";
+
+// drivers management routes
+import DriverList from "../features/drivers/pages/DriverList.tsx";
+import DriverDetail from "../features/drivers/pages/DriverDetail.tsx";
+import DriverCreate from "../features/drivers/pages/DriverCreate.tsx";
+import DriverEdit from "../features/drivers/pages/DriverEdit.tsx";
+// import DriverRequests from "../features/drivers/pages/DriverRequests.tsx";
+
+// pathfinders management routes
+import PathfinderList from "../features/pathfinders/pages/PathfinderList.tsx";
+import PathfinderDetail from "../features/pathfinders/pages/PathfinderDetail.tsx";
+import PathfinderCreate from "../features/pathfinders/pages/PathfinderCreate.tsx";
+import PathfinderEdit from "../features/pathfinders/pages/PathfinderEdit.tsx";
+// import PathfinderRequests from "../features/pathfinders/pages/PathfinderRequests.tsx";
 
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
@@ -53,7 +60,6 @@ export default function AppRoutes() {
         <Route path="/users/:id/show" element={<ProtectedRoute><UserDetail /></ProtectedRoute>} />
         <Route path="/users/:id/edit" element={<ProtectedRoute><UserEdit /></ProtectedRoute>} />
     
-
         {/* admin management routes */}
         <Route path="/admin" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
         <Route path="/admin/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
@@ -66,6 +72,13 @@ export default function AppRoutes() {
         {/* <Route path="/drivers/requests" element={<ProtectedRoute><DriverRequests /></ProtectedRoute>} /> */}
         <Route path="/drivers/:id/show" element={<ProtectedRoute><DriverDetail /></ProtectedRoute>} />
         <Route path="/drivers/:id/edit" element={<ProtectedRoute><DriverEdit /></ProtectedRoute>} />
+
+        {/* pathfinders management routes */}
+        <Route path="/pathfinders" element={<ProtectedRoute><PathfinderList /></ProtectedRoute>} />
+        <Route path="/pathfinders/create" element={<ProtectedRoute><PathfinderCreate /></ProtectedRoute>} />
+        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute><PathfinderRequests /></ProtectedRoute>} /> */}
+        <Route path="/pathfinders/:id/show" element={<ProtectedRoute><PathfinderDetail /></ProtectedRoute>} />
+        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute><PathfinderEdit /></ProtectedRoute>} />
 
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />

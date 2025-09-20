@@ -44,6 +44,20 @@ import CompanyCreate from "../features/companies/pages/CompanyCreate.tsx";
 import CompanyEdit from "../features/companies/pages/CompanyEdit.tsx";
 // import CompanyRequests from "../features/companies/pages/CompanyRequests.tsx";
 
+// notifications management routes
+import NotificationList from "../features/notifications/pages/NotificationList.tsx";
+
+// support_data management routes
+import SupportDataList from "../features/support_data/pages/SupportDataList.tsx";
+import SupportDataDetail from "../features/support_data/pages/SupportDataDetail.tsx";
+
+// system_settings management routes
+import SystemSettingList from "../features/system_settings/pages/SystemSettingList.tsx";
+
+// ratings management routes
+import RatingList from "../features/ratings/pages/RatingList.tsx";
+import RatingDetail from "../features/ratings/pages/RatingDetail.tsx";
+
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
@@ -94,8 +108,24 @@ export default function AppRoutes() {
         <Route path="/companies/:id/show" element={<ProtectedRoute><CompanyDetail /></ProtectedRoute>} />
         <Route path="/companies/:id/edit" element={<ProtectedRoute><CompanyEdit /></ProtectedRoute>} />
 
+        {/* notifications management routes */}
+        <Route path="/notifications" element={<ProtectedRoute><NotificationList /></ProtectedRoute>} />
+        {/*<Route path="/notifications/:id/show" element={<ProtectedRoute><NotificationDetail /></ProtectedRoute>} />*/}
+
+        {/* support-data management routes */}
+        <Route path="/support-data" element={<ProtectedRoute><SupportDataList /></ProtectedRoute>} />
+        <Route path="/support-data/:id/show" element={<ProtectedRoute><SupportDataDetail /></ProtectedRoute>} />
+
+        {/* system-settings management routes */}
+        <Route path="/system-settings" element={<ProtectedRoute><SystemSettingList /></ProtectedRoute>} />
+
+        {/* ratings management routes */}
+        <Route path="/ratings" element={<ProtectedRoute><RatingList /></ProtectedRoute>} />
+        <Route path="/ratings/:id/show" element={<ProtectedRoute><RatingDetail /></ProtectedRoute>} />
+
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -15,11 +15,11 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
   // Unified route configuration
   const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
     "/dashboard": { title: "Hello Admin 👋", subtitle: "Good Morning" },
+    "/drivers": {title:"Manage Driver", subtitle:"Drivers > Requests", parent:{label:"Drivers", path:"/drivers"}},
+    "/pathfinders": {title:"Manage Pathfinders", subtitle:"Pathfinders > Reports", parent:{label:"Pathfinders", path:"/pathfinders"}},
+    "/companies": {title:"Manage Companies", subtitle:"Companies > Branches", parent:{label:"Companies", path:"/companies"}},
     "/users": {title:"Manage Users", subtitle:"Users > View List", parent:{label:"Users", path:"/users"}},
     "/admin": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
-    "/drivers/requests": {title:"Manage Driver", subtitle:"Drivers > Requests", parent:{label:"Drivers", path:"/drivers"}},
-    "/pathfinders/reports": {title:"Manage Pathfinders", subtitle:"Pathfinders > Reports", parent:{label:"Pathfinders", path:"/pathfinders"}},
-    "/company/branches": {title:"Company MGT", subtitle:"Company > Branches", parent:{label:"Company", path:"/company"}},
     "/live-map": {title:"Live Map", subtitle:"Map > Tracking", parent: {label:"Map", path:"/live-map"}},
     "/bookings": {title: "All Bookings", subtitle:"Bookings > View List", parent:{label:"Bookings", path:"/bookings"}},
     "/transactions": {title:"Transactions", subtitle:"Finance > Transactions", parent:{label:"Finance", path:"/transactions"}},
@@ -27,7 +27,8 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
     "/trip-charges": {title:"Trip Charges", subtitle:"Trips > Charges", parent:{label:"Trips", path:"/trip-charges"}},
     "/reports": {title:"Reports", subtitle:"Analytics > Reports", parent:{label:"Analytics", path:"/reports"}},
     "/ratings": {title: "Ratings", subtitle: "Feedback > Ratings", parent: { label: "Feedback", path: "/ratings"}},
-    "/support": {title: "Support Data", subtitle: "Support > Data", parent: { label: "Support", path: "/support"}},
+    "/support-data": {title: "Support Data", subtitle: "Support > Data", parent: { label: "Support", path: "/support-data"}},
+    "/system-settings": {title: "System Settings", subtitle: "System > Settings", parent: { label: "System", path: "/system-settings"}},
     "/notifications": {title:"Notifications", subtitle:"System > Notifications", parent: {label:"System", path:"/notifications"}}
 
     // ...other routes

@@ -129,25 +129,25 @@ export default function DriverList() {
                                             </td>
                                           </tr>
                                         ) : (
-                                          // Render table rows
-                                          drivers.length === 0 ? (
-                                            <tr><td colSpan={6} className="text-center text-muted py-3">No record drivers found</td></tr>
-                                          ) : (
-                                            drivers.map((d) => (
-                                              <tr key={d.id}>
-                                                <td className="text-muted py-3 px-2">{d.id}</td>
-                                                <td className="text-muted py-3 px-2">
-                                                    <Link to={`/drivers/${d.id}/show`} className="text-decoration-none text-primary">{d.name}</Link>
-                                                </td>
-                                                <td className="text-muted py-3 px-2">{d.email}</td>
-                                                <td className="text-muted py-3 px-2">{d.date}</td>
-                                                <td className="text-muted py-3 px-2">{d.bookings}</td>
-                                                <td className="text-muted py-3 px-2">
-                                                    <span className={`col-sm-12 ${getStatusBadge(d.status)}`}>{d.status}</span>
-                                                </td>
-                                              </tr>
-                                            ))
-                                          )
+                                            // Render table rows
+                                            drivers.length === 0 ? (
+                                                <tr><td colSpan={6} className="text-center text-muted py-3">No record drivers found</td></tr>
+                                            ) : (
+                                                drivers.map((d) => (
+                                                  <tr key={d.id}>
+                                                    <td className="text-muted py-3 px-2">{d.id}</td>
+                                                    <td className="text-muted py-3 px-2">
+                                                        <Link to={`/drivers/${d.id}/show`} className="text-decoration-none text-primary">{d.name}</Link>
+                                                    </td>
+                                                    <td className="text-muted py-3 px-2">{d.email}</td>
+                                                    <td className="text-muted py-3 px-2">{d.date}</td>
+                                                    <td className="text-muted py-3 px-2">{d.bookings}</td>
+                                                    <td className="text-muted py-3 px-2">
+                                                        <span className={`col-sm-12 ${getStatusBadge(d.status)}`}>{d.status}</span>
+                                                    </td>
+                                                  </tr>
+                                                ))
+                                            )
                                         )}
                                     </tbody>                                    
                                 </table>

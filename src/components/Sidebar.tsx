@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, Map, FileText, LogOut, Settings, Calendar, CreditCard, Star, MessageCircle, Bell, Building2, Route, Filter,
-	Gift, DollarSign, BarChart3, HelpCircle, UserCheck, MapPin, Bookmark, ChevronLeft, ChevronRight, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
+	Gift, DollarSign, BarChart3, HelpCircle, UserCheck, MapPin, Bookmark, ChevronLeft, ChevronRight, ChevronDown, Menu, X, Sun, Moon, Cog } from "lucide-react";
 
 // Interface for menu items in sidebar
 interface SidebarProps { onLogout: () => void; collapsed: boolean; onToggleCollapse: (collapsed: boolean) => void;}
@@ -70,8 +70,9 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 	    { id: 'trip-charges', icon: CreditCard, label: 'Trip Charges', path: '/trip-charges' },
 	    { id: 'reports', icon: BarChart3, label: 'Reports', path: '/reports' },
 	    { id: 'ratings', icon: Star, label: 'Ratings', path: '/ratings' },
-	    { id: 'support-data', icon: MessageCircle, label: 'Support Data', path: '/support' },
+	    { id: 'support-data', icon: MessageCircle, label: 'Support Data', path: '/support-data' },
 	    { id: 'notifications', icon: Bell, label: 'Notifications', path: '/notifications' },
+	    { id: 'system-settings', icon: Cog, label: 'System Settings', path: '/system-settings' },
   	];
 
   	// Close mobile menu

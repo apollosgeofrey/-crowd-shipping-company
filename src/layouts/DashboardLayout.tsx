@@ -7,6 +7,12 @@ import { useAppDispatch } from "../store/index";
 import { clearAuth } from "../features/auth/store/authSlice";
 import "./dashboardLayout.css";
 
+
+{/*<div className="modal fade" id="chargeModal" tabIndex={-1} aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+      <div className="modal-header">*/}
+
 export default function DashboardLayout({ children }: PropsWithChildren) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);

@@ -11,18 +11,6 @@ import VerifyEmail from "../features/auth/pages/VerifyEmail.tsx";
 // dashboard route
 import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
 
-// users management routes 
-import UserList from "../features/users/pages/UserList.tsx";
-import UserDetail from "../features/users/pages/UserDetail.tsx";
-import UserCreate from "../features/users/pages/UserCreate.tsx";
-import UserEdit from "../features/users/pages/UserEdit.tsx";
-
-// admin management routes
-import AdminList from "../features/admin/pages/AdminList.tsx";
-import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
-import AdminCreate from "../features/admin/pages/AdminCreate.tsx";
-import AdminEdit from "../features/admin/pages/AdminEdit.tsx";
-
 // drivers management routes
 import DriverList from "../features/drivers/pages/DriverList.tsx";
 import DriverDetail from "../features/drivers/pages/DriverDetail.tsx";
@@ -44,97 +32,139 @@ import CompanyCreate from "../features/companies/pages/CompanyCreate.tsx";
 import CompanyEdit from "../features/companies/pages/CompanyEdit.tsx";
 // import CompanyRequests from "../features/companies/pages/CompanyRequests.tsx";
 
-// notifications management routes
-import NotificationList from "../features/notifications/pages/NotificationList.tsx";
+// users management routes 
+import UserList from "../features/users/pages/UserList.tsx";
+import UserDetail from "../features/users/pages/UserDetail.tsx";
+import UserCreate from "../features/users/pages/UserCreate.tsx";
+import UserEdit from "../features/users/pages/UserEdit.tsx";
 
-// support_data management routes
-import SupportDataList from "../features/support_data/pages/SupportDataList.tsx";
-import SupportDataDetail from "../features/support_data/pages/SupportDataDetail.tsx";
+// admin management routes
+import AdminList from "../features/admin/pages/AdminList.tsx";
+import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
+import AdminCreate from "../features/admin/pages/AdminCreate.tsx";
+import AdminEdit from "../features/admin/pages/AdminEdit.tsx";
 
-// system_settings management routes
-import SystemSettingList from "../features/system_settings/pages/SystemSettingList.tsx";
+// live_map management routes
+import LiveMapIndex from "../features/live_map/pages/LiveMapIndex.tsx";
 
-// ratings management routes
-import RatingList from "../features/ratings/pages/RatingList.tsx";
-import RatingDetail from "../features/ratings/pages/RatingDetail.tsx";
+// bookings management routes
+import BookingList from "../features/bookings/pages/BookingList.tsx";
+
+// transactions management routes
+import TransactionList from "../features/transactions/pages/TransactionList.tsx";
+
+// promo_codes management routes
+import PromoCodeList from "../features/promo_codes/pages/PromoCodeList.tsx";
+
+// trip_charges management routes
+import TripChargeList from "../features/trip_charges/pages/TripChargeList.tsx";
 
 // reports management routes
 import ReportList from "../features/reports/pages/ReportList.tsx";
 import ReportDetail from "../features/reports/pages/ReportDetail.tsx";
 
+// ratings management routes
+import RatingList from "../features/ratings/pages/RatingList.tsx";
+import RatingDetail from "../features/ratings/pages/RatingDetail.tsx";
+
+// support_data management routes
+import SupportDataList from "../features/support_data/pages/SupportDataList.tsx";
+import SupportDataDetail from "../features/support_data/pages/SupportDataDetail.tsx";
+
+// notifications management routes
+import NotificationList from "../features/notifications/pages/NotificationList.tsx";
+
+// system_settings management routes
+import SystemSettingList from "../features/system_settings/pages/SystemSettingList.tsx";
+
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
 export default function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* public routes */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        
-        {/* dashboard routes */}
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        
-        {/* users management routes */}
-        <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-        <Route path="/users/create" element={<ProtectedRoute><UserCreate /></ProtectedRoute>} />
-        <Route path="/users/:id/show" element={<ProtectedRoute><UserDetail /></ProtectedRoute>} />
-        <Route path="/users/:id/edit" element={<ProtectedRoute><UserEdit /></ProtectedRoute>} />
-    
-        {/* admin management routes */}
-        <Route path="/admin" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
-        <Route path="/admin/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
-        <Route path="/admin/:id/show" element={<ProtectedRoute><AdminDetail /></ProtectedRoute>} />
-        <Route path="/admin/:id/edit" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
+	return (
+	    <BrowserRouter>
+		    <Routes>
+		        {/* public routes */}
+		        <Route path="/" element={<Navigate to="/login" replace />} />
+		        <Route path="/login" element={<Login />} />
+		        <Route path="/forgot-password" element={<ForgotPassword />} />
+		        <Route path="/reset-password" element={<ResetPassword />} />
+		        <Route path="/verify-email" element={<VerifyEmail />} />
+		        
+		        {/* dashboard routes */}
+		        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+		        
+		        {/* drivers management routes */}
+		        <Route path="/drivers" element={<ProtectedRoute><DriverList /></ProtectedRoute>} />
+		        <Route path="/drivers/create" element={<ProtectedRoute><DriverCreate /></ProtectedRoute>} />
+		        {/* <Route path="/drivers/requests" element={<ProtectedRoute><DriverRequests /></ProtectedRoute>} /> */}
+		        <Route path="/drivers/:id/show" element={<ProtectedRoute><DriverDetail /></ProtectedRoute>} />
+		        <Route path="/drivers/:id/edit" element={<ProtectedRoute><DriverEdit /></ProtectedRoute>} />
 
-        {/* drivers management routes */}
-        <Route path="/drivers" element={<ProtectedRoute><DriverList /></ProtectedRoute>} />
-        <Route path="/drivers/create" element={<ProtectedRoute><DriverCreate /></ProtectedRoute>} />
-        {/* <Route path="/drivers/requests" element={<ProtectedRoute><DriverRequests /></ProtectedRoute>} /> */}
-        <Route path="/drivers/:id/show" element={<ProtectedRoute><DriverDetail /></ProtectedRoute>} />
-        <Route path="/drivers/:id/edit" element={<ProtectedRoute><DriverEdit /></ProtectedRoute>} />
+		        {/* pathfinders management routes */}
+		        <Route path="/pathfinders" element={<ProtectedRoute><PathfinderList /></ProtectedRoute>} />
+		        <Route path="/pathfinders/create" element={<ProtectedRoute><PathfinderCreate /></ProtectedRoute>} />
+		        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute><PathfinderRequests /></ProtectedRoute>} /> */}
+		        <Route path="/pathfinders/:id/show" element={<ProtectedRoute><PathfinderDetail /></ProtectedRoute>} />
+		        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute><PathfinderEdit /></ProtectedRoute>} />
 
-        {/* pathfinders management routes */}
-        <Route path="/pathfinders" element={<ProtectedRoute><PathfinderList /></ProtectedRoute>} />
-        <Route path="/pathfinders/create" element={<ProtectedRoute><PathfinderCreate /></ProtectedRoute>} />
-        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute><PathfinderRequests /></ProtectedRoute>} /> */}
-        <Route path="/pathfinders/:id/show" element={<ProtectedRoute><PathfinderDetail /></ProtectedRoute>} />
-        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute><PathfinderEdit /></ProtectedRoute>} />
+		        {/* companies management routes */}
+		        <Route path="/companies" element={<ProtectedRoute><CompanyList /></ProtectedRoute>} />
+		        <Route path="/companies/create" element={<ProtectedRoute><CompanyCreate /></ProtectedRoute>} />
+		        {/* <Route path="/companies/requests" element={<ProtectedRoute><CompanyRequests /></ProtectedRoute>} /> */}
+		        <Route path="/companies/:id/show" element={<ProtectedRoute><CompanyDetail /></ProtectedRoute>} />
+		        <Route path="/companies/:id/edit" element={<ProtectedRoute><CompanyEdit /></ProtectedRoute>} />
 
-        {/* companies management routes */}
-        <Route path="/companies" element={<ProtectedRoute><CompanyList /></ProtectedRoute>} />
-        <Route path="/companies/create" element={<ProtectedRoute><CompanyCreate /></ProtectedRoute>} />
-        {/* <Route path="/companies/requests" element={<ProtectedRoute><CompanyRequests /></ProtectedRoute>} /> */}
-        <Route path="/companies/:id/show" element={<ProtectedRoute><CompanyDetail /></ProtectedRoute>} />
-        <Route path="/companies/:id/edit" element={<ProtectedRoute><CompanyEdit /></ProtectedRoute>} />
+		        {/* users management routes */}
+		        <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+		        <Route path="/users/create" element={<ProtectedRoute><UserCreate /></ProtectedRoute>} />
+		        <Route path="/users/:id/show" element={<ProtectedRoute><UserDetail /></ProtectedRoute>} />
+		        <Route path="/users/:id/edit" element={<ProtectedRoute><UserEdit /></ProtectedRoute>} />
+		    
+		        {/* admin management routes */}
+		        <Route path="/admin" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
+		        <Route path="/admin/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
+		        <Route path="/admin/:id/show" element={<ProtectedRoute><AdminDetail /></ProtectedRoute>} />
+		        <Route path="/admin/:id/edit" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
 
-        {/* notifications management routes */}
-        <Route path="/notifications" element={<ProtectedRoute><NotificationList /></ProtectedRoute>} />
-        {/*<Route path="/notifications/:id/show" element={<ProtectedRoute><NotificationDetail /></ProtectedRoute>} />*/}
+		        {/* live-map management routes */}
+		        <Route path="/live-map" element={<ProtectedRoute><LiveMapIndex /></ProtectedRoute>} />
 
-        {/* support-data management routes */}
-        <Route path="/support-data" element={<ProtectedRoute><SupportDataList /></ProtectedRoute>} />
-        <Route path="/support-data/:id/show" element={<ProtectedRoute><SupportDataDetail /></ProtectedRoute>} />
+		        {/* bookings management routes */}
+		        <Route path="/bookings" element={<ProtectedRoute><BookingList /></ProtectedRoute>} />
 
-        {/* system-settings management routes */}
-        <Route path="/system-settings" element={<ProtectedRoute><SystemSettingList /></ProtectedRoute>} />
+		        {/* transactions management routes */}
+		        <Route path="/transactions" element={<ProtectedRoute><TransactionList /></ProtectedRoute>} />
 
-        {/* ratings management routes */}
-        <Route path="/ratings" element={<ProtectedRoute><RatingList /></ProtectedRoute>} />
-        <Route path="/ratings/:id/show" element={<ProtectedRoute><RatingDetail /></ProtectedRoute>} />
+		        {/* promo-codes management routes */}
+		        <Route path="/promo-codes" element={<ProtectedRoute><PromoCodeList /></ProtectedRoute>} />
 
-        {/* reports management routes */}
-        <Route path="/reports" element={<ProtectedRoute><ReportList /></ProtectedRoute>} />
-        <Route path="/reports/:id/show" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
+		        {/* trip-charges management routes */}
+		        <Route path="/trip-charges" element={<ProtectedRoute><TripChargeList /></ProtectedRoute>} />
 
-        {/* fallback routes id non is found */}
-        <Route path="*" element={<NotFoundPage />} />
+		        {/* reports management routes */}
+		        <Route path="/reports" element={<ProtectedRoute><ReportList /></ProtectedRoute>} />
+		        <Route path="/reports/:id/show" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
 
-      </Routes>
-    </BrowserRouter>
-  );
+		        {/* ratings management routes */}
+		        <Route path="/ratings" element={<ProtectedRoute><RatingList /></ProtectedRoute>} />
+		        <Route path="/ratings/:id/show" element={<ProtectedRoute><RatingDetail /></ProtectedRoute>} />
+
+		        {/* support-data management routes */}
+		        <Route path="/support-data" element={<ProtectedRoute><SupportDataList /></ProtectedRoute>} />
+		        <Route path="/support-data/:id/show" element={<ProtectedRoute><SupportDataDetail /></ProtectedRoute>} />
+
+		        {/* notifications management routes */}
+		        <Route path="/notifications" element={<ProtectedRoute><NotificationList /></ProtectedRoute>} />
+		        {/*<Route path="/notifications/:id/show" element={<ProtectedRoute><NotificationDetail /></ProtectedRoute>} />*/}
+
+		        {/* system-settings management routes */}
+		        <Route path="/system-settings" element={<ProtectedRoute><SystemSettingList /></ProtectedRoute>} />
+
+		        {/* fallback routes id non is found */}
+		        <Route path="*" element={<NotFoundPage />} />
+
+		    </Routes>
+	    </BrowserRouter>
+	);
 }

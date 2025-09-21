@@ -58,6 +58,10 @@ import SystemSettingList from "../features/system_settings/pages/SystemSettingLi
 import RatingList from "../features/ratings/pages/RatingList.tsx";
 import RatingDetail from "../features/ratings/pages/RatingDetail.tsx";
 
+// reports management routes
+import ReportList from "../features/reports/pages/ReportList.tsx";
+import ReportDetail from "../features/reports/pages/ReportDetail.tsx";
+
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
 
@@ -122,6 +126,10 @@ export default function AppRoutes() {
         {/* ratings management routes */}
         <Route path="/ratings" element={<ProtectedRoute><RatingList /></ProtectedRoute>} />
         <Route path="/ratings/:id/show" element={<ProtectedRoute><RatingDetail /></ProtectedRoute>} />
+
+        {/* reports management routes */}
+        <Route path="/reports" element={<ProtectedRoute><ReportList /></ProtectedRoute>} />
+        <Route path="/reports/:id/show" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
 
         {/* fallback routes id non is found */}
         <Route path="*" element={<NotFoundPage />} />

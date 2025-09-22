@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export default function NotFoundPage() {
@@ -15,9 +15,9 @@ export default function NotFoundPage() {
             <Typography variant="body1" color="textSecondary" mb={2}>
                 Sorry, the page you are looking for does not exist.
             </Typography>
-            <Button variant="contained" color="btn btn-primary" onClick={() => navigate('/')}>
-                Go to Home
-            </Button>
+            <button className="btn btn-primary" onClick={() => navigate('/')}>
+                <span className="fa fa-angle-double-left"></span> Go to Home
+            </button>
         </Box>
     );
 };

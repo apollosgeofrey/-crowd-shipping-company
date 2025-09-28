@@ -23,7 +23,7 @@ export default function AdminList() {
       setIsLoading(true);
       try {
         // Example API call (replace with your backend endpoint)
-        const res = await fetch(`/api/admins?page=${page}`);
+        // const res = await fetch(`/api/admins?page=${page}`);
         // const data = await res.json();
 
         // Laravel paginate-style response often has: data, total, per_page, current_page

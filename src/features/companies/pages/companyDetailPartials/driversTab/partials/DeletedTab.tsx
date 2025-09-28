@@ -32,10 +32,10 @@ export default function DeletedTab({
 
     // Mock demo data
     const drivers: DeletedDrivers[] = [
-        { id: 1, totalDeliveries: "2", name: "23456 - Prince Emmae", dateJoind: "Mar 05, 2025", status: "Deleted" },
-        { id: 2, totalDeliveries: "4", name: "23466 - Mercy", dateJoind: "April 20, 2025", status: "Deleted" },
-        { id: 3, totalDeliveries: "5", name: "34567 - Daniel",  dateJoind: "October 05, 2025", status: "Deleted" },
-        { id: 4, totalDeliveries: "7", name: "23566 - Luke Ball", dateJoind: "August 12, 2025", status: "Deleted" },
+        { id: 1, totalDeliveries: "2", fullName: "23456 - Prince Emmae", dateJoind: "Mar 05, 2025", status: "Deleted" },
+        { id: 2, totalDeliveries: "4", fullName: "23466 - Mercy", dateJoind: "April 20, 2025", status: "Deleted" },
+        { id: 3, totalDeliveries: "5", fullName: "34567 - Daniel",  dateJoind: "October 05, 2025", status: "Deleted" },
+        { id: 4, totalDeliveries: "7", fullName: "23566 - Luke Ball", dateJoind: "August 12, 2025", status: "Deleted" },
     ];
 
     // other logic (if any)
@@ -59,7 +59,7 @@ export default function DeletedTab({
                             {drivers.map((driver) => (
                                 <tr key={driver.id}>
                                     <td className="text-muted py-2 px-2">{driver.id}</td>
-                                    <td className="text-muted py-2 px-2">{driver.name}</td>
+                                    <td className="text-muted py-2 px-2">{driver.fullName}</td>
                                     <td className="text-muted py-2 px-2">{driver.totalDeliveries}</td>
                                     <td className="text-muted py-2 px-2">{driver.dateJoind}</td>
                                     <td className="py-2 px-2">

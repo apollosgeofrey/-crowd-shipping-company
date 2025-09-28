@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaUser, FaFileAlt, FaLock } from "react-icons/fa";
+import { FaUser, FaFileAlt } from "react-icons/fa";
 import DocumentsTab from "./partials/DocumentsTab.tsx";
 import PersonalInformationTab from "./partials/PersonalInformationTab.tsx";
 

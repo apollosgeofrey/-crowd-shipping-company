@@ -1,8 +1,8 @@
 // components/Sidebar.tsx
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, Map, FileText, LogOut, Settings, Calendar, CreditCard, Star, MessageCircle, Bell, Building2, Route, Filter,
-	Gift, DollarSign, BarChart3, HelpCircle, UserCheck, MapPin, Bookmark, ChevronLeft, ChevronRight, ChevronDown, Menu, X, Sun, Moon, Cog } from "lucide-react";
+import { LayoutDashboard, Users, Map, LogOut, Settings, CreditCard, Star, MessageCircle, Bell, Building2, Route,
+	Gift, DollarSign, BarChart3, UserCheck, Bookmark, ChevronLeft, ChevronRight, ChevronDown, Menu, X, Sun, Moon, Cog } from "lucide-react";
 
 // Interface for menu items in sidebar
 interface SidebarProps { onLogout: () => void; collapsed: boolean; onToggleCollapse: (collapsed: boolean) => void;}

@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+// import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PackageImage from "../../../assets/images/package_image.png";
 import PaginationBar from "../../../components/PaginationBar.tsx";
@@ -24,10 +24,10 @@ export default function BookingList() {
 	    setShowModal(true);             // show the modal
 	};
 
-	const handleClose = () => {
-	    setShowModal(false);
-	    setSelectedBooking(null);
-	};
+	// const handleClose = () => {
+	//     setShowModal(false);
+	//     setSelectedBooking(null);
+	// };
 
 	const [bookings, setBookings] = useState<any[]>([
 		{
@@ -157,7 +157,7 @@ export default function BookingList() {
 		  setIsLoading(true);
 			try {
 				// Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/bookings?page=${page}`);
+                // const res = await fetch(`/api/bookings?page=${page}`);
                 // const data = await res.json();
                 // Laravel paginate-style response often has: data, total, per_page, current_page
 			    setBookings(bookings);
@@ -173,28 +173,28 @@ export default function BookingList() {
 
 
 
-	// handle the add of charge
-	const handleAdd = () => {
-    	setEditCharge(null);
-    	setShowModal(true);
-  	};
+	// // handle the add of charge
+	// const handleAdd = () => {
+    // 	setEditCharge(null);
+    // 	setShowModal(true);
+  	// };
 
-  	// handle the edit of charge
-  	const handleEdit = (booking: any) => {
-    	setEditCharge(booking);
-    	setShowModal(true);
-  	};
+  	// // handle the edit of charge
+  	// const handleEdit = (booking: any) => {
+    // 	setEditCharge(booking);
+    // 	setShowModal(true);
+  	// };
 
-  	// handle the save of charge
-  	const handleSave = (data: any) => {
-    	if (editCharge) {
-      		// Edit existing
-      		setBookings(bookings.map(c => (c.id === editCharge.id ? { ...c, ...data } : c)));
-    	} else {
-      		// Add new
-      		setBookings([...bookings, { id: bookings.length + 1, ...data }]);
-    	}
-  	};
+  	// // handle the save of charge
+  	// const handleSave = (data: any) => {
+    // 	if (editCharge) {
+    //   		// Edit existing
+    //   		setBookings(bookings.map(c => (c.id === editCharge.id ? { ...c, ...data } : c)));
+    // 	} else {
+    //   		// Add new
+    //   		setBookings([...bookings, { id: bookings.length + 1, ...data }]);
+    // 	}
+  	// };
 
 
 	// handle the delete of charge

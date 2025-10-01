@@ -38,19 +38,6 @@ export default function CompletedTab({
         { id: 4, driver: "23566 - Luke Ball", dateSent: "May 12, 2025", deliveryDate: "August 12, 2025", status: "Delivered" },
     ];
 
-    const getStatusBadge = (status: CompletedTrip["status"]) => {
-        switch (status) {
-        case "Delivered":
-            return "badge rounded bg-success-subtle text-success fw-semibold px-3 py-2";
-        case "Pending":
-            return "badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2";
-        case "Declined":
-            return "badge rounded bg-danger-subtle text-danger fw-semibold px-3 py-2";
-        default:
-            return "badge rounded bg-light text-dark fw-semibold px-3 py-2";
-        }
-    };
-
     // other logic (if any)
     // Render
     return (
@@ -75,7 +62,7 @@ export default function CompletedTab({
                                     <td className="text-muted py-2 px-2">{trip.dateSent}</td>
                                     <td className="text-muted py-2 px-2">{trip.deliveryDate}</td>
                                     <td className="py-2 px-2">
-                                        <span className={`col-sm-12 ${getStatusBadge(trip.status)}`}>{trip.status}</span>
+                                        <span className={`col-sm-12 badge rounded bg-success-subtle text-success fw-semibold px-3 py-2`}>{trip.status}</span>
                                     </td>
                                 </tr>
                             ))}

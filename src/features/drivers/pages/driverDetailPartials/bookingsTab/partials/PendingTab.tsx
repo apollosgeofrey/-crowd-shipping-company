@@ -37,11 +37,6 @@ export default function PendingTab({
         { id: 4, driver: "23566 - Luke Ball", dateSent: "May 12, 2025", status: "Waiting" },
     ];
 
-    // Badge renderer
-    const getStatusBadge = (status: PendingTrip["status"]) => {
-        return "badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2";
-        // Yellow background, dark text — matches screenshot
-    };
     // other logic (if any)
 
     // Render
@@ -69,7 +64,7 @@ export default function PendingTab({
                                         {trip.deliveryDate ? trip.deliveryDate : "-----------"}
                                     </td>
                                     <td className="py-2 px-2">
-                                        <span className={`col-sm-12 ${getStatusBadge(trip.status)}`}>{trip.status}</span>
+                                        <span className={`col-sm-12 badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2}`}>{trip.status}</span>
                                     </td>
                                 </tr>
                             ))}

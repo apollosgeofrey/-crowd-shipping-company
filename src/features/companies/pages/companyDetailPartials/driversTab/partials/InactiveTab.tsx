@@ -3,6 +3,7 @@
 
 interface InactiveDrivers {
     id: number;
+    number: string;
     totalDeliveries: string;
     dateSent: string;
     deliveryDate: string;

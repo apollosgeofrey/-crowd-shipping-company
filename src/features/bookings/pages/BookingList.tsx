@@ -18,7 +18,7 @@ export default function BookingList() {
 	// const [editCharge, setEditCharge] = useState<any | null>(null);
 	const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
 
-	// 👇 handleView Implementation
+	// handleView Implementation
 	const handleView = (booking: any) => {
 	    setSelectedBooking(booking);   // save the clicked row data
 	    setShowModal(true);             // show the modal

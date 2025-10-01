@@ -18,7 +18,7 @@ export default function BookingTrips() {
     setCurrentDate(new Date(year, currentDate.getMonth() + 1, 1));
   };
 
-  const handleDayClick = (day: int) => {
+  const handleDayClick = (day: number) => {
     setSelectedDays([day]); // allow single selection (or expand logic for multi)
   };
 

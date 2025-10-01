@@ -39,11 +39,6 @@ export default function InProgressTab({
         { id: 4, driver: "23566 - Luke Ball", dateSent: "May 12, 2025", status: "In Progress" },
     ];
 
-    // Badge renderer
-    const getStatusBadge = (status: InProgressTrip["status"]) => {
-        return "badge rounded    text-primary fw-semibold px-3 py-2";
-    };
-
     return (
         <div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
             <div className="card-body">
@@ -68,7 +63,7 @@ export default function InProgressTab({
                                 {trip.deliveryDate ? trip.deliveryDate : "-----------"}
                             </td>
                             <td className="py-2 px-2">
-                                <span className={`col-sm-12 ${getStatusBadge(trip.status)}`}>{trip.status}</span>
+                                <span className={`col-sm-12 badge rounded text-primary fw-semibold px-3 py-2`}>{trip.status}</span>
                             </td>
                             </tr>
                         ))}

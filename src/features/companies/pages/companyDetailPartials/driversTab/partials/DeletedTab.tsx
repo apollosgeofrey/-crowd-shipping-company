@@ -3,6 +3,7 @@
 
 interface DeletedDrivers {
     id: number;
+    number: string;
     totalDeliveries: string;
     dateSent: string;
     deliveryDate: string;

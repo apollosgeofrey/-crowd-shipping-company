@@ -1,6 +1,6 @@
 // pages/users/tabs/EarningTabIndex.tsx
 // import { ProgressBar } from "react-bootstrap";
-import { FaCalendarAlt, FaWallet, FaClipboardList, FaFileAlt } from "react-icons/fa";
+// import { FaCalendarAlt, FaWallet, FaClipboardList, FaFileAlt } from "react-icons/fa";
 
 export default function EarningTabIndex({
     // props

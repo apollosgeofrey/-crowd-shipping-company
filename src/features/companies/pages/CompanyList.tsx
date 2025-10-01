@@ -28,6 +28,7 @@ export default function CompanyList() {
 
                 // Laravel paginate-style response often has: data, total, per_page, current_page
                 setCompanies(companies);
+                setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
             } catch (err) {
                 console.error(err);

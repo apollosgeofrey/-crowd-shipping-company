@@ -1,6 +1,6 @@
 import L from "leaflet";
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+// import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
@@ -12,21 +12,21 @@ export default function LiveMapIndex() {
 
 	// Simulate fetch
 	useEffect(() => {
-		// async function fetchComplaints() {
-		//   setIsLoading(true);
-		// 	try {
-		// 		// Example API call (replace with your backend endpoint)
-        //         const res = await fetch(`/api/support-data?page=${page}`);
-        //         // const data = await res.json();
-        //         // Laravel paginate-style response often has: data, total, per_page, current_page
-		// 	    // optionally update totalPages dynamically: setTotalPages(data.last_page);
-		// 	} catch (err) {
-		// 	    console.error(err);
-		// 	} finally {
-		// 	    setIsLoading(false);
-		// 	}
-		// }
-		// fetchComplaints();
+		async function fetchLiveLocations() {
+		  setIsLoading(true);
+			try {
+				// Example API call (replace with your backend endpoint)
+                // const res = await fetch(`/api/support-data?page=${page}`);
+                // const data = await res.json();
+                // Laravel paginate-style response often has: data, total, per_page, current_page
+			    // optionally update totalPages dynamically: setTotalPages(data.last_page);
+			} catch (err) {
+			    console.error(err);
+			} finally {
+			    setIsLoading(false);
+			}
+		}
+		fetchLiveLocations();
 	}, []);
 
 	// Custom marker icons

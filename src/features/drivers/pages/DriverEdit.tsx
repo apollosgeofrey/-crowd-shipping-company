@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 // import userMale from "../../../assets/images/user_male.png";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 // import ProfileTabIndex from "./adminDetailPartials/profileTab/ProfileTabIndex.tsx";
@@ -9,7 +9,7 @@ import DashboardLayout from "../../../layouts/DashboardLayout";
 // import {FaUser, FaKey, FaList} from "react-icons/fa";
 
 export default function DriverEdit() {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
 
 
     return (

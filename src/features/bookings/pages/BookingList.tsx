@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 // import { Link } from "react-router-dom";
 // import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";

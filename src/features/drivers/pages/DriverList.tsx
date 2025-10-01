@@ -23,11 +23,12 @@ export default function DriverList() {
             setIsLoading(true);
             try {
                 // Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/drivers?page=${page}`);
+                // const res = await fetch(`/api/drivers?page=${page}`);
                 // const data = await res.json();
 
                 // Laravel paginate-style response often has: data, total, per_page, current_page
                 setDrivers(drivers);
+                setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
             } catch (err) {
                 console.error(err);

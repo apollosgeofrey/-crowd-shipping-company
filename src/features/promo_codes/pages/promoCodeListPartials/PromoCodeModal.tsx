@@ -22,7 +22,7 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData, sta
 	    if (initialData) {
 	    	setFormData(initialData); // prefill for edit
 	    } else {
-	    	setFormData({ promoCode: "", discount: "", validFrom: "", validUntil: "" });
+	    	setFormData({ promoCode: "", discount: "", validFrom: "", validUntil: "", status: "" });
 	    }
 	}, [initialData]);
 

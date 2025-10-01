@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useState } from "react";
 import ReportTab from "./partials/ReportTab.tsx"
 // import TransactionTab from "./partials/TransactionTab.tsx"
 import { FaInfoCircle } from "react-icons/fa";

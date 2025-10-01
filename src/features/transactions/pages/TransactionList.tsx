@@ -199,25 +199,25 @@ export default function TransactionList() {
 
 
 	// handle the delete of charge
-	const handleDelete = (charge: any) => {
-		Swal.fire({
-		    title: "Are you sure?",
-		    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
-		    icon: "warning",
-		    showCancelButton: true,
-		    confirmButtonColor: "#d33",
-		    cancelButtonColor: "#3085d6",
-		    confirmButtonText: "Yes, delete it!",
-		    cancelButtonText: "No, don't delete it!",
-		}).then((result) => {
-		    if (result.isConfirmed) {
-		      	// your delete logic
-		      	// onDelete(charge.id);
+	// const handleDelete = (charge: any) => {
+	// 	Swal.fire({
+	// 	    title: "Are you sure?",
+	// 	    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
+	// 	    icon: "warning",
+	// 	    showCancelButton: true,
+	// 	    confirmButtonColor: "#d33",
+	// 	    cancelButtonColor: "#3085d6",
+	// 	    confirmButtonText: "Yes, delete it!",
+	// 	    cancelButtonText: "No, don't delete it!",
+	// 	}).then((result) => {
+	// 	    if (result.isConfirmed) {
+	// 	      	// your delete logic
+	// 	      	// onDelete(charge.id);
 
-		      	Swal.fire("Deleted!", "The charge has been removed.", "success");
-		    }
-		});
-	};
+	// 	      	Swal.fire("Deleted!", "The charge has been removed.", "success");
+	// 	    }
+	// 	});
+	// };
 
   	return (
 	    <DashboardLayout>

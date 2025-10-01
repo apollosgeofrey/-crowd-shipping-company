@@ -22,7 +22,7 @@ export default function TripChargeModal({ show, onClose, onSave, initialData, st
 	    if (initialData) {
 	    	setFormData(initialData); // prefill for edit
 	    } else {
-	    	setFormData({ chargeType: "", amount: "", area: "", dateApplied: "" });
+	    	setFormData({ chargeType: "", amount: "", area: "", dateApplied: "", status: "" });
 	    }
 	}, [initialData]);
 

@@ -261,8 +261,8 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 					                          		<div className="ms-4 d-flex flex-column gap-1">
 					                            		{item.children!.map((child) => {
 					                              			const childActive = isActive(child.path);
-					                              			return (
-					                                			<Link key={child.id} to={child.path} onClick={closeMobile} className="btn text-decoration-none d-flex align-items-center p-2" title={child.label}
+					                              			return (					                              				
+					                                			<Link key={child.id} to={child.path ?? "#"} onClick={closeMobile} className="btn text-decoration-none d-flex align-items-center p-2" title={child.label}
 					                                  				style={{ backgroundColor: childActive ? '#FDEFEB' : 'transparent', color: childActive ? '#f97316' : current.sidebarText, border: 'none',
 					                                    			borderRadius: '8px', fontSize: '13px', transition: 'all 0.2s ease', textAlign: 'left', marginLeft: '8px' }}
 				                                  				onMouseEnter={(e) => {

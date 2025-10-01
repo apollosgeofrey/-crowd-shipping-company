@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+// import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PackageImage from "../../../assets/images/package_image.png";
 import PaginationBar from "../../../components/PaginationBar.tsx";
@@ -15,19 +15,19 @@ export default function TransactionList() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [totalPages, setTotalPages] = useState(2);
 	const [showModal, setShowModal] = useState(false);
-	const [editTransaction, setEditTransaction] = useState<any | null>(null);
+	// const [editTransaction, setEditTransaction] = useState<any | null>(null);
 	const [selectedTransaction, setSelectedTransaction] = useState<any | null>(null);
 
-	// 👇 handleView Implementation
+	// handleView Implementation
 	const handleView = (transaction: any) => {
 	    setSelectedTransaction(transaction);   // save the clicked row data
 	    setShowModal(true);             // show the modal
 	};
 
-	const handleClose = () => {
-	    setShowModal(false);
-	    setSelectedTransaction(null);
-	};
+	// const handleClose = () => {
+	//     setShowModal(false);
+	//     setSelectedTransaction(null);
+	// };
 
 	const [transactions, setTransactions] = useState<any[]>([
 		{
@@ -157,10 +157,11 @@ export default function TransactionList() {
 		  setIsLoading(true);
 			try {
 				// Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/transactions?page=${page}`);
+                // const res = await fetch(`/api/transactions?page=${page}`);
                 // const data = await res.json();
                 // Laravel paginate-style response often has: data, total, per_page, current_page
 			    setTransactions(transactions);
+			    setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
 			} catch (err) {
 			    console.error(err);
@@ -174,31 +175,31 @@ export default function TransactionList() {
 
 
 	// handle the add of charge
-	const handleAdd = () => {
-    	setEditTransaction(null);
-    	setShowModal(true);
-  	};
+	// const handleAdd = () => {
+    // 	setEditTransaction(null);
+    // 	setShowModal(true);
+  	// };
 
   	// handle the edit of charge
-  	const handleEdit = (transaction: any) => {
-    	setEditTransaction(transaction);
-    	setShowModal(true);
-  	};
+  	// const handleEdit = (transaction: any) => {
+    // 	setEditTransaction(transaction);
+    // 	setShowModal(true);
+  	// };
 
   	// handle the save of charge
-  	const handleSave = (data: any) => {
-    	if (editTransaction) {
-      		// Edit existing
-      		setTransactions(transactions.map(c => (c.id === editTransaction.id ? { ...c, ...data } : c)));
-    	} else {
-      		// Add new
-      		setTransactions([...transactions, { id: transactions.length + 1, ...data }]);
-    	}
-  	};
+  	// const handleSave = (data: any) => {
+    // 	if (editTransaction) {
+    //   		// Edit existing
+    //   		setTransactions(transactions.map(c => (c.id === editTransaction.id ? { ...c, ...data } : c)));
+    // 	} else {
+    //   		// Add new
+    //   		setTransactions([...transactions, { id: transactions.length + 1, ...data }]);
+    // 	}
+  	// };
 
 
 	// handle the delete of charge
-	const handleDelete = (charge) => {
+	const handleDelete = (charge: any) => {
 		Swal.fire({
 		    title: "Are you sure?",
 		    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,

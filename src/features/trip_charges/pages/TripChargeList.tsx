@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PaginationBar from "../../../components/PaginationBar.tsx";
@@ -29,10 +29,11 @@ export default function TripChargeList() {
 		  setIsLoading(true);
 			try {
 				// Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/trip-charges?page=${page}`);
+                // const res = await fetch(`/api/trip-charges?page=${page}`);
                 // const data = await res.json();
                 // Laravel paginate-style response often has: data, total, per_page, current_page
 			    setTripCharges(tripCharges);
+			    setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
 			} catch (err) {
 			    console.error(err);
@@ -70,7 +71,7 @@ export default function TripChargeList() {
 
 
 	// handle the delete of charge
-	const handleDelete = (charge) => {
+	const handleDelete = (charge: any) => {
 		Swal.fire({
 		    title: "Are you sure?",
 		    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,

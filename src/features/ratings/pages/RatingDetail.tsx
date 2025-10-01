@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import userMale from "../../../assets/images/user_male.png";
+// import { useParams } from "react-router-dom";
+// import userMale from "../../../assets/images/user_male.png";
 import packageImage from "../../../assets/images/package_image.png";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import DriverDetails from "./ratingDetailPartials/DriverDetails.tsx";
-import { FaPhone, FaPhoneAlt, FaVideo, FaPaperclip, FaSmile, FaPaperPlane } from "react-icons/fa";
+// import { FaPhone, FaPhoneAlt, FaVideo, FaPaperclip, FaSmile, FaPaperPlane } from "react-icons/fa";
 
 export default function RatingDetail() {
-	const { id } = useParams<{ id: string }>();
-	const [activeTab, setActiveTab] = useState("message");
-	
+	// const { id } = useParams<{ id: string }>();
+		
 	const trip = {
 		reference: "TRP-001",
 		packageInfo: "Electronics Package - MacBook Pro",

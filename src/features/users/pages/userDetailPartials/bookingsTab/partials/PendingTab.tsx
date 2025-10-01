@@ -38,10 +38,15 @@ export default function PendingTab({
     ];
 
     // Badge renderer
+    // Badge renderer
     const getStatusBadge = (status: PendingTrip["status"]) => {
-        return "badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2";
-        // Yellow background, dark text — matches screenshot
+        if(status) {
+            return "badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2";
+            // Yellow background, dark text — matches screenshot
+        } 
+        return "badge rounded bg-secondary-subtle text-secondary fw-semibold px-3 py-2";
     };
+
     // other logic (if any)
 
     // Render

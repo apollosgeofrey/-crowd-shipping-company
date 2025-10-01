@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import userMale from "../../../assets/images/user_male.png";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import { FaUser, FaMoneyBillWave, FaClipboardCheck, FaChartBar } from "react-icons/fa";
@@ -9,7 +9,7 @@ import BookingTabIndex from "./driverDetailPartials/bookingsTab/BookingTabIndex.
 import ReportTabIndex from "./driverDetailPartials/reportsTab/ReportTabIndex.tsx"
 
 export default function DriverDetail    () {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
 
     // Separate states for main tab and profile sub-tab
     const [activeMainTab, setActiveMainTab] = useState("profile");

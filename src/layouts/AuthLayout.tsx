@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { APP_NAME } from "../config/constants";
 import "./authLayout.css";
 

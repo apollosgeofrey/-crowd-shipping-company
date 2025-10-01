@@ -34,6 +34,7 @@ export default function NotificationList() {
     useEffect(() => {
         // Example: fetch from API in real use
         // fetch("/api/notifications").then(...)
+        setNotifications(notifications);
     }, []);
 
     return (

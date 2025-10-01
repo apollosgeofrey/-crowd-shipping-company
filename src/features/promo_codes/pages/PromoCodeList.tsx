@@ -1,10 +1,23 @@
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import PromoCodeModal from "./promoCodeListPartials/PromoCodeModal.tsx"
+
+// near the top of the file
+interface PromoCode {
+	id: string;
+	promoCode: string;
+	discount: number;
+	validFrom: string;   // or Date if you parse it
+	validUntil: string;  // or Date
+	status: 'Active' | 'Inactive' | 'Expired' | string;
+	createdDate: string;
+	// add any other fields your API returns
+	[key: string]: any;
+}
 
 
 export default function PromoCodeList() {
@@ -31,10 +44,11 @@ export default function PromoCodeList() {
 		  setIsLoading(true);
 			try {
 				// Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/promo-codes?page=${page}`);
+                // const res = await fetch(`/api/promo-codes?page=${page}`);
                 // const data = await res.json();
                 // Laravel paginate-style response often has: data, total, per_page, current_page
 			    setPromoCodes(promoCodes);
+			    setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
 			} catch (err) {
 			    console.error(err);
@@ -54,7 +68,7 @@ export default function PromoCodeList() {
   	};
 
   	// handle the edit of charge
-  	const handleEdit = (promoCode: any) => {
+  	const handleEdit = (promoCode: PromoCode) => {
     	setEditCharge(promoCode);
     	setShowModal(true);
   	};
@@ -72,10 +86,10 @@ export default function PromoCodeList() {
 
 
 	// handle the delete of charge
-	const handleDelete = (charge) => {
+	const handleDelete = (promoCode: PromoCode) => {
 		Swal.fire({
 		    title: "Are you sure?",
-		    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
+		    text: `You are about to delete "${promoCode.promoCode}" charge applied on "${promoCode.createdDate}".`,
 		    icon: "warning",
 		    showCancelButton: true,
 		    confirmButtonColor: "#d33",
@@ -170,7 +184,8 @@ export default function PromoCodeList() {
 										      	<td colSpan={7} className="text-center text-muted py-3">No promo code record found.</td>
 										    </tr>
 										  ) : (
-										    promoCodes.map((pc, index) => (
+										    promoCodes.map((pc) => (
+										    // promoCodes.map((pc, index) => (
 										      	<tr key={pc.id}>
 											        <td className="text-muted py-3">{pc.id}</td>
 											        <td className="text-muted py-3">{pc.promoCode}</td>

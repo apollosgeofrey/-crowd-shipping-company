@@ -23,11 +23,12 @@ export default function PathfinderList() {
             setIsLoading(true);
             try {
                 // Example API call (replace with your backend endpoint)
-                const res = await fetch(`/api/pathfinders?page=${page}`);
+                // const res = await fetch(`/api/pathfinders?page=${page}`);
                 // const data = await res.json();
 
                 // Laravel paginate-style response often has: data, total, per_page, current_page
                 setPathfinders(pathfinders);
+                setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
             } catch (err) {
                 console.error(err);
@@ -68,7 +69,7 @@ export default function PathfinderList() {
                                     {/* Divider applied to subsequent items */}
                                     <div className="d-flex align-items-center border-start px-2">
                                         <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-                                        <option>Date</option>
+                                            <option>Date</option>
                                         </select>
                                     </div>
 

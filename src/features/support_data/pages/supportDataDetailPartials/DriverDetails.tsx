@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import userMale from "../../..//../assets/images/user_male.png";
 
 

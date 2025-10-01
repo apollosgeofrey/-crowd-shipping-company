@@ -41,7 +41,10 @@ export default function InProgressTab({
 
     // Badge renderer
     const getStatusBadge = (status: InProgressTrip["status"]) => {
-        return "badge rounded    text-primary fw-semibold px-3 py-2";
+        if(status) {
+            return "badge rounded  text-primary fw-semibold px-3 py-2";
+        } 
+        return "badge rounded  text-secondary fw-semibold px-3 py-2";
     };
 
     return (

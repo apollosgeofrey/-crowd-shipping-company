@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import userMale from "../../../assets/images/user_male.png";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import { FaUser, FaMoneyBillWave, FaClipboardCheck, FaChartBar, FaExchangeAlt } from "react-icons/fa";
@@ -10,7 +10,7 @@ import ReportTabIndex from "./pathfinderDetailPartials/reportsTab/ReportTabIndex
 import TripTabIndex from "./pathfinderDetailPartials/tripsTab/TripTabIndex.tsx"
 
 export default function PathfinderDetail    () {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
 
     // Separate states for main tab and profile sub-tab
     const [activeMainTab, setActiveMainTab] = useState("profile");

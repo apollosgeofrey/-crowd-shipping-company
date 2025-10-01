@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import userMale from "../../..//../assets/images/user_male.png";
+// import { useParams } from "react-router-dom";
+import userMale from "../../../../assets/images/user_male.png";
 
 
 export default function DriverDetails() {

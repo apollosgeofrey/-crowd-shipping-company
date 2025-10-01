@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useState } from "react";
 import WalletTab from "./partials/WalletTab.tsx";
 import TransactionTab from "./partials/TransactionTab.tsx";
 import PaymentDetailTab from "./partials/PaymentDetailTab.tsx";

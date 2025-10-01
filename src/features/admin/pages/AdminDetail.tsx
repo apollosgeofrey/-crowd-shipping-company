@@ -9,7 +9,7 @@ import AnotherMenu2TabIndex from "./adminDetailPartials/anotherMenu2Tab/AnotherM
 import {FaUser, FaKey, FaList} from "react-icons/fa";
 
 export default function AdminDetail() {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
 
     // Separate states for main tab and wallet sub-tab
     const [activeMainTab, setActiveMainTab] = useState("profile");

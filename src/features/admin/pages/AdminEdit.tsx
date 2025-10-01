@@ -9,7 +9,7 @@ import DashboardLayout from "../../../layouts/DashboardLayout";
 // import {FaUser, FaKey, FaList} from "react-icons/fa";
 
 export default function AdminEdit() {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
 
 
     return (

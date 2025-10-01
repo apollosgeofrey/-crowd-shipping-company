@@ -27,7 +27,7 @@ export default function VerifyEmail() {
 					<label className="form-label small mb-3 text-center">
 						A code has been sent to your mail, check your inbox and input it below to continue
 					</label>
-					<input className="form-control border-primary" value={code} onChange={(e)=>setCode(e.target.value)} requiredplaceholder="Enter OTP Code"/>
+					<input className="form-control border-primary" value={code} onChange={(e)=>setCode(e.target.value)} required placeholder="Enter OTP Code"/>
 				</div>
 				<button className="mt-3 btn btn-primary w-100 rounded-pill">Verify and Proceed</button>
 			</form>

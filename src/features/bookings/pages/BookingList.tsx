@@ -15,7 +15,7 @@ export default function BookingList() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [totalPages, setTotalPages] = useState(2);
 	const [showModal, setShowModal] = useState(false);
-	const [editCharge, setEditCharge] = useState<any | null>(null);
+	// const [editCharge, setEditCharge] = useState<any | null>(null);
 	const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
 
 	// 👇 handleView Implementation
@@ -44,20 +44,20 @@ export default function BookingList() {
 		    beforeImage: PackageImage,
 		    afterImage: PackageImage,
 		    sender: {
-		      name: "John Smith",
-		      phone: "+234-801-234-5678",
-		      address: "Lagos Island",
+		      	name: "John Smith",
+		      	phone: "+234-801-234-5678",
+		      	address: "Lagos Island",
 		    },
 		    receiver: {
-		      name: "Sarah Johnson",
-		      phone: "+234-801-234-5678",
-		      address: "Victoria Island",
+		      	name: "Sarah Johnson",
+		      	phone: "+234-801-234-5678",
+		      	address: "Victoria Island",
 		    },
 		    driver: {
-		      name: "Michael Brown",
-		      phone: "+234-801-234-5678",
-		      vehicle: "Toyota Camry - ABC123XY",
-		      currentLocation: "Tafawa Balewa Square",
+		      	name: "Michael Brown",
+		      	phone: "+234-801-234-5678",
+		      	vehicle: "Toyota Camry - ABC123XY",
+		      	currentLocation: "Tafawa Balewa Square",
 		    },
 	  	}, {
 		    id: "TRP-002",
@@ -73,20 +73,20 @@ export default function BookingList() {
 		    beforeImage: "/images/before-papers.jpg",
 		    afterImage: "/images/after-papers.jpg",
 		    sender: {
-		      name: "Samuel Ade",
-		      phone: "+234-802-111-2233",
-		      address: "Ikeja",
+		      	name: "Samuel Ade",
+		      	phone: "+234-802-111-2233",
+		      	address: "Ikeja",
 		    },
 		    receiver: {
-		      name: "Grace Bello",
-		      phone: "+234-802-444-5566",
-		      address: "Maryland",
+		      	name: "Grace Bello",
+		      	phone: "+234-802-444-5566",
+		      	address: "Maryland",
 		    },
 		    driver: {
-		      name: "James Anderson",
-		      phone: "+234-803-777-8899",
-		      vehicle: "Honda Accord - XYZ789AB",
-		      currentLocation: "Oregun Road",
+		      	name: "James Anderson",
+		      	phone: "+234-803-777-8899",
+		      	vehicle: "Honda Accord - XYZ789AB",
+		      	currentLocation: "Oregun Road",
 		    },
 	  	}, {
 		    id: "TRP-003",
@@ -102,20 +102,20 @@ export default function BookingList() {
 		    beforeImage: "/images/before-docs.jpg",
 		    afterImage: "/images/after-docs.jpg",
 		    sender: {
-		      name: "Ngozi Okafor",
-		      phone: "+234-805-123-4567",
-		      address: "Lekki Phase 1",
+				name: "Ngozi Okafor",
+				phone: "+234-805-123-4567",
+				address: "Lekki Phase 1",
 		    },
 		    receiver: {
-		      name: "David Mark",
-		      phone: "+234-806-321-4321",
-		      address: "Ajah",
+				name: "David Mark",
+				phone: "+234-806-321-4321",
+				address: "Ajah",
 		    },
 		    driver: {
-		      name: "Daniel Lee",
-		      phone: "+234-809-888-9999",
-		      vehicle: "Nissan Altima - DEF456CD",
-		      currentLocation: "Ajah Bus Stop",
+				name: "Daniel Lee",
+				phone: "+234-809-888-9999",
+				vehicle: "Nissan Altima - DEF456CD",
+				currentLocation: "Ajah Bus Stop",
 		    },
 		}, {
 		    id: "TRP-004",
@@ -131,20 +131,20 @@ export default function BookingList() {
 		    beforeImage: "/images/before-clothes.jpg",
 		    afterImage: "/images/after-clothes.jpg",
 		    sender: {
-		      name: "Aisha Bello",
-		      phone: "+234-810-222-3344",
-		      address: "San Francisco",
+				name: "Aisha Bello",
+				phone: "+234-810-222-3344",
+				address: "San Francisco",
 		    },
 		    receiver: {
-		      name: "Olu Adeyemi",
-		      phone: "+234-811-999-8877",
-		      address: "San Bay",
+				name: "Olu Adeyemi",
+				phone: "+234-811-999-8877",
+				address: "San Bay",
 		    },
 		    driver: {
-		      name: "James Anderson",
-		      phone: "+234-803-777-8899",
-		      vehicle: "Honda Accord - XYZ789AB",
-		      currentLocation: "Third Mainland Bridge",
+				name: "James Anderson",
+				phone: "+234-803-777-8899",
+				vehicle: "Honda Accord - XYZ789AB",
+				currentLocation: "Third Mainland Bridge",
 		    },
 	  	},
 	]);
@@ -161,6 +161,7 @@ export default function BookingList() {
                 // const data = await res.json();
                 // Laravel paginate-style response often has: data, total, per_page, current_page
 			    setBookings(bookings);
+			    setTotalPages(totalPages);
                 // optionally update totalPages dynamically: setTotalPages(data.last_page);
 			} catch (err) {
 			    console.error(err);
@@ -179,13 +180,13 @@ export default function BookingList() {
     // 	setShowModal(true);
   	// };
 
-  	// // handle the edit of charge
+  	// // // handle the edit of charge
   	// const handleEdit = (booking: any) => {
     // 	setEditCharge(booking);
     // 	setShowModal(true);
   	// };
 
-  	// // handle the save of charge
+  	// // // handle the save of charge
   	// const handleSave = (data: any) => {
     // 	if (editCharge) {
     //   		// Edit existing
@@ -198,25 +199,25 @@ export default function BookingList() {
 
 
 	// handle the delete of charge
-	const handleDelete = (charge) => {
-		Swal.fire({
-		    title: "Are you sure?",
-		    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
-		    icon: "warning",
-		    showCancelButton: true,
-		    confirmButtonColor: "#d33",
-		    cancelButtonColor: "#3085d6",
-		    confirmButtonText: "Yes, delete it!",
-		    cancelButtonText: "No, don't delete it!",
-		}).then((result) => {
-		    if (result.isConfirmed) {
-		      	// your delete logic
-		      	// onDelete(charge.id);
+	// const handleDelete = (charge) => {
+	// 	Swal.fire({
+	// 	    title: "Are you sure?",
+	// 	    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
+	// 	    icon: "warning",
+	// 	    showCancelButton: true,
+	// 	    confirmButtonColor: "#d33",
+	// 	    cancelButtonColor: "#3085d6",
+	// 	    confirmButtonText: "Yes, delete it!",
+	// 	    cancelButtonText: "No, don't delete it!",
+	// 	}).then((result) => {
+	// 	    if (result.isConfirmed) {
+	// 	      	// your delete logic
+	// 	      	// onDelete(charge.id);
 
-		      	Swal.fire("Deleted!", "The charge has been removed.", "success");
-		    }
-		});
-	};
+	// 	      	Swal.fire("Deleted!", "The charge has been removed.", "success");
+	// 	    }
+	// 	});
+	// };
 
   	return (
 	    <DashboardLayout>
@@ -355,7 +356,7 @@ export default function BookingList() {
       						<BookingDetailModal show={showModal} onClose={() => setShowModal(false)} booking={selectedBooking}/>
 
 			              	{/* Pagination Bar */}
-			              	<PaginationBar page={page} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage}/>
+			              	<PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
 			            </div>
 			        </div>
 		        </div>

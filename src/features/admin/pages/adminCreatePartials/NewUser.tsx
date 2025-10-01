@@ -93,7 +93,7 @@ export default function NewUser() {
                         </div>
                         <div className="col-12 mb-3">
                             {/* <label className="fw-bold" htmlFor="address">Address:<sup className="text-danger">*</sup></label> */}
-                            <textarea name="address" className="form-control" placeholder="House Address" onChange={handleChange}>{formData.address}</textarea>
+                            <textarea name="address" className="form-control" placeholder="House Address" value={formData.address} onChange={handleChange}></textarea>
                         </div>
                         <div className="col-md-4 mb-3">
                             {/* <label className="fw-bold" htmlFor="city">City:<sup className="text-danger">*</sup></label> */}

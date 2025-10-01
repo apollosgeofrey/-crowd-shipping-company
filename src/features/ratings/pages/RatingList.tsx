@@ -201,7 +201,7 @@ export default function RatingList() {
 						    </div>
 
 						    {/* Pagination Bar */}
-						    <PaginationBar page={page} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage}/>
+						    <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
 					    </div>
 					</div>
 				</div>

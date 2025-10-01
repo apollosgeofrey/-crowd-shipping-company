@@ -1,4 +1,6 @@
-import L from "leaflet";
+// import L from "leaflet";
+import * as L from "leaflet";
+import 'leaflet/dist/leaflet.css';
 // import { Link } from "react-router-dom";
 // import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -30,10 +32,11 @@ export default function LiveMapIndex() {
 	}, []);
 
 	// Custom marker icons
-	const createIcon = (color: string) => new L.DivIcon({
-	     className: "custom-marker",
-	     html: `<div style="background:${color};width:14px;height:14px;border-radius:50%;border:2px solid #fff"></div>`,
+	const createIcon = (color: string): L.DivIcon => new L.DivIcon({
+		className: "custom-marker",
+		html: `<div style="background:${color};width:14px;height:14px;border-radius:50%;border:2px solid #fff"></div>`,
 	});
+
 
 	// Example trips data
 	const trips = [
@@ -109,15 +112,19 @@ export default function LiveMapIndex() {
 							        	{isLoading ? (
                                             <div className="text-center text-primary col-sm-12 pt-5 py-3">Loading...</div>
                                         ) : (
-									        <MapContainer center={[7.3775, 3.9470]} zoom={13} style={{ height: "100%", width: "100%" }}>								            
+                                        	// Map
+									        // <MapContainer center={[7.3775, 3.9470]} zoom={13} style={{ height: "100%", width: "100%" }}>
+                                          	<MapContainer center={[7.3775, 3.9470] as L.LatLngExpression} zoom={13} style={{ height: "100%", width: "100%" }}>
 									            {/* Map tiles */}
 									            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'/>
 
 									            {/* Render trips */}
 									            {trips.map((trip) => (
-									              	<Polyline key={trip.id} positions={trip.coords} color={trip.color} weight={4}>
+									              	// <Polyline key={trip.id} positions={trip.coords} color={trip.color} weight={4}>
+									            	<Polyline key={trip.id} positions={trip.coords as L.LatLngExpression[]} pathOptions={{ color: (trip.color as string), weight: 4 } as L.PathOptions}>
 										                {/* Start Marker */}
-										                <Marker position={trip.coords[0]} icon={createIcon(trip.color)}>
+										                {/*<Marker position={trip.coords[0]} icon={createIcon(trip.color)}>*/}
+										                <Marker position={trip.coords[0] as L.LatLngExpression} icon={createIcon(trip.color) as any}>
 										                  	<Popup>
 										                    	<b>{trip.id} - {trip.driver}</b> <br />
 										                    	Vehicle: {trip.vehicle} <br />
@@ -126,7 +133,8 @@ export default function LiveMapIndex() {
 										                </Marker>
 
 									                	{/* End Marker */}
-									                	<Marker position={trip.coords[1]} icon={createIcon(trip.color)} />
+									                	{/*<Marker position={trip.coords[1]} icon={createIcon(trip.color)} />*/}
+									                	<Marker position={trip.coords[1] as L.LatLngExpression} icon={createIcon(trip.color) as any} />
 									              	</Polyline>
 									            ))}
 									        </MapContainer>

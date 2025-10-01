@@ -5,8 +5,7 @@ interface OnlineDrivers {
     id: number;
     name: string;
     totalDeliveries: string;
-    dateSent: string;
-    deliveryDate: string;
+    dateJoind: string;
     status: "Online";
 }
 

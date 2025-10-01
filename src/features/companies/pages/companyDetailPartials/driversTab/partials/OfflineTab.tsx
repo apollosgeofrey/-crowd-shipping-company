@@ -3,10 +3,9 @@
 
 interface OfflineDrivers {
     id: number;
-    number: string;
     totalDeliveries: string;
-    dateSent: string;
-    deliveryDate: string;
+    name: string;
+    dateJoind: string;
     status: "Offline";
 }
 

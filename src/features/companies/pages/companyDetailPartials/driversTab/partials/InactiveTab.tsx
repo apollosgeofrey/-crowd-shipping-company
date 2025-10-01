@@ -3,10 +3,9 @@
 
 interface InactiveDrivers {
     id: number;
-    number: string;
     totalDeliveries: string;
-    dateSent: string;
-    deliveryDate: string;
+    name: string;
+    dateJoind: string;
     status: "Inactive";
 }
 

@@ -3,10 +3,9 @@
 
 interface DeletedDrivers {
     id: number;
-    number: string;
     totalDeliveries: string;
-    dateSent: string;
-    deliveryDate: string;
+    fullName: string;
+    dateJoind: string;
     status: "Deleted";
 }
 

@@ -106,27 +106,31 @@ export default function LiveMapIndex() {
 			            	<div className="col-md-12">
 						      	<div className="card border-0 shadow-sm rounded" style={{ overflow: "hidden", maxWidth: "100vw" }} >
 							        <div className="card-body p-0" style={{ height: "500px" }}>
-								        <MapContainer center={[7.3775, 3.9470]} zoom={13} style={{ height: "100%", width: "100%" }}>								            
-								            {/* Map tiles */}
-								            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'/>
+							        	{isLoading ? (
+                                            <div className="text-center text-primary col-sm-12 pt-5 py-3">Loading...</div>
+                                        ) : (
+									        <MapContainer center={[7.3775, 3.9470]} zoom={13} style={{ height: "100%", width: "100%" }}>								            
+									            {/* Map tiles */}
+									            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'/>
 
-								            {/* Render trips */}
-								            {trips.map((trip) => (
-								              	<Polyline key={trip.id} positions={trip.coords} color={trip.color} weight={4}>
-									                {/* Start Marker */}
-									                <Marker position={trip.coords[0]} icon={createIcon(trip.color)}>
-									                  	<Popup>
-									                    	<b>{trip.id} - {trip.driver}</b> <br />
-									                    	Vehicle: {trip.vehicle} <br />
-									                    	Status: {trip.status}
-									                  	</Popup>
-									                </Marker>
+									            {/* Render trips */}
+									            {trips.map((trip) => (
+									              	<Polyline key={trip.id} positions={trip.coords} color={trip.color} weight={4}>
+										                {/* Start Marker */}
+										                <Marker position={trip.coords[0]} icon={createIcon(trip.color)}>
+										                  	<Popup>
+										                    	<b>{trip.id} - {trip.driver}</b> <br />
+										                    	Vehicle: {trip.vehicle} <br />
+										                    	Status: {trip.status}
+										                  	</Popup>
+										                </Marker>
 
-								                	{/* End Marker */}
-								                	<Marker position={trip.coords[1]} icon={createIcon(trip.color)} />
-								              	</Polyline>
-								            ))}
-								        </MapContainer>
+									                	{/* End Marker */}
+									                	<Marker position={trip.coords[1]} icon={createIcon(trip.color)} />
+									              	</Polyline>
+									            ))}
+									        </MapContainer>
+									    )}
 							        </div>
 						      	</div>
 						    </div>			              	

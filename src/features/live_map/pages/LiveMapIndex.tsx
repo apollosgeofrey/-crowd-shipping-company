@@ -1,4 +1,3 @@
-// import L from "leaflet";
 import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 // import { Link } from "react-router-dom";
@@ -113,17 +112,14 @@ export default function LiveMapIndex() {
                                             <div className="text-center text-primary col-sm-12 pt-5 py-3">Loading...</div>
                                         ) : (
                                         	// Map
-									        // <MapContainer center={[7.3775, 3.9470]} zoom={13} style={{ height: "100%", width: "100%" }}>
-                                          	<MapContainer center={[7.3775, 3.9470] as L.LatLngExpression} zoom={13} style={{ height: "100%", width: "100%" }}>
+									        <MapContainer center={[7.3775, 3.9470] as L.LatLngExpression} zoom={13} style={{ height: "100%", width: "100%" }}>
 									            {/* Map tiles */}
 									            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'/>
 
 									            {/* Render trips */}
 									            {trips.map((trip) => (
-									              	// <Polyline key={trip.id} positions={trip.coords} color={trip.color} weight={4}>
-									            	<Polyline key={trip.id} positions={trip.coords as L.LatLngExpression[]} pathOptions={{ color: (trip.color as string), weight: 4 } as L.PathOptions}>
+									              	<Polyline key={trip.id} positions={trip.coords as L.LatLngExpression[]} pathOptions={{ color: (trip.color as string), weight: 4 } as L.PathOptions}>
 										                {/* Start Marker */}
-										                {/*<Marker position={trip.coords[0]} icon={createIcon(trip.color)}>*/}
 										                <Marker position={trip.coords[0] as L.LatLngExpression} icon={createIcon(trip.color) as any}>
 										                  	<Popup>
 										                    	<b>{trip.id} - {trip.driver}</b> <br />
@@ -133,7 +129,6 @@ export default function LiveMapIndex() {
 										                </Marker>
 
 									                	{/* End Marker */}
-									                	{/*<Marker position={trip.coords[1]} icon={createIcon(trip.color)} />*/}
 									                	<Marker position={trip.coords[1] as L.LatLngExpression} icon={createIcon(trip.color) as any} />
 									              	</Polyline>
 									            ))}

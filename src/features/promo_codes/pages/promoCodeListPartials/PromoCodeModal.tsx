@@ -9,7 +9,7 @@ interface ChargeModalProps {
 	status?: string;
 }
 
-export default function PromoCodeModal({ show, onClose, onSave, initialData, status }: ChargeModalProps) {
+export default function PromoCodeModal({ show, onClose, onSave, initialData }: ChargeModalProps) {
 	const [formData, setFormData] = useState({
 		promoCode: initialData?.promoCode || "",
 	    discount: initialData?.discount || "",

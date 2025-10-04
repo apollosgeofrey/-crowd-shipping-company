@@ -26,7 +26,7 @@ export default function ResetPassword() {
 		if (password !== confirm) return Swal.fire("Error", "Passwords do not match", "error");
 		try {
 			setLoading(false);
-			await resetPasswordApi({ token, email, password, password_confirmation: confirm });
+			await resetPasswordApi({ token, email, password, confirm });
 			Swal.fire("Done", "Password has been reset", "success");
 			nav("/login");
 		} catch (e:any) {

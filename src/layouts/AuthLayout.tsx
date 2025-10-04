@@ -70,7 +70,7 @@ export function CompanySplitAuthLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="row min-vh-100 auth-font">
 			{/* Left Brand Section */}
-			<div className="col-md-6 d-none d-md-flex align-items-center justify-content-center"  sstyle={{ backgroundColor: "#FDEFEB" }}>
+			<div className="col-md-6 d-none d-md-flex align-items-center justify-content-center" style={{ backgroundColor: "#FDEFEB" }}>
 				<div className="text-center">
 					<h1 className="display-4 fw-bold text-primary">{APP_NAME}</h1>
 					<p className="lead">Your reliable transportation partner</p>

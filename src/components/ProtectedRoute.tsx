@@ -3,8 +3,9 @@ import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../store/index.ts";
 import { useIsAdmin, useIsCompany } from "../hooks/usePlatform.ts";
 
+type PlatformRole = "admin" | "company" | "user" | string;
 
-type ProtectedRouteProps = {
+export type ProtectedRouteProps = {
   children: JSX.Element;
   allowedRoles?: PlatformRole[];      // empty = allow any authenticated user
   fallbackPath?: string;             // where to redirect when unauthorized (403)
@@ -25,7 +26,7 @@ export default function ProtectedRoute({
 	const token = useAppSelector((s) => s.auth.token);
 
 	// Check if user is authenticateds
-	// if (!token) return <Navigate to="/login" replace />;
+	// if (requireAuth && !token) return <Navigate to="/login" replace />;
 
   	// Check if user has any of the allowed roles
   	const hasAccess = (allowedRoles.includes('admin')&&isAdmin) || (allowedRoles.includes('company')&&isCompany);
@@ -34,7 +35,7 @@ export default function ProtectedRoute({
   	if (!hasAccess) return <Navigate to={fallbackPath} replace />;
 
   	// temporarily return the children
-	if (!token) return children;
+	if (requireAuth && !token) return children;
 
 	// Finally return the children
 	return children;

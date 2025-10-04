@@ -8,13 +8,13 @@ export interface LoginPayload {
 export interface RegisterPayload {
 	email: string;
 	password: string;
+	password_confirmation: string;
 }
 
 export interface ResetPayload {
 	token: string;
 	email: string;
 	password: string;
-	password_confirmation: string;
 }
 
 export const loginApi = async (payload: LoginPayload) => {

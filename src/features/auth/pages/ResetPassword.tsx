@@ -15,6 +15,7 @@ export default function ResetPassword() {
 
 	const [confirm, setConfirm] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	// toggle states
 	const [showConfirm, setShowConfirm] = useState(false);

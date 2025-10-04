@@ -1,10 +1,13 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import AuthLayout from "../../../layouts/AuthLayout";
 import { forgotPasswordApi } from "../services/authService";
+import { useIsAdmin, useIsCompany } from "../../../hooks/usePlatform";
+import { AdminAuthLayout, CompanyAuthLayout } from "../../../layouts/AuthLayout";
 
 export default function ForgotPassword() {
+	const isAdmin = useIsAdmin();
+	const isCompany = useIsCompany();
 	const [email, setEmail] = useState("");
 		const submit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -16,24 +19,47 @@ export default function ForgotPassword() {
 		}
 	};
 
-	return (
-		<AuthLayout>
-			<form onSubmit={submit}>
-				<p className="text-center fw-bold text-dark small mt-5 mb-4">Reset Password</p>
-				<div className="mb-5">
-					<label className="form-label text-justify small mb-3">
-						Please enter the email address attached to your account
-					</label>
-					<input className="form-control border-primary" type="email" placeholder="Enter Email Address"
-					value={email} onChange={(e)=>setEmail(e.target.value)} required />
+	if (isAdmin === true) {
+		return (
+			<AdminAuthLayout>
+				<form onSubmit={submit}>
+					<p className="text-center fw-bold text-dark small mt-5 mb-4">Reset Password</p>
+					<div className="mb-5">
+						<label className="form-label text-justify small mb-3">
+							Please enter the email address attached to your account
+						</label>
+						<input className="form-control border-primary" type="email" placeholder="Enter Email Address"
+						value={email} onChange={(e)=>setEmail(e.target.value)} required />
+					</div>
+					<button className="btn btn-primary w-100 rounded-pill">Send Reset Link</button>
+				</form>
+				<div className="text-left small mt-3">
+					<Link to="/login" className="text-sm text-primary text-decoration-none">
+						<span className="fas fa-angle-double-left"></span>Back to login
+					</Link>
 				</div>
-				<button className="btn btn-primary w-100 rounded-pill">Send Reset Link</button>
-			</form>
-			<div className="text-left small mt-3">
-				<Link to="/login" className="text-sm text-primary text-decoration-none">
-					<span className="fas fa-angle-double-left"></span>Back to login
-				</Link>
-			</div>
-		</AuthLayout>
-	);
+			</AdminAuthLayout>
+		);
+	} else if (isCompany === true) {
+		return (
+			<CompanyAuthLayout>
+				<form onSubmit={submit}>
+					<p className="text-center fw-bold text-dark small mt-5 mb-4">Reset Password</p>
+					<div className="mb-5">
+						<label className="form-label text-justify small mb-3">
+							Please enter the email address attached to your account
+						</label>
+						<input className="form-control border-primary" type="email" placeholder="Enter Email Address"
+						value={email} onChange={(e)=>setEmail(e.target.value)} required />
+					</div>
+					<button className="btn btn-primary w-100 rounded-pill">Send Reset Link</button>
+				</form>
+				<div className="text-left small mt-3">
+					<Link to="/login" className="text-sm text-primary text-decoration-none">
+						<span className="fas fa-angle-double-left"></span>Back to login
+					</Link>
+				</div>
+			</CompanyAuthLayout>
+		);
+	}
 }

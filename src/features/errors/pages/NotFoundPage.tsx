@@ -6,15 +6,18 @@ export default function NotFoundPage() {
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" bgcolor="#f5f5f5" >
-            <Typography variant="h2" color="error" gutterBottom>
+            <Typography variant="h2" color="error" gutterBottom component="h1" sx={{ fontWeight: 700 }}>
                 404
             </Typography>
-            <Typography variant="h5" gutterBottom>
+
+            <Typography variant="h5" gutterBottom component="h2">
                 Page Not Found
             </Typography>
+
             <Typography variant="body1" color="textSecondary" mb={2}>
                 Sorry, the page you are looking for does not exist.
             </Typography>
+            
             <button className="btn btn-primary" onClick={() => navigate('/')}>
                 <span className="fa fa-angle-double-left"></span> Go to Home
             </button>

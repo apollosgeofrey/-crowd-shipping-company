@@ -79,6 +79,7 @@ import SystemSettingList from "../features/system_settings/pages/SystemSettingLi
 
 // fallback route
 import NotFoundPage from "../features/errors/pages/NotFoundPage.tsx";
+import UnauthorizedPage from '../features/errors/pages/UnauthorizedPage.tsx';
 
 export default function AppRoutes() {
 	return (
@@ -92,76 +93,77 @@ export default function AppRoutes() {
 		        <Route path="/verify-email" element={<VerifyEmail />} />
 		        
 		        {/* dashboard routes */}
-		        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+		        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'company']}><Dashboard /></ProtectedRoute>} />
 		        
 		        {/* drivers management routes */}
-		        <Route path="/drivers" element={<ProtectedRoute><DriverList /></ProtectedRoute>} />
-		        <Route path="/drivers/create" element={<ProtectedRoute><DriverCreate /></ProtectedRoute>} />
-		        {/* <Route path="/drivers/requests" element={<ProtectedRoute><DriverRequests /></ProtectedRoute>} /> */}
-		        <Route path="/drivers/:id/show" element={<ProtectedRoute><DriverDetail /></ProtectedRoute>} />
-		        <Route path="/drivers/:id/edit" element={<ProtectedRoute><DriverEdit /></ProtectedRoute>} />
+		        <Route path="/drivers" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverList /></ProtectedRoute>} />
+		        <Route path="/drivers/create" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverCreate /></ProtectedRoute>} />
+		        {/* <Route path="/drivers/requests" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverRequests /></ProtectedRoute>} /> */}
+		        <Route path="/drivers/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverDetail /></ProtectedRoute>} />
+		        <Route path="/drivers/:id/edit" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverEdit /></ProtectedRoute>} />
 
 		        {/* pathfinders management routes */}
-		        <Route path="/pathfinders" element={<ProtectedRoute><PathfinderList /></ProtectedRoute>} />
-		        <Route path="/pathfinders/create" element={<ProtectedRoute><PathfinderCreate /></ProtectedRoute>} />
-		        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute><PathfinderRequests /></ProtectedRoute>} /> */}
-		        <Route path="/pathfinders/:id/show" element={<ProtectedRoute><PathfinderDetail /></ProtectedRoute>} />
-		        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute><PathfinderEdit /></ProtectedRoute>} />
+		        <Route path="/pathfinders" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderList /></ProtectedRoute>} />
+		        <Route path="/pathfinders/create" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderCreate /></ProtectedRoute>} />
+		        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderRequests /></ProtectedRoute>} /> */}
+		        <Route path="/pathfinders/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderDetail /></ProtectedRoute>} />
+		        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderEdit /></ProtectedRoute>} />
 
 		        {/* companies management routes */}
-		        <Route path="/companies" element={<ProtectedRoute><CompanyList /></ProtectedRoute>} />
-		        <Route path="/companies/create" element={<ProtectedRoute><CompanyCreate /></ProtectedRoute>} />
-		        {/* <Route path="/companies/requests" element={<ProtectedRoute><CompanyRequests /></ProtectedRoute>} /> */}
-		        <Route path="/companies/:id/show" element={<ProtectedRoute><CompanyDetail /></ProtectedRoute>} />
-		        <Route path="/companies/:id/edit" element={<ProtectedRoute><CompanyEdit /></ProtectedRoute>} />
+		        <Route path="/companies" element={<ProtectedRoute allowedRoles={['admin']}><CompanyList /></ProtectedRoute>} />
+		        <Route path="/companies/create" element={<ProtectedRoute allowedRoles={['admin']}><CompanyCreate /></ProtectedRoute>} />
+		        {/* <Route path="/companies/requests" element={<ProtectedRoute allowedRoles={['admin']}><CompanyRequests /></ProtectedRoute>} /> */}
+		        <Route path="/companies/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><CompanyDetail /></ProtectedRoute>} />
+		        <Route path="/companies/:id/edit" element={<ProtectedRoute allowedRoles={['admin', 'company']}><CompanyEdit /></ProtectedRoute>} />
 
 		        {/* users management routes */}
-		        <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-		        <Route path="/users/create" element={<ProtectedRoute><UserCreate /></ProtectedRoute>} />
-		        <Route path="/users/:id/show" element={<ProtectedRoute><UserDetail /></ProtectedRoute>} />
-		        <Route path="/users/:id/edit" element={<ProtectedRoute><UserEdit /></ProtectedRoute>} />
+		        <Route path="/users" element={<ProtectedRoute allowedRoles={['admin']}><UserList /></ProtectedRoute>} />
+		        <Route path="/users/create" element={<ProtectedRoute allowedRoles={['admin']}><UserCreate /></ProtectedRoute>} />
+		        <Route path="/users/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><UserDetail /></ProtectedRoute>} />
+		        <Route path="/users/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><UserEdit /></ProtectedRoute>} />
 		    
 		        {/* admin management routes */}
-		        <Route path="/admin" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
-		        <Route path="/admin/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
-		        <Route path="/admin/:id/show" element={<ProtectedRoute><AdminDetail /></ProtectedRoute>} />
-		        <Route path="/admin/:id/edit" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
+		        <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminList /></ProtectedRoute>} />
+		        <Route path="/admin/create" element={<ProtectedRoute allowedRoles={['admin']}><AdminCreate /></ProtectedRoute>} />
+		        <Route path="/admin/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><AdminDetail /></ProtectedRoute>} />
+		        <Route path="/admin/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><AdminEdit /></ProtectedRoute>} />
 
 		        {/* live-map management routes */}
-		        <Route path="/live-map" element={<ProtectedRoute><LiveMapIndex /></ProtectedRoute>} />
+		        <Route path="/live-map" element={<ProtectedRoute allowedRoles={['admin', 'company']}><LiveMapIndex /></ProtectedRoute>} />
 
 		        {/* bookings management routes */}
-		        <Route path="/bookings" element={<ProtectedRoute><BookingList /></ProtectedRoute>} />
+		        <Route path="/bookings" element={<ProtectedRoute allowedRoles={['admin', 'company']}><BookingList /></ProtectedRoute>} />
 
 		        {/* transactions management routes */}
-		        <Route path="/transactions" element={<ProtectedRoute><TransactionList /></ProtectedRoute>} />
+		        <Route path="/transactions" element={<ProtectedRoute allowedRoles={['admin', 'company']}><TransactionList /></ProtectedRoute>} />
 
 		        {/* promo-codes management routes */}
-		        <Route path="/promo-codes" element={<ProtectedRoute><PromoCodeList /></ProtectedRoute>} />
+		        <Route path="/promo-codes" element={<ProtectedRoute allowedRoles={['admin', 'company']}><PromoCodeList /></ProtectedRoute>} />
 
 		        {/* trip-charges management routes */}
-		        <Route path="/trip-charges" element={<ProtectedRoute><TripChargeList /></ProtectedRoute>} />
+		        <Route path="/trip-charges" element={<ProtectedRoute allowedRoles={['admin', 'company']}><TripChargeList /></ProtectedRoute>} />
 
 		        {/* reports management routes */}
-		        <Route path="/reports" element={<ProtectedRoute><ReportList /></ProtectedRoute>} />
-		        <Route path="/reports/:id/show" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
+		        <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><ReportList /></ProtectedRoute>} />
+		        <Route path="/reports/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><ReportDetail /></ProtectedRoute>} />
 
 		        {/* ratings management routes */}
-		        <Route path="/ratings" element={<ProtectedRoute><RatingList /></ProtectedRoute>} />
-		        <Route path="/ratings/:id/show" element={<ProtectedRoute><RatingDetail /></ProtectedRoute>} />
+		        <Route path="/ratings" element={<ProtectedRoute allowedRoles={['admin', 'company']}><RatingList /></ProtectedRoute>} />
+		        <Route path="/ratings/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><RatingDetail /></ProtectedRoute>} />
 
 		        {/* support-data management routes */}
-		        <Route path="/support-data" element={<ProtectedRoute><SupportDataList /></ProtectedRoute>} />
-		        <Route path="/support-data/:id/show" element={<ProtectedRoute><SupportDataDetail /></ProtectedRoute>} />
+		        <Route path="/support-data" element={<ProtectedRoute allowedRoles={['admin', 'company']}><SupportDataList /></ProtectedRoute>} />
+		        <Route path="/support-data/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><SupportDataDetail /></ProtectedRoute>} />
 
 		        {/* notifications management routes */}
-		        <Route path="/notifications" element={<ProtectedRoute><NotificationList /></ProtectedRoute>} />
-		        {/*<Route path="/notifications/:id/show" element={<ProtectedRoute><NotificationDetail /></ProtectedRoute>} />*/}
+		        <Route path="/notifications" element={<ProtectedRoute allowedRoles={['admin', 'company']}><NotificationList /></ProtectedRoute>} />
+		        {/*<Route path="/notifications/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><NotificationDetail /></ProtectedRoute>} />*/}
 
 		        {/* system-settings management routes */}
-		        <Route path="/system-settings" element={<ProtectedRoute><SystemSettingList /></ProtectedRoute>} />
+		        <Route path="/system-settings" element={<ProtectedRoute allowedRoles={['admin']}><SystemSettingList /></ProtectedRoute>} />
 
 		        {/* fallback routes id non is found */}
+		        <Route path="/unauthorized" element={<UnauthorizedPage />} />
 		        <Route path="*" element={<NotFoundPage />} />
 
 		    </Routes>

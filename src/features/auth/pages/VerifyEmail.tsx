@@ -15,11 +15,14 @@ export default function VerifyEmail() {
 	const submit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
+			setLoading(false);
 			await verifyEmailApi(code);
 			Swal.fire("Verified", "Your email is verified", "success");
 			nav("/login");
 		} catch (e:any) {
 			Swal.fire("Error", e?.response?.data?.message || "Verification failed", "error");
+		} finally {
+			setLoading(false);
 		}
 	};
 

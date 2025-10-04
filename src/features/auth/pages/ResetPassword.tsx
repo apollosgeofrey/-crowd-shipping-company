@@ -24,11 +24,14 @@ export default function ResetPassword() {
 		e.preventDefault();
 		if (password !== confirm) return Swal.fire("Error", "Passwords do not match", "error");
 		try {
+			setLoading(false);
 			await resetPasswordApi({ token, email, password, password_confirmation: confirm });
 			Swal.fire("Done", "Password has been reset", "success");
 			nav("/login");
 		} catch (e:any) {
 			Swal.fire("Error", e?.response?.data?.message || "Reset failed", "error");
+		} finally {
+			setLoading(false);
 		}
 	};
 	if (isAdmin === true) {

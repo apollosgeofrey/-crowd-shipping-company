@@ -13,10 +13,13 @@ export default function ForgotPassword() {
 	const submit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
+			setLoading(true);
 			await forgotPasswordApi(email);
 			Swal.fire("Sent", "Password reset link sent to your email", "success");
 		} catch (e:any) {
 			Swal.fire("Error", e?.response?.data?.message || "Unable to send reset link", "error");
+		} finally {
+			setLoading(false);
 		}
 	};
 

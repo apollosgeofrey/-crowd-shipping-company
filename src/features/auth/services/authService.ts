@@ -8,7 +8,7 @@ export interface LoginPayload {
 export interface RegisterPayload {
 	email: string;
 	password: string;
-	password_confirmation: string;
+	confirm_password: string;
 }
 
 export interface ResetPayload {

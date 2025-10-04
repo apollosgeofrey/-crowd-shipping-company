@@ -61,7 +61,7 @@ export default function VerifyEmail() {
 				            <label htmlFor="code" className="form-label small text-muted fw-bold mb-0">
 				              	Confirmation Code:<sup className="text-danger">*</sup>
 				            </label>
-				            <input id="code" name="code" type="text" className="form-control" placeholder="Enter Code" value={code} required onChange={(e) => setCodes(e.target.value)} aria-required/>
+				            <input id="code" name="code" type="text" className="form-control" placeholder="Enter Code" value={code} required onChange={(e) => setCode(e.target.value)} aria-required/>
 				        </div>
 
 			          	{/* big orange button */}

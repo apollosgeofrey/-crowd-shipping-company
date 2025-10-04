@@ -69,7 +69,9 @@ export default function ResetPassword() {
 					</div>
 
 					{/* Reset button */}
-					<button className="btn btn-primary mt-3 rounded-pill w-100">Reset Password</button>
+					<button type="submit" className="btn btn-primary mt-3 rounded-pill w-100" disabled={loading} aria-disabled={loading}>
+		            	{loading ? "Reseting..." : "Reset Password"}
+		          	</button>
 				</form>
 				<div className="text-left small mt-3">
 					<Link to="/login" className="text-sm text-primary text-decoration-none">
@@ -81,39 +83,47 @@ export default function ResetPassword() {
 	} else if (isCompany === true) {
 		return (
 			<CompanyAuthLayout>
-				<form onSubmit={submit}>
-					<p className="text-center fw-bold text-dark small mt-4 mb-4">Enter New Password</p>
-					{/* New Password */}
-					<div className="mb-3">
-						<label className="form-label mb-0 small">
-							New Password:<sup className="text-danger">*</sup>
-						</label>
-						<div className="input-group">
-							<input className="form-control border-primary border-end-0 rounded-end-0" type={showPassword ? "text" : "password"} value={password}
-							placeholder="Enter New Password" onChange={(e) => setPassword(e.target.value)} required/>
-							<button type="button" className="btn btn-outline-primary border-start-0 rounded-start-0" onClick={() => setShowPassword(!showPassword)}>
-								<i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
-							</button>
-						</div>
-					</div>
+				<div>
+			        <h1 className="text-center fw-bold mb-5" style={{ fontSize: "34px", color: "#0f1724" }}>
+			        	Enter New Password
+			        </h1>
+			        
+			        <form onSubmit={submit} noValidate>			        	
+				        <div className="mb-4">
+					        <label className="form-label small text-muted fw-bold mb-0">
+					            New Password:<sup className="text-danger">*</sup>
+				            </label>
+				            
+							<div className="input-group">
+								<input className="form-control border-primary border-end-0 rounded-end-0" type={showPassword ? "text" : "password"} value={password}
+								placeholder="Enter New Password" onChange={(e) => setPassword(e.target.value)} required/>
+								<button type="button" className="btn btn-outline-primary border-start-0 rounded-start-0" onClick={() => setShowPassword(!showPassword)}>
+									<i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+								</button>
+							</div>
+				        </div>
 
-					{/* Confirm Password */}
-					<div className="mb-4">
-						<label className="form-label mb-0 small">
-							Confirm Password:<sup className="text-danger">*</sup>
-						</label>
-						<div className="input-group">
-							<input className="form-control border-primary border-end-0 rounded-end-0" type={showConfirm ? "text" : "password"} value={confirm}
-							placeholder="Enter Confirm Password" onChange={(e) => setConfirm(e.target.value)} required/>
-							<button type="button" className="btn btn-outline-primary border-start-0 rounded-start-0" onClick={() => setShowConfirm(!showConfirm)}>
-								<i className={`fas ${showConfirm ? "fa-eye-slash" : "fa-eye"}`}></i>
-							</button>
+				        {/* Confirm Password */}
+						<div className="mb-4">
+							<label className="form-label mb-0 small">
+								Confirm Password:<sup className="text-danger">*</sup>
+							</label>
+							<div className="input-group">
+								<input className="form-control border-primary border-end-0 rounded-end-0" type={showConfirm ? "text" : "password"} value={confirm}
+								placeholder="Enter Confirm Password" onChange={(e) => setConfirm(e.target.value)} required/>
+								<button type="button" className="btn btn-outline-primary border-start-0 rounded-start-0" onClick={() => setShowConfirm(!showConfirm)}>
+									<i className={`fas ${showConfirm ? "fa-eye-slash" : "fa-eye"}`}></i>
+								</button>
+							</div>
 						</div>
-					</div>
 
-					{/* Reset button */}
-					<button className="btn btn-primary mt-3 rounded-pill w-100">Reset Password</button>
-				</form>
+		          	    {/* Reset button */}
+						<button type="submit" className="btn btn-primary form-control fw-bold mb-3 mt-3" disabled={loading} aria-disabled={loading}>
+		            		{loading ? "Reseting..." : "Reset Password"}
+				        </button>				       
+				    </form>
+				</div>
+
 				<div className="text-left small mt-3">
 					<Link to="/login" className="text-sm text-primary text-decoration-none">
 						<span className="fas fa-angle-double-left"></span>Back to login

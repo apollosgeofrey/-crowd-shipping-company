@@ -5,6 +5,11 @@ export interface LoginPayload {
 	password: string;
 }
 
+export interface RegisterPayload {
+	email: string;
+	password: string;
+}
+
 export interface ResetPayload {
 	token: string;
 	email: string;
@@ -14,6 +19,12 @@ export interface ResetPayload {
 
 export const loginApi = async (payload: LoginPayload) => {
 	const { data } = await api.post("/auth/login", payload);
+	// expected: {token: string, user: {...}}
+	return data;
+};
+
+export const registerApi = async (payload: RegisterPayload) => {
+	const { data } = await api.post("/auth/register", payload);
 	// expected: {token: string, user: {...}}
 	return data;
 };

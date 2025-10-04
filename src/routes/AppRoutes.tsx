@@ -4,9 +4,10 @@ import ProtectedRoute from "../components/ProtectedRoute";
 
 // auth routes
 import Login from "../features/auth/pages/Login.tsx";
-import ForgotPassword from "../features/auth/pages/ForgotPassword.tsx";
-import ResetPassword from "../features/auth/pages/ResetPassword.tsx";
+import Register from "../features/auth/pages/Register.tsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.tsx";
+import ResetPassword from "../features/auth/pages/ResetPassword.tsx";
+import ForgotPassword from "../features/auth/pages/ForgotPassword.tsx";
 
 // dashboard route
 import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
@@ -91,6 +92,9 @@ export default function AppRoutes() {
 		        <Route path="/forgot-password" element={<ForgotPassword />} />
 		        <Route path="/reset-password" element={<ResetPassword />} />
 		        <Route path="/verify-email" element={<VerifyEmail />} />
+		        
+		        {/*Company Registration routes */}
+		        <Route path="/register" element={<ProtectedRoute allowedRoles={['admin', 'company']}><Register /></ProtectedRoute>} />
 		        
 		        {/* dashboard routes */}
 		        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'company']}><Dashboard /></ProtectedRoute>} />

@@ -46,19 +46,7 @@ export function CompanyAuthLayout({ children }: PropsWithChildren) {
 		<div className="company-auth-bg" style={{ backgroundImage: `url(${bgImage})`,}}>
 		   	<div className="company-auth-container">
 		        <div className="auth-card">
-			        <div className="auth-card-brand text-center mb-3">
-			            <h2 className="h4 fw-bold mb-1">Crowdshipping</h2>
-			            <p className="mb-0 text-muted small">Your reliable transportation partner</p>
-			        </div>
-
-			        <div className="auth-card-body">
-			            {/* form content passed as children */}
-			            {children}
-			        </div>
-
-			        <div className="auth-card-footer text-center mt-3">
-			            <small className="text-muted">By creating account, you agree to our Terms of Service.</small>
-			        </div>
+			        {children}
 			    </div>
 		    </div>
 	    </div>
@@ -80,14 +68,8 @@ export function CompanySplitAuthLayout({ children }: PropsWithChildren) {
 			{/* Right Form Section */}
 			<div className="col-md-6 d-flex align-items-center justify-content-center p-5" style={{ backgroundImage: `url(${bgImage})`,}}>
 				<div className="w-100" style={{ maxWidth: "400px" }}>
-				    <div className="auth-card">				        
-				        <div className="auth-card-body">
-				            {children}
-				        </div>
-
-				        <div className="auth-card-footer text-center mt-3">
-				            <small className="text-muted">By creating account, you agree to our Terms of Service.</small>
-				        </div>
+				    <div className="auth-card">
+				        {children}
 				    </div>
 			    </div>
 			</div>

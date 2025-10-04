@@ -15,6 +15,7 @@ export interface ResetPayload {
 	token: string;
 	email: string;
 	password: string;
+	confirm: string;
 }
 
 export const loginApi = async (payload: LoginPayload) => {

@@ -59,11 +59,11 @@ export default function BookingOverview() {
       </div>
 
       {/* Table */}
-      <div className="table-responsive small">
-        <table className="table table-striped align-middle text-wrap">
+      <div className="table-xscroll small">
+        <table className="table table-striped align-middle">
           <thead>
             <tr>
-              <th>Trip ID</th>
+              <th>ID</th>
               <th>Description</th>
               <th>Driver</th>
               <th>Route</th>

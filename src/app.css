@@ -138,3 +138,16 @@ a.text-primary:focus {
 }
 
 
+/* put this in a global css loaded after Bootstrap */
+.table-xscroll {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;           /* force horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-xscroll > table {
+  width: max-content;                     /* allow table to be wider than wrapper */
+  min-width: 100%;                        /* but fill when content is small */
+}

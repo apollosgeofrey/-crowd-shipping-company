@@ -6,36 +6,33 @@ import { useIsAdmin, useIsCompany } from "../hooks/usePlatform.ts";
 type PlatformRole = "admin" | "company" | "user" | string;
 
 export type ProtectedRouteProps = {
-  children: JSX.Element;
-  allowedRoles?: PlatformRole[];      // empty = allow any authenticated user
-  fallbackPath?: string;             // where to redirect when unauthorized (403)
-  requireAuth?: boolean;             // if true, redirect unauthenticated users to /login
+	children: JSX.Element;
+	allowedRoles?: PlatformRole[];      // empty = allow any authenticated user
+	fallbackPath?: string;             // where to redirect when unauthorized (403)
+	requireAuth?: boolean;             // if true, redirect unauthenticated users to /login
 };
 
 
 export default function ProtectedRoute({
-  children,
-  allowedRoles = [],
-  fallbackPath = "/unauthorized",
-  requireAuth = true,
+	children,
+	allowedRoles = [],
+	fallbackPath = "/unauthorized",
+	requireAuth = true,
 }: ProtectedRouteProps) {
 
-  	// Define usecase variables
-  	const isAdmin = useIsAdmin();
-  	const isCompany = useIsCompany();
+	// Define usecase variables
+	const isAdmin = useIsAdmin();
+	const isCompany = useIsCompany();
 	const token = useAppSelector((s) => s.auth.token);
 
 	// Check if user is authenticateds
-	// if (requireAuth && !token) return <Navigate to="/login" replace />;
+	if (requireAuth && !token) return <Navigate to="/login" replace />;
 
-  	// Check if user has any of the allowed roles
-  	const hasAccess = (allowedRoles.includes('admin')&&isAdmin) || (allowedRoles.includes('company')&&isCompany);
+	// Check if user has any of the allowed roles
+	const hasAccess = (allowedRoles.includes('admin')&&isAdmin) || (allowedRoles.includes('company')&&isCompany);
 
-  	// Check if user has access else redirect to "no access" page
-  	if (!hasAccess) return <Navigate to={fallbackPath} replace />;
-
-  	// temporarily return the children
-	if (requireAuth && !token) return children;
+	// Check if user has access else redirect to "no access" page
+	if (!hasAccess) return <Navigate to={fallbackPath} replace />;
 
 	// Finally return the children
 	return children;

@@ -1,6 +1,8 @@
 // components/Sidebar.tsx
-import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useLogout } from "../features/auth/hooks/useLogout";
+
 import {
 	LayoutDashboard, Users, Map, LogOut, Settings, CreditCard, Star, MessageCircle, Bell, Building2, Route,
 	Gift, DollarSign, BarChart3, UserCheck, Bookmark, ChevronLeft, ChevronRight, ChevronDown, Menu, X, Sun, Moon, Cog
@@ -22,7 +24,6 @@ interface MenuItem {
 }
 
 // Menu items for sidebar (raw definition — visibility controlled later)
-// Moved outside component so this array reference is stable and won't cause re-renders.
 const MENU_ITEMS: MenuItem[] = [
   	{ id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard', platforms: ['admin', 'company'] },
 	{ id: 'company-profile', icon: Building2, label: 'Company Profile', path: '/companies/3234/show', platforms: ['company'] },
@@ -74,14 +75,16 @@ const MENU_ITEMS: MenuItem[] = [
 ];
 
 // Interface for sidebar props
-interface SidebarProps { onLogout: () => void; collapsed: boolean; onToggleCollapse: (collapsed: boolean) => void;}
+interface SidebarProps { onLogout?: () => void; collapsed: boolean; onToggleCollapse: (collapsed: boolean) => void;}
 
 // Sidebar menu implementation
 export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: SidebarProps) {
 	// platform flags from redux (set at startup in main.tsx/store)
 	const isAdmin = useIsAdmin();
-	const isCompany = useIsCompany();
 	const location = useLocation();
+	const isCompany = useIsCompany();
+	const handleLogout = useLogout();
+
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [theme, setTheme] = useState<"dark" | "light">("light");
 	const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
@@ -316,7 +319,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 
 		        {/* Logout Button */}
 		        <div className="p-2 pt-0 border-top" style={{ borderTopColor: current.border }}>
-		          	<button onClick={() => {onLogout(); closeMobile();}} className="btn w-100 d-flex align-items-center p-2" title={collapsed ? 'Log out' : ''}
+		          	<button onClick={() => {handleLogout(); closeMobile();}} className="btn w-100 d-flex align-items-center p-2" title={collapsed ? 'Log out' : ''}
 	            	style={{backgroundColor: 'transparent', color: current.sidebarText, border: 'none', borderRadius: '8px',
 	              		fontSize: '14px', transition: 'all 0.2s ease',textAlign: 'left', justifyContent: collapsed ? 'center' : 'flex-start'}}
             		onMouseEnter={(e) => {

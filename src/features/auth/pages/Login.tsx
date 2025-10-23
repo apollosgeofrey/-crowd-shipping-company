@@ -1,56 +1,90 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { setAuth } from "../store/authSlice";
+import { LogIn, Loader2 } from "lucide-react";
+import { loginApi } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../store/index.ts";
-import { loginApi, meApi } from "../services/authService";
 import type { LoginPayload } from "../services/authService";
 import { useIsAdmin, useIsCompany } from "../../../hooks/usePlatform";
+import { useAppDispatch, useAppSelector } from "../../../store/index.ts";
 import { AdminAuthLayout, CompanyAuthLayout } from "../../../layouts/AuthLayout";
 
 export default function Login() {
+
+	 // ✅ Login form states
 	const nav = useNavigate();
 	const isAdmin = useIsAdmin();
 	const isCompany = useIsCompany();
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(false);
 	const [form, setForm] = useState<LoginPayload>({ email: "", password: "" });
+	const { isAuthenticated, token, user } = useAppSelector((state) => state.auth);
+	const isUserAuthenticated = isAuthenticated !== undefined ? isAuthenticated : !!token && !!user;
 
-	const submit = async (e: React.FormEvent) => {
-		e.preventDefault();
+	// ✅ Redirect to dashboard if authenticated
+	useEffect(() => {
+		if (isUserAuthenticated) nav("/dashboard", { replace: true });
+	}, [isUserAuthenticated, nav, isAuthenticated, token, user]);
+	
+	// ✅ Login submit handler for admin and company
+	const submit = async () => {		  
 		try {
 			setLoading(true);
-			const { token } = await loginApi(form);
-			const user = await meApi();
-			dispatch(setAuth({ token, user }));
-			Swal.fire("Success", "Login successful", "success");
-			nav("/dashboard");
+			const loginResponse = await loginApi(form);
+
+			// Validate the full response structure
+		    if (!loginResponse?.data?.token || !loginResponse?.data?.user) throw new Error("Invalid response from server");
+
+		    dispatch(setAuth({ token: loginResponse.data.token, user: loginResponse.data.user }));
+		    Swal.fire("Success", (loginResponse.message || "Login successful"), "success");
+			nav("/dashboard", { replace: true });
 		} catch (e: any) {
-			// Swal.fire("Error", e?.response?.data?.message || "Invalid credentials", "error");
-			nav("/dashboard");
+		    console.log("ERROR caught:", e);
+		    console.log("Error details:", e?.response);
+		    Swal.fire("Error", (e?.response?.data?.message || "Invalid credentials"), "error");
 		} finally {
-			setLoading(false);
+		    setLoading(false);
 		}
 	};
 
+	// ✅ Show loading while checking authentication or redirecting
+	if (isAuthenticated) {
+		return (
+			<div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+				<div className="text-center">
+					<div className="spinner-border text-primary" role="status">
+						<span className="visually-hidden">Redirecting...</span>
+					</div>
+					<p className="mt-2">Redirecting to dashboard...</p>
+				</div>
+			</div>
+		);
+	}
+
+	// ✅ Render login form for admin
 	if (isAdmin === true) {
 		return (
 			<AdminAuthLayout>
 				<h4 className="text-center mb-4 text-dark mt-2">You are welcome!</h4>
-				<form onSubmit={submit}>
+				<form /*noValidate*/>
 					<p className="text-center text-dark small mt-4 mb-3">Please Login</p>
 					<div className="mb-4">
-						<input className="form-control rounded border-primary" type="email" placeholder="Enter Email" value={form.email}
-							onChange={(e) => setForm({ ...form, email: e.target.value })} required/>
-						</div>
+						<input className="form-control form-control-lg rounded border-primary" type="email" placeholder="Enter Email" value={form.email}
+							onChange={(e) => setForm({ ...form, email: e.target.value })} required autoFocus/>
+					</div>
 					<div className="mb-4">
-						<input className="form-control rounded border-primary" type="password" placeholder="Enter Password"
+						<input className="form-control form-control-lg rounded border-primary" type="password" placeholder="Enter Password"
 						value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required/>
 					</div>
 
-					<button className="btn w-100 rounded text-white fw-bold btn-primary" disabled={loading}>
-						{loading ? "Signing in..." : "Login"}
-					</button>
+					{/* primary button - orange color inline so no external CSS */}
+			        <button type="button" onClick={submit} className="btn w-100 rounded text-white fw-bold btn-primary" disabled={loading}>
+			        	{loading ?
+			            	<><span className="spinner-border spinner-border-sm text-white" role="status"><span className="visually-hidden">Loading...</span></span> Signing in...</>
+			            	:
+			            	<> <span className="fa fa-sign-in"></span> Login</>
+			            }
+			        </button>
 
 					<div className="form-check form-switch mt-2">
 						<input className="form-check-input" type="checkbox" id="rememberMe" />
@@ -63,7 +97,7 @@ export default function Login() {
 				</form>
 			</AdminAuthLayout>
 		);
-	} else if (isCompany === true) {
+	} else if (isCompany === true) { // ✅ Render login form for company
 		return (
 			<CompanyAuthLayout>
 				<div>
@@ -75,13 +109,13 @@ export default function Login() {
 			          	<Link to="/register" className="text-primary fw-bold ms-2">Create an Account</Link>
 			        </div>
 
-			        <form onSubmit={submit} noValidate>
+			        <form /*noValidate*/>
 				        <div className="mb-4">
 				            <label className="form-label small text-muted fw-bold mb-0">
 				            	Email:<sup className="text-danger">*</sup>
 				            </label>
 				            <input type="email" className="form-control" placeholder="Enter Email Address" value={form.email}
-				              required onChange={(e) => setForm({ ...form, email: e.target.value })}/>
+				              required onChange={(e) => setForm({ ...form, email: e.target.value })} autoFocus />
 				        </div>
 
 				        <div className="mb-4">
@@ -104,8 +138,12 @@ export default function Login() {
 				        </div>
 
 				        {/* primary button - orange color inline so no external CSS */}
-				        <button type="submit" className="btn btn-primary form-control fw-bold mb-3 mt-3" disabled={loading}>
-				            {loading ? "Signing in..." : "Login"}
+				        <button type="button" onClick={submit} className="btn btn-primary form-control fw-bold mb-3 mt-3" disabled={loading}>
+				            {loading ?
+			            		<><span className="spinner-border spinner-border-sm text-white" role="status"><span className="visually-hidden">Loading...</span></span> Signing in...</>
+				            	:
+				            	<> <span className="fa fa-sign-in"></span> Login</>
+				            }
 				        </button>
 
 				        <hr />

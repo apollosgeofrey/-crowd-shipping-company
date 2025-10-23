@@ -1,27 +1,45 @@
-import axios from "axios";
+import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: { "Content-Type": "application/json" }
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5005';
+
+export const api = axios.create({
+	baseURL: API_BASE_URL,
+	headers: {
+		'Content-Type': 'application/json',
+		'Accept': 'application/json',
+	},
 });
 
-// attach token
+// Add token to requests automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("auth_token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
+	const token = localStorage.getItem('authToken');
+	const apiKey = import.meta.env.VITE_API_KEY || 'TTPK_26369a22-f01f-4dcd-b494-3ac058f9ed19';
+
+	if (token) config.headers.Authorization = `Bearer ${token}`;
+
+	// Add API key to all requests
+	config.headers['x-api-key'] = apiKey;
+
+	return config;
 });
 
-// optional: handle 401
+// Handle token expiration and responses
 api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err?.response?.status === 401) {
-      localStorage.removeItem("auth_token");
-      window.location.href = "/login";
-    }
-    return Promise.reject(err);
-  }
+	(response) => {
+		return response;
+	},
+	(error) => {
+		// Token expired or invalid
+		if (error.response?.status === 401 && !error.config.url.includes('/sign-in')) {
+			localStorage.removeItem('authToken');
+			localStorage.removeItem('user');
+			window.location.href = '/login';
+		}
+
+		// Handle other common errors
+		if (error.response?.status === 403) console.error('Access forbidden');
+		return Promise.reject(error);
+	}
 );
 
 export default api;

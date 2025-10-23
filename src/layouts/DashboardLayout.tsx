@@ -38,14 +38,14 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
 	const sidebarWidth = getSidebarWidth();
 
 	return (
-		<div className="d-flex" style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+		<div className="" style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
 			<Sidebar onLogout={logout} collapsed={sidebarCollapsed} onToggleCollapse={setSidebarCollapsed}/>
 
 			<main className="flex-grow-1 d-flex flex-column" style={{marginLeft: isMobile ? '0' : `${sidebarWidth}px`, transition: 'margin-left 0.3s ease'}}>
 				<Navbar  sidebarWidth={sidebarWidth} sidebarCollapsed={sidebarCollapsed} isMobile={isMobile}/>
 
 				<div className="flex-grow-1" style={{overflowY: 'auto', backgroundColor: '#f8f9fa', marginTop: '80px',  transition: 'margin-top 0.3s ease'}}>
-					<div className="container-fluid p-3 p-lg-4" style={{ maxWidth: '1400px' }}>
+					<div className="container-fluid p-3 p-lg-4 w-full">
 						{children}
 					</div>
 				</div>

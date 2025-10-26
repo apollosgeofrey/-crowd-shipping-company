@@ -61,7 +61,7 @@ const MENU_ITEMS: MenuItem[] = [
   	},
 	{ id: 'manage-users', icon: UserCheck, label: 'Manage Users', path: '/users', platforms: ['admin'] },
 	// admin-only (example)
-	{ id: 'manage-admin', icon: Settings, label: 'Manage Admin', path: '/admin', platforms: ['admin'] },
+	{ id: 'manage-admins', icon: Settings, label: 'Manage Admins', path: '/admins', platforms: ['admin'] },
 	{ id: 'live-map', icon: Map, label: 'Live Map', path: '/live-map', platforms: ['admin', 'company'] },
 	{ id: 'all-bookings', icon: Bookmark, label: 'All Bookings', path: '/bookings', platforms: ['admin', 'company'] },
 	{ id: 'transactions', icon: DollarSign, label: 'Transactions', path: '/transactions', platforms: ['admin', 'company'] },

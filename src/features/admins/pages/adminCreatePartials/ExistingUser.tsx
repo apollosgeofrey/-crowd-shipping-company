@@ -20,7 +20,7 @@ export default function AdminCreate() {
 
                 {/* Only enable Next when user is selected */}
                 {selectedUserId ? (
-                <Link to={`/admin/${selectedUserId}/show`} className="btn btn-primary fw-semibold d-flex align-items-center gap-2">
+                <Link to={`/admins/${selectedUserId}/show`} className="btn btn-primary fw-semibold d-flex align-items-center gap-2">
                     <i className="fa fa-save"></i> Next
                 </Link>
                 ) : (

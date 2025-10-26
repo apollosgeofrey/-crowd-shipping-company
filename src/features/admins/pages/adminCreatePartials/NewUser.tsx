@@ -123,7 +123,7 @@ export default function NewUser() {
                 {/* <button type="submit" className="btn btn-primary">
                     Next<span className="fa fa-chevron-right"></span>
                 </button> */}
-                <Link to="/admin/1/show" className="btn btn-primary d-flex align-items-center gap-2">
+                <Link to="/admins/1/show" className="btn btn-primary d-flex align-items-center gap-2">
                     Next <span className="fa fa-chevron-right"></span>
                 </Link>
 

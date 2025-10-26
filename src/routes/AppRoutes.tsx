@@ -39,11 +39,11 @@ import UserDetail from "../features/users/pages/UserDetail.tsx";
 import UserCreate from "../features/users/pages/UserCreate.tsx";
 import UserEdit from "../features/users/pages/UserEdit.tsx";
 
-// admin management routes
-import AdminList from "../features/admin/pages/AdminList.tsx";
-import AdminDetail from "../features/admin/pages/AdminDetail.tsx";
-import AdminCreate from "../features/admin/pages/AdminCreate.tsx";
-import AdminEdit from "../features/admin/pages/AdminEdit.tsx";
+// admins management routes
+import AdminList from "../features/admins/pages/AdminList.tsx";
+import AdminDetail from "../features/admins/pages/AdminDetail.tsx";
+import AdminCreate from "../features/admins/pages/AdminCreate.tsx";
+import AdminEdit from "../features/admins/pages/AdminEdit.tsx";
 
 // live_map management routes
 import LiveMapIndex from "../features/live_map/pages/LiveMapIndex.tsx";
@@ -126,11 +126,11 @@ export default function AppRoutes() {
 		        <Route path="/users/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><UserDetail /></ProtectedRoute>} />
 		        <Route path="/users/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><UserEdit /></ProtectedRoute>} />
 		    
-		        {/* admin management routes */}
-		        <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminList /></ProtectedRoute>} />
-		        <Route path="/admin/create" element={<ProtectedRoute allowedRoles={['admin']}><AdminCreate /></ProtectedRoute>} />
-		        <Route path="/admin/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><AdminDetail /></ProtectedRoute>} />
-		        <Route path="/admin/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><AdminEdit /></ProtectedRoute>} />
+		        {/* admins management routes */}
+		        <Route path="/admins" element={<ProtectedRoute allowedRoles={['admin']}><AdminList /></ProtectedRoute>} />
+		        <Route path="/admins/create" element={<ProtectedRoute allowedRoles={['admin']}><AdminCreate /></ProtectedRoute>} />
+		        <Route path="/admins/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><AdminDetail /></ProtectedRoute>} />
+		        <Route path="/admins/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><AdminEdit /></ProtectedRoute>} />
 
 		        {/* live-map management routes */}
 		        <Route path="/live-map" element={<ProtectedRoute allowedRoles={['admin', 'company']}><LiveMapIndex /></ProtectedRoute>} />

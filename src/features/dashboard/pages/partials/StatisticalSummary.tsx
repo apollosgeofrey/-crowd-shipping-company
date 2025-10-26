@@ -11,50 +11,50 @@ type StatCardProps = {
 };
 
 function StatCard({ title, value, delta, positive, updatedAt, icon }: StatCardProps) {
-  return (
-      <div className="card shadow-sm border-0 rounded h-100">
-        {/* Top Section */}
-        <div className="card-body pt-0 pb-1">
-            {/* Icon + Title on its own line */}
-            <div className="d-flex align-items-center w-100 mt-2">
-                <span className="text-primary">{icon}</span>
-                <span className="mx-3">{title}</span>
+    return (
+        <div className="card shadow-sm border-0 rounded h-100">
+            {/* Top Section */}
+            <div className="card-body pt-0 pb-1">
+                {/* Icon + Title on its own line */}
+                <div className="d-flex align-items-center w-100 mt-2">
+                    <span className="text-primary">{icon}</span>
+                    <span className="mx-3">{title}</span>
+                </div>
+                {/* Value and Delta on its own line, delta at right end */}
+                <div className="d-flex align-items-center justify-content-between w-100 mt-2">
+                    <span className="fs-5 fw-bold">{value}</span>
+                    <span className={`badge px-3 py-1 fs-6 fw-semibold ${ positive ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger"}`}>
+                        {delta}
+                    </span>
+                </div>
             </div>
-            {/* Value and Delta on its own line, delta at right end */}
-            <div className="d-flex align-items-center justify-content-between w-100 mt-2">
-                <span className="fs-5 fw-bold">{value}</span>
-                <span className={`badge px-3 py-1 fs-6 fw-semibold ${ positive ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger"}`}>
-                    {delta}
-                </span>
+
+            {/* Divider */}
+            <hr className="my-0" />
+
+            {/* Footer */}
+            <div className="card-footer bg-white small text-muted">
+                <b>Last Update:</b> {updatedAt}
             </div>
         </div>
-
-      {/* Divider */}
-      <hr className="my-0" />
-
-      {/* Footer */}
-      <div className="card-footer bg-white small text-muted">
-        Update: {updatedAt}
-      </div>
-    </div>
-  );
+    );
 }
 
 interface Props {
     stats?: {
-        totalDrivers: { count: number; lastUpdateDate: string };
-        totalCompanies: { count: number; lastUpdateDate: string };
-        totalTrips: { count: number; lastUpdateDate: string };
-        totalFleets: { count: number; lastUpdateDate: string };
+        totalDrivers: { count: number; updateDate: string };
+        totalCompanies: { count: number; updateDate: string };
+        totalTrips: { count: number; updateDate: string };
+        totalFleets: { count: number; updateDate: string };
     };
-    user?: {
-        fullName: string;
-        userType: string;
-        role: string;
-    };
+    // user?: {
+    //     fullName: string;
+    //     userType: string;
+    //     role: string;
+    // };
 }
 
-export default function StatisticalSummary({ stats, user }: Props) {
+export default function StatisticalSummary({ stats }: Props) {
     // Format date from "2023-07-16" to "July 16, 2023"
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -75,7 +75,7 @@ export default function StatisticalSummary({ stats, user }: Props) {
                         value={stats?.totalDrivers?.count || '0'}
                         delta="+12%"
                         positive
-                        updatedAt={stats?.totalDrivers?.lastUpdateDate ? formatDate(stats.totalDrivers.lastUpdateDate) : 'N/A'}
+                        updatedAt={stats?.totalDrivers?.updateDate ? formatDate(stats.totalDrivers.updateDate) : 'N/A'}
                         icon={<Users size={15} />}
                     />
                 </div>
@@ -85,7 +85,7 @@ export default function StatisticalSummary({ stats, user }: Props) {
                         value={stats?.totalTrips?.count || '0'}
                         delta="+5%"
                         positive
-                        updatedAt={stats?.totalTrips?.lastUpdateDate ? formatDate(stats.totalTrips.lastUpdateDate) : 'N/A'}
+                        updatedAt={stats?.totalTrips?.updateDate ? formatDate(stats.totalTrips.updateDate) : 'N/A'}
                         icon={<Briefcase size={15} />}
                     />
                 </div>
@@ -95,7 +95,7 @@ export default function StatisticalSummary({ stats, user }: Props) {
                         value={stats?.totalCompanies?.count || '0'}
                         delta="-8%"
                         positive={false}
-                        updatedAt={stats?.totalCompanies?.lastUpdateDate ? formatDate(stats.totalCompanies.lastUpdateDate) : 'N/A'}
+                        updatedAt={stats?.totalCompanies?.updateDate ? formatDate(stats.totalCompanies.updateDate) : 'N/A'}
                         icon={<Building2 size={12} />}
                     />
                 </div>
@@ -105,7 +105,7 @@ export default function StatisticalSummary({ stats, user }: Props) {
                         value={stats?.totalFleets?.count || '0'}
                         delta="+12%"
                         positive
-                        updatedAt={stats?.totalFleets?.lastUpdateDate ? formatDate(stats.totalFleets.lastUpdateDate) : 'N/A'}
+                        updatedAt={stats?.totalFleets?.updateDate ? formatDate(stats.totalFleets.updateDate) : 'N/A'}
                         icon={<Truck size={15} />}
                     />
                 </div>

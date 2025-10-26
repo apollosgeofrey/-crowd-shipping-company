@@ -7,7 +7,7 @@ import StatisticalSummary from "./partials/StatisticalSummary.tsx";
 import { StateLoading, StateError, StateEmpty } from '../../../components/StateComponents.tsx';
 
 export default function Dashboard() {
-	const { data, loading, error, refetch } = useDashboardData();
+	const { response, loading, error, refetch } = useDashboardData();
 
 	// Render loading state
     if (loading) return <StateLoading />;
@@ -16,26 +16,26 @@ export default function Dashboard() {
     if (error) return <StateError error={error} onRetry={refetch} />;
 
     // Render empty state
-    if (!data) return <StateEmpty onRetry={refetch} />;	
-
+    if (!response) return <StateEmpty onRetry={refetch} />;	
+console.log('response:', response);
 	// Render dashboard layout WITH DATA PASSED TO COMPONENTS
 	return (
 		<DashboardLayout>
 			<div className="row mb-4">
 				<div className="col-sm-12 col-md-8">
-					{/* Pass stats data to StatisticalSummary */}
-					<StatisticalSummary stats={data?.stats} user={data?.user} /><br />
+					{/* Pass stats response data to StatisticalSummary */}
+					<StatisticalSummary stats={response?.data?.stats} /><br />
 					
-					{/* Pass revenue data to RevenueChart */}
-					<RevenueChart revenueData={data?.revenue} /><br />
+					{/* Pass revenue response data to RevenueChart */}
+					<RevenueChart revenueData={response?.data?.revenue} /><br />
 				</div>
 				<div className="col-sm-12 col-md-4">
-					{/* Pass pathfinders data to BookingTrips */}
-					<BookingTrips pathfinders={data?.pathfinders} /><br />
+					{/* Pass pathfinders response data to BookingTrips */}
+					<BookingTrips pathfinders={response?.data?.pathfinders} /><br />
 				</div>
 				<div className="col-sm-12 col-md-12">
-					{/* Pass bookings data to BookingOverviews */}
-					<BookingOverviews bookings={data?.recentBookings} /><br />
+					{/* Pass bookings response data to BookingOverviews */}
+					<BookingOverviews recentBookings={response?.data?.recentBookings} /><br />
 				</div>
 			</div>
 		</DashboardLayout>

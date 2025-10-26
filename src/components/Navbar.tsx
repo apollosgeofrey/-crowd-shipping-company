@@ -27,7 +27,7 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	    document.addEventListener('mousedown', handleClickOutside);
 	    return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, []);
-console.log('user:', user); 
+	// console.log('user:', user); 
 
 	// Unified route configuration
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {

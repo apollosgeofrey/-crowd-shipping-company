@@ -2,6 +2,7 @@
 import { Bell, Search, ChevronDown, User, LogOut, Settings } from "lucide-react";
 import { useLogout } from "../features/auth/hooks/useLogout";
 import { useState, useRef, useEffect } from "react";
+import { useUserData } from '../hooks/useUserData';
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -12,6 +13,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: NavbarProps) {
+	const { user } = useUserData();
 	const handleLogout = useLogout();
 	const { pathname } = useLocation();
 	const dropdownRef = useRef<HTMLDivElement>(null);
@@ -25,11 +27,11 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	    document.addEventListener('mousedown', handleClickOutside);
 	    return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, []);
-
+console.log('user:', user); 
 
 	// Unified route configuration
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
-		"/dashboard": { title: "Hello Admin 👋", subtitle: "Good Morning" },
+		"/dashboard": { title: `Hello ${user?.fullName || 'Admin'} 👋`, subtitle: "Good Morning" },
 		"/drivers": {title:"Manage Driver", subtitle:"Drivers > Requests", parent:{label:"Drivers", path:"/drivers"}},
 		"/pathfinders": {title:"Manage Pathfinders", subtitle:"Pathfinders > Reports", parent:{label:"Pathfinders", path:"/pathfinders"}},
 		"/companies": {title:"Manage Companies", subtitle:"Companies > Branches", parent:{label:"Companies", path:"/companies"}},
@@ -51,7 +53,7 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 
 	// Helpers for fallback
 	const titleCase = (s: string) => s.replace(/[-_]+/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-	const defaultTitle = "Hello Admin 👋";
+	const defaultTitle = `Hello ${user?.fullName || 'Admin'} 👋`;
 	const defaultSubtitle = "Good Morning";
 
 	const pageConfig = routeConfig[pathname] || {
@@ -110,14 +112,14 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 				            <button className="btn d-flex align-items-center gap-2 border-0 bg-transparent" onClick={() => setDropdownOpen(!dropdownOpen)} style={{ cursor: 'pointer' }}>
 				                <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ 
 				                width: "32px", height: "32px", backgroundColor: "#f97316", color: "white", fontSize: "14px", fontWeight: "500"}}>
-				                  	RA
+				                  	{ user?.fullName ? user.fullName.split(' ').slice(0, 2).map(word => word.charAt(0)).join('') : 'CS' }
 				                </div>
 				                <div className="d-none d-sm-block text-start">
 				                  	<p className="mb-0 fw-medium" style={{ fontSize: "14px", color: "#212529" }}>
-				                    	Robert Allen
+				                    	{ user?.fullName || 'Crowdshipping' }
 				                  	</p>
 				                  	<p className="mb-0 text-muted" style={{ fontSize: "12px" }}>
-				                    	Admin
+				                    	{ user?.userType || 'Admin' }
 				                  	</p>
 				                </div>
 				                <ChevronDown size={16} className="text-muted" style={{transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease'}}/>

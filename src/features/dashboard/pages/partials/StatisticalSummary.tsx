@@ -1,12 +1,13 @@
+// partials/StatisticalSummary.tsx
 import { Users, Briefcase, Building2, Truck } from "lucide-react";
 
 type StatCardProps = {
-  title: string;
-  value: number | string;
-  delta: string;
-  positive?: boolean;
-  updatedAt: string;
-  icon: React.ReactNode;
+    title: string;
+    value: number | string;
+    delta: string;
+    positive?: boolean;
+    updatedAt: string;
+    icon: React.ReactNode;
 };
 
 function StatCard({ title, value, delta, positive, updatedAt, icon }: StatCardProps) {
@@ -39,49 +40,75 @@ function StatCard({ title, value, delta, positive, updatedAt, icon }: StatCardPr
   );
 }
 
-{/* KPI Grid */}
-export default function StatisticalSummary() {
+interface Props {
+    stats?: {
+        totalDrivers: { count: number; lastUpdateDate: string };
+        totalCompanies: { count: number; lastUpdateDate: string };
+        totalTrips: { count: number; lastUpdateDate: string };
+        totalFleets: { count: number; lastUpdateDate: string };
+    };
+    user?: {
+        fullName: string;
+        userType: string;
+        role: string;
+    };
+}
+
+export default function StatisticalSummary({ stats, user }: Props) {
+    // Format date from "2023-07-16" to "July 16, 2023"
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+        });
+    };
+
     return (
-        <div className="row g-2">
-            <div className="col-12 col-sm-6">
-                <StatCard
-                    title="Total Drivers"
-                    value={560}
-                    delta="+12%"
-                    positive
-                    updatedAt="July 16, 2023"
-                    icon={<Users size={15} />}
-                />
-            </div>
-            <div className="col-12 col-sm-6">
-                <StatCard
-                    title="Total Trips"
-                    value={1050}
-                    delta="+5%"
-                    positive
-                    updatedAt="July 14, 2023"
-                    icon={<Briefcase size={15} />}
-                />
-            </div>
-            <div className="col-12 col-sm-6">
-                <StatCard
-                    title="Total Companies"
-                    value={470}
-                    delta="-8%"
-                    positive={false}
-                    updatedAt="July 14, 2023"
-                    icon={<Building2 size={12} />}
-                />
-            </div>
-            <div className="col-12 col-sm-6">
-                <StatCard
-                    title="Total Fleets"
-                    value={250}
-                    delta="+12%"
-                    positive
-                    updatedAt="July 10, 2023"
-                    icon={<Truck size={15} />}
-                />
+        <div>
+            {/* KPI Grid */}
+            <div className="row g-2">
+                <div className="col-12 col-sm-6">
+                    <StatCard
+                        title="Total Drivers"
+                        value={stats?.totalDrivers?.count || '0'}
+                        delta="+12%"
+                        positive
+                        updatedAt={stats?.totalDrivers?.lastUpdateDate ? formatDate(stats.totalDrivers.lastUpdateDate) : 'N/A'}
+                        icon={<Users size={15} />}
+                    />
+                </div>
+                <div className="col-12 col-sm-6">
+                    <StatCard
+                        title="Total Trips"
+                        value={stats?.totalTrips?.count || '0'}
+                        delta="+5%"
+                        positive
+                        updatedAt={stats?.totalTrips?.lastUpdateDate ? formatDate(stats.totalTrips.lastUpdateDate) : 'N/A'}
+                        icon={<Briefcase size={15} />}
+                    />
+                </div>
+                <div className="col-12 col-sm-6">
+                    <StatCard
+                        title="Total Companies"
+                        value={stats?.totalCompanies?.count || '0'}
+                        delta="-8%"
+                        positive={false}
+                        updatedAt={stats?.totalCompanies?.lastUpdateDate ? formatDate(stats.totalCompanies.lastUpdateDate) : 'N/A'}
+                        icon={<Building2 size={12} />}
+                    />
+                </div>
+                <div className="col-12 col-sm-6">
+                    <StatCard
+                        title="Total Fleets"
+                        value={stats?.totalFleets?.count || '0'}
+                        delta="+12%"
+                        positive
+                        updatedAt={stats?.totalFleets?.lastUpdateDate ? formatDate(stats.totalFleets.lastUpdateDate) : 'N/A'}
+                        icon={<Truck size={15} />}
+                    />
+                </div>
             </div>
         </div>
     );

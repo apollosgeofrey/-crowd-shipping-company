@@ -64,39 +64,33 @@ export default function PathfinderList() {
     };
 
     // Get status text based on status and approval
-    const getStatusBadge = (pathfinder: Pathfinder) => {
-        if (!pathfinder.isApproved && pathfinder.status === "pending") return "text-warning-subtle text-warning";
-        if (pathfinder.isApproved && pathfinder.status === "active") return "text-success-subtle text-success";
-        if (pathfinder.status === "suspended") return "text-danger-subtle text-danger";
-        if (pathfinder.status === "inactive") return "text-secondary-subtle text-secondary";
-        return "text-light text-dark";
-    };
-
-    // Get status display text
-    const getStatusText = (pathfinder: Pathfinder) => {
-        if (!pathfinder.isApproved && pathfinder.status === "pending") return "Pending Approval";
-        if (pathfinder.isApproved && pathfinder.status === "active") return "Active";
-        return pathfinder.status.charAt(0).toUpperCase() + pathfinder.status.slice(1);
+    const getStatusTextColor = (status: string) => {
+        if (status === "pending") return "text-warning";
+        if (status === "active") return "text-success";
+        if (status === "inactive") return "text-secondary";
+        if (status === "suspended") return "text-danger";
+        return "text-dark";
     };
 
     // Format date
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    };
+    const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
 
     // Get KYC status badge
-    const getKycBadge = (kycStatus: string) => {
+    const getKycTextColor = (kycStatus: string) => {
         switch (kycStatus) {
-            case "completed": return "badge rounded bg-success-subtle text-success fw-semibold";
-            case "pending": return "badge rounded bg-warning-subtle text-warning fw-semibold";
-            case "rejected": return "badge rounded bg-danger-subtle text-danger fw-semibold";
-            default: return "badge rounded bg-light text-dark fw-semibold";
+            case "completed": return "text-success";
+            case "pending": return "text-warning";
+            case "rejected": return "text-danger";
+            default: return "text-dark";
         }
     };
+
+    // Capitalize first letter for display
+    const capitalizeFirst = (str: string) => (!str) ? '' : str.charAt(0).toUpperCase() + str.slice(1);
 
     return (
         <DashboardLayout>
@@ -168,10 +162,7 @@ export default function PathfinderList() {
 
                                     {/* Reset Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
-                                        <button 
-                                            className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger"
-                                            onClick={resetFilters}
-                                        >
+                                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
                                             <i className="fa fa-undo me-1"></i> Reset Filter
                                         </button>
                                     </div>
@@ -204,12 +195,12 @@ export default function PathfinderList() {
                                     <thead className="table-light small">
                                         <tr>
                                             <th style={{ width: "2%" }}>#</th>
-                                            <th style={{ width: "15%" }}>PATHFINDER</th>
-                                            <th style={{ width: "20%" }}>CONTACT INFORMATION</th>
-                                            <th style={{ width: "12%" }}>JOINED DATE</th>
-                                            <th style={{ width: "12%" }}>LAST LOGIN</th>
-                                            <th style={{ width: "17%" }}>KYC STATUS</th>
-                                            <th style={{ width: "17%" }}>ACCOUNT STATUS</th>
+                                            <th style={{ width: "16%" }}>PATHFINDER</th>
+                                            <th style={{ width: "18%" }}>CONTACT INFORMATION</th>
+                                            <th style={{ width: "10%" }}>JOINED DATE</th>
+                                            <th style={{ width: "10%" }}>LAST LOGIN</th>
+                                            <th style={{ width: "19%" }}>WALLET</th>
+                                            <th style={{ width: "15%" }}>STATUSES</th>
                                             <th style={{ width: "10%" }}>ACTIONS</th>
                                         </tr>
                                     </thead>
@@ -241,7 +232,7 @@ export default function PathfinderList() {
                                                             {pathfinder.fullName}
                                                         </Link>
                                                         <small className="text-muted d-block">
-                                                            ID: {pathfinder.userId}
+                                                            <b>ID:</b> {pathfinder.userId}
                                                         </small>
                                                     </td>
                                                     
@@ -290,10 +281,6 @@ export default function PathfinderList() {
                                                                             minute: '2-digit'
                                                                         })}
                                                                     </small>
-                                                                    <small className="text-success mt-1">
-                                                                        <i className="fa fa-circle me-1" style={{ fontSize: "6px" }}></i>
-                                                                        Recently Active
-                                                                    </small>
                                                                 </>
                                                             ) : (
                                                                 <small className="text-muted">
@@ -307,85 +294,62 @@ export default function PathfinderList() {
                                                     {/* KYC Status */}
                                                     <td className="py-3 px-2">
                                                         <div className="d-flex flex-column align-items-start">
-                                                            <span className={getKycBadge(pathfinder.kycStatus)}>
-                                                                {pathfinder.kycStatus?.charAt(0).toUpperCase() + pathfinder.kycStatus?.slice(1) || "N/A"}
-                                                            </span>
-                                                            {pathfinder.wallet && (
-                                                                <small className="text-muted mt-1">
-                                                                    Wallet Balance: ₦{pathfinder.wallet.balance?.toLocaleString() || "0"}
-                                                                </small>
+                                                            {pathfinder.wallet ? (
+                                                                <>
+                                                                    <div className="text-muted mt-1">
+                                                                        <b>Wallet ID:</b> {pathfinder.wallet._id || "N/A"}
+                                                                    </div>
+                                                                    <div className="text-muted mt-1">
+                                                                        <b>Balance:</b> ₦{pathfinder.wallet.balance?.toLocaleString() || "0"}
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                'N/A'
                                                             )}
                                                         </div>
                                                     </td>
                                                     
-                                                    {/* Account Status */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="gap-3 small">
-                                                            <span className={getStatusBadge(pathfinder)}>
-                                                                {getStatusText(pathfinder)} ||
+                                                    {/* Account Statuses */}
+                                                    <td className="py-3 px-2 small">
+                                                        <div className="text-muted">
+                                                            <b>KYC:</b>
+                                                            <span className={`float-end ${getKycTextColor(pathfinder.kycStatus)}`}>
+                                                                {capitalizeFirst(pathfinder.kycStatus)}
                                                             </span>
-                                                            {pathfinder.isVerified && (
-                                                                <span className="text-success">Verified </span> 
-                                                            )}
-                                                            {!pathfinder.isVerified && (
-                                                                <span className="text-warning">Unverified</span>
+                                                        </div> 
+                                                        <div className="text-muted">
+                                                            <b>ACCOUNT:</b>
+                                                            <span className={`float-end ${getStatusTextColor(pathfinder.status)}`}>
+                                                                {capitalizeFirst(pathfinder.status)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-muted">
+                                                            <b>APPROVAL:</b>
+                                                            <span className={`float-end text-${pathfinder.isApproved ? 'success' : 'warning'}`}>
+                                                                {pathfinder.isApproved ? 'Approved' : 'Pending'}
+                                                            </span>
+                                                        </div>                                                        
+                                                        <div className="text-muted">
+                                                            <b>VERIFICATION:</b>
+                                                            {pathfinder.isVerified ? (
+                                                                <span className="float-end text-success">Verified </span> 
+                                                            ) : (
+                                                                <span className="float-end text-warning">Unverified</span>
                                                             )}
                                                         </div>
                                                     </td>
                                                     
                                                     {/* Actions */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="dropdown">
-                                                            <button className="btn btn-sm btn-primary border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"aria-expanded="false">
-                                                                Action
-                                                            </button>
-                                                            <ul className="dropdown-menu dropdown-menu-end small">
-                                                                <li>
-                                                                    <Link 
-                                                                        className="dropdown-item" 
-                                                                        to={`/pathfinders/${pathfinder._id}/show`}
-                                                                    >
-                                                                        <i className="fa fa-eye me-2"></i>View Details
-                                                                    </Link>
-                                                                </li>
-                                                                <li>
-                                                                    <Link 
-                                                                        className="dropdown-item" 
-                                                                        to={`/pathfinders/${pathfinder._id}/edit`}
-                                                                    >
-                                                                        <i className="fa fa-edit me-2"></i>Edit
-                                                                    </Link>
-                                                                </li>
-                                                                <li><hr className="dropdown-divider" /></li>
-                                                                {!pathfinder.isApproved && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-success">
-                                                                            <i className="fa fa-check me-2"></i>Approve
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                {pathfinder.status === 'active' && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-warning">
-                                                                            <i className="fa fa-pause me-2"></i>Suspend
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                {pathfinder.status === 'suspended' && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-info">
-                                                                            <i className="fa fa-play me-2"></i>Activate
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                <li>
-                                                                    <button className="dropdown-item text-danger">
-                                                                        <i className="fa fa-trash me-2"></i>Delete
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
+                                                    <td className="text-muted py-3 px-2">
+                                                        <div className="btn-group">
+                                                            <Link to={`/pathfinders/${pathfinder._id}/show`} className="btn btn-sm btn-outline-primary" title="View Pathfinder">
+                                                                View <i className="fa fa-eye small"></i>
+                                                            </Link>
+                                                            <Link to={`/pathfinders/${pathfinder._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit Pathfinder">
+                                                                Edit <i className="fa fa-edit small"></i>
+                                                            </Link>
                                                         </div>
-                                                    </td>
+                                                    </td>                                                    
                                                 </tr>
                                             ))
                                         )}

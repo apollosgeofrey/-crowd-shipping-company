@@ -68,35 +68,27 @@ export default function AdminList() {
 		});
 	};
 
-	// Get Status Badge Classes 
-	const getStatusBadge = (status: string) => {
+	// Get Status Text Classes 
+	const getStatusTextColor = (status: string) => {
 		switch (status.toLowerCase()) {
-			case "active": 
-				return "badge rounded bg-success-subtle text-success fw-semibold";
+			case "active": return "text-success";
 			case "inactive": 
 			case "suspended":
-				return "badge rounded bg-secondary-subtle text-secondary fw-semibold";
+				return "text-secondary";
 			case "rejected": 
 			case "cancelled":
-				return "badge rounded bg-danger-subtle text-danger fw-semibold";
+				return "text-danger";
 			case "processing": 
-			case "pending":
-				return "badge rounded bg-info-subtle text-info fw-semibold";
-			default: 
-				return "badge rounded bg-light text-dark fw-semibold";
+			case "pending": return "text-info";
+			default: return "text-dark";
 		}
 	};
 
 	// Capitalize first letter for display
-	const capitalizeFirst = (str: string) => {
-		if (!str) return '';
-		return str.charAt(0).toUpperCase() + str.slice(1);
-	};
+	const capitalizeFirst = (str: string) => (!str) ? '' : str.charAt(0).toUpperCase() + str.slice(1);
 
 	// Format role for better display
-	const formatRole = (role: string) => {
-		return role.split('-').map(word => capitalizeFirst(word)).join(' ');
-	};
+	const formatRole = (role: string) => role.split('-').map(word => capitalizeFirst(word)).join(' ');
 
 	return (
 		<DashboardLayout>
@@ -168,12 +160,13 @@ export default function AdminList() {
 								<table className="table align-middle mb-0 table-sm">
 									<thead className="table-light small">
 										<tr>
-											<th style={{ width: "5%" }}>#</th>
-											<th style={{ width: "25%" }}>ADMIN DETAILS</th>
+											<th style={{ width: "2%" }}>#</th>
+											<th style={{ width: "20%" }}>ADMIN DETAILS</th>
+											<th style={{ width: "15%" }}>ID NUMBER</th>
 											<th style={{ width: "20%" }}>CONTACT INFO</th>
-											<th style={{ width: "15%" }}>DATE</th>
-											<th style={{ width: "20%" }}>ROLE & STATUS</th>
-											<th style={{ width: "15%" }}>ACTIONS</th>
+											<th style={{ width: "15%" }}>ONBOARDING DATE</th>
+											<th style={{ width: "18%" }}>ROLE & STATUSES</th>
+											<th style={{ width: "10%" }}>ACTIONS</th>
 										</tr>
 									</thead>
 									<tbody className="small">
@@ -201,13 +194,10 @@ export default function AdminList() {
 															<Link to={`/admins/${admin._id}/show`} className="text-decoration-none text-primary fw-bold">
 																{admin.fullName}
 															</Link>
-															<br />
+														</td>
+														<td className="text-muted py-3 px-2">
 															<small className="text-muted">
-																ID: {admin.userId}
-															</small>
-															<br />
-															<small className={`text-${admin.isVerified ? 'success' : 'warning'}`}>
-																{admin.isVerified ? '✓ Verified' : 'Pending verification'}
+																{admin.userId ? admin.userId : 'N/A'}
 															</small>
 														</td>
 														<td className="text-muted py-3 px-2">
@@ -225,28 +215,42 @@ export default function AdminList() {
 															{formatDate(admin.createdAt)}
 															<br />
 															<small className="text-muted">
-																Last login: {admin.lastLogin ? formatDate(admin.lastLogin) : 'Never'}
+																<b>Last login:</b> {admin.lastLogin ? formatDate(admin.lastLogin) : 'Never'}
 															</small>
 														</td>
-														<td className="text-muted py-3 px-2">
-															<span className={`badge ${admin.role === 'super-admin' ? 'bg-warning' : 'bg-info'} text-dark`}>
-																{formatRole(admin.role)}
-															</span> ||
-															<span className={`${getStatusBadge(admin.status)}`}>
-																{capitalizeFirst(admin.status)}
-															</span>
-														</td>
+
+														{/* Account Statuses */}
+	                                                    <td className="py-3 px-2 small">
+															<div className="text-muted">
+	                                                            <b>ROLE:</b>
+																<span className={`float-end badge ${admin.role === 'super-admin' ? 'bg-warning' : 'bg-info'} text-dark`}>
+	                                                            	{formatRole(admin.role)}
+	                                                            </span>
+	                                                        </div>
+	                                                        <div className="text-muted">
+	                                                            <b>ACCOUNT:</b>
+	                                                            <span className={`float-end ${getStatusTextColor(admin.status)}`}>
+	                                                                {capitalizeFirst(admin.status)}
+	                                                            </span>
+	                                                        </div>
+	                                                        <div className="text-muted">
+	                                                            <b>VERIFICATION:</b>
+	                                                            {admin.isVerified ? (
+	                                                                <span className="float-end text-success">Verified </span> 
+	                                                            ) : (
+	                                                                <span className="float-end text-warning">Unverified</span>
+	                                                            )}
+	                                                        </div>
+	                                                    </td>
+
 														<td className="text-muted py-3 px-2">
 															<div className="btn-group">
 																<Link to={`/admins/${admin._id}/show`} className="btn btn-sm btn-outline-primary" title="View Admin">
-																	<i className="fa fa-eye small"></i>
+																	View <i className="fa fa-eye small"></i>
 																</Link>
 																<Link to={`/admins/${admin._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit Admin">
-																	<i className="fa fa-edit small"></i>
+																	Edit <i className="fa fa-edit small"></i>
 																</Link>
-																<button className="btn btn-sm btn-outline-danger" title="Delete Admin" onClick={() => {/* Add delete handler */}}>
-																	<i className="fa fa-trash small"></i>
-																</button>
 															</div>
 														</td>
 													</tr>

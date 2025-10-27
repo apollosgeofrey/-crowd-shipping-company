@@ -68,38 +68,45 @@ export default function UserList() {
 		});
 	};
 
+
+	// Get KYC status badge
+    const getKycTextColor = (kycStatus: string) => {
+        switch (kycStatus) {
+            case "completed": return "text-success";
+            case "pending": return "text-warning";
+            case "rejected": return "text-danger";
+            default: return "text-dark";
+        }
+    };
+
+
 	// Get status badge based on user status
-	const getStatusBadge = (status: string) => {
+	const getStatusTextColor = (status: string) => {
 	    switch (status.toLowerCase()) {
 			case "active": 
-				return "badge rounded bg-success-subtle text-success fw-semibold px-3 py-2";
+				return "text-success";
 			case "inactive": 
 			case "suspended":
-				return "badge rounded bg-secondary-subtle text-secondary fw-semibold px-3 py-2";
+				return "text-secondary";
 			case "rejected": 
 			case "cancelled":
-				return "badge rounded bg-danger-subtle text-danger fw-semibold px-3 py-2";
+				return "text-danger";
 			case "processing": 
 			case "pending":
-				return "badge rounded bg-info-subtle text-info fw-semibold px-3 py-2";
+				return "text-info";
 			default: 
-				return "badge rounded bg-light text-dark fw-semibold px-3 py-2";
+				return "text-dark";
 	    }
 	};
 
 	// Capitalize first letter for display
-	const capitalizeFirst = (str: string) => {
-		if (!str) return '';
-		return str.charAt(0).toUpperCase() + str.slice(1);
-	};
+	const capitalizeFirst = (str: string) => (!str) ? '' : str.charAt(0).toUpperCase() + str.slice(1);
 
 	// Format wallet balance for display
-	const formatBalance = (balance: number) => {
-		return new Intl.NumberFormat('en-NG', {
-			style: 'currency',
-			currency: 'NGN'
-		}).format(balance);
-	};
+	const formatBalance = (balance: number) => new Intl.NumberFormat('en-NG', {
+		style: 'currency',
+		currency: 'NGN'
+	}).format(balance);
 
 	return (
 		<DashboardLayout>
@@ -163,14 +170,15 @@ export default function UserList() {
 				          	{/* Table */}
 				          	<div className="table-responsive rounded-3 shadow-sm border">
 					            <table className="table align-middle mb-0 table-sm">
-						             <thead className="table-light">
+						             <thead className="table-light small">
 						                <tr className="m-5">
 							                <th style={{ width: "2%" }}>#</th>
-							                <th style={{ width: "15%" }}>FULL NAME</th>
-							                <th style={{ width: "15%" }}>Email | Telephone</th>
-							                <th style={{ width: "15%" }}>DATE</th>
-							                <th style={{ width: "25%" }}>Wallet Balance</th>
-							                <th style={{ width: "15%" }}>STATUS</th>
+							                <th style={{ width: "20%" }}>FULL NAME</th>
+							                <th style={{ width: "18%" }}>CONTACT DETAILS</th>
+							                <th style={{ width: "15%" }}>JOINED DATE</th>
+							                <th style={{ width: "20%" }}>WALLET</th>
+							                <th style={{ width: "15%" }}>STATUSES</th>
+							                <th style={{ width: "10%" }}>ACTION</th>
 						                </tr>
 						             </thead>
 						             <tbody className="small">
@@ -198,17 +206,9 @@ export default function UserList() {
 							                        	<Link to={`/users/${user._id}/show`} className="text-decoration-none text-primary fw-bold">
 							                        		{user.fullName}
 							                        	</Link>
-							                        	<br />
-							                        	<small className="text-muted">
-							                        		{/*{capitalizeFirst(user.role)} • {capitalizeFirst(user.userType)}*/}
-							                        		{user.kycStatus && (
-															    <><strong>• KYC:</strong> {capitalizeFirst(user.kycStatus)} || </> 
-															)}
-							                        	</small>
-							                        	<small className={`text-${user.isVerified ? 'success' : 'warning'}`}>
-							                        		{user.isVerified ? 'Verified' : 'Pending Verification'}
-							                        	</small> <br/>
-							                        	
+							                        	<small className="text-muted d-block">
+                                                            <b>ID:</b> {user.userId}
+                                                        </small>
 							                        </td>
 							                     	<td className="text-muted py-3 px-2">
 													    <a href={`mailto:${user.email}`} className="text-decoration-none text-primary" title={`Send email to ${user.email}`}>
@@ -229,23 +229,52 @@ export default function UserList() {
 							                        	</small>
 							                        </td>
 							                        <td className="text-muted py-3 px-2">
-							                        	<span className="fw-bold text-success">
-							                        		{user.wallet ? formatBalance(user.wallet.balance) : '₦0'}
+							                        	<span className="text-muted">
+							                        		<strong className="me-1">Wallet ID:</strong> {user.walletId || 'N/A'}
 							                        	</span>
 							                        	<br />
 							                        	<small className="text-muted">
-							                        		<><strong>• Wallet ID:</strong> {user.walletId || 'N/A'}</>
+							                        		<strong className="me-1">Balance:</strong> {user.wallet ? formatBalance(user.wallet.balance) : '₦0'}
 							                        	</small>
 							                        </td>
+                                                    <td className="py-3 px-2 small">
+                                                        <div className="text-muted small">
+                                                            <b>KYC:</b>
+                                                            <span className={`float-end ${getKycTextColor(user.kycStatus)}`}>
+                                                                {capitalizeFirst(user.kycStatus)}
+                                                            </span>
+                                                        </div> 
+                                                        <div className="text-muted small">
+                                                            <b>ACCOUNT:</b>
+                                                            <span className={`float-end ${getStatusTextColor(user.status)}`}>
+                                                                {capitalizeFirst(user.status)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-muted small">
+                                                            <b>APPROVAL:</b>
+								                        	<span className={`float-end text-${user.isApproved ? 'success' : 'warning'}`}>
+								                        		{user.isApproved ? 'Approved' : 'Pending'}
+								                        	</span>
+                                                        </div>                                                        
+                                                        <div className="text-muted small">
+                                                            <b>VERIFICATION:</b>
+                                                            {user.isVerified ? (
+                                                                <span className="float-end text-success">Verified </span> 
+                                                            ) : (
+                                                                <span className="float-end text-warning">Unverified</span>
+                                                            )}
+                                                        </div>
+                                                    </td>
 							                        <td className="text-muted py-3 px-2">
-							                        	<span className={`col-sm-12 ${getStatusBadge(user.status)}`}>
-							                        		{capitalizeFirst(user.status)}
-							                        	</span>
-							                        	<br />
-							                        	<small className={`text-${user.isApproved ? 'success' : 'warning'}`}>
-							                        		{user.isApproved ? '✓ Approved' : <><span className="fa fa-warning"></span>Pending Approval</>}
-							                        	</small>
-							                        </td>
+							                        	<div className="btn-group">
+															<Link to={`/users/${user._id}/show`} className="btn btn-sm btn-outline-primary" title="View User">
+																View <i className="fa fa-eye small"></i>
+															</Link>
+															<Link to={`/users/${user._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit User">
+																Edit <i className="fa fa-edit small"></i>
+															</Link>
+														</div>
+													</td>
 						                      	</tr>
 						                    ))
 						                  )

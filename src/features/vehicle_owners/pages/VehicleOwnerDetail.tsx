@@ -3,10 +3,10 @@ import { useState } from "react";
 import userMale from "../../../assets/images/user_male.png";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import { FaUser, FaMoneyBillWave, FaClipboardCheck, FaChartBar } from "react-icons/fa";
-import ProfileTabIndex from "./driverDetailPartials/profileTab/ProfileTabIndex.tsx";
-import EarningTabIndex from "./driverDetailPartials/earningsTab/EarningTabIndex.tsx";
-import BookingTabIndex from "./driverDetailPartials/bookingsTab/BookingTabIndex.tsx";
-import ReportTabIndex from "./driverDetailPartials/reportsTab/ReportTabIndex.tsx"
+import ProfileTabIndex from "./vehicleOwnerDetailPartials/profileTab/ProfileTabIndex.tsx";
+import EarningTabIndex from "./vehicleOwnerDetailPartials/earningsTab/EarningTabIndex.tsx";
+import BookingTabIndex from "./vehicleOwnerDetailPartials/bookingsTab/BookingTabIndex.tsx";
+import ReportTabIndex from "./vehicleOwnerDetailPartials/reportsTab/ReportTabIndex.tsx"
 
 export default function DriverDetail    () {
     // const { id } = useParams<{ id: string }>();

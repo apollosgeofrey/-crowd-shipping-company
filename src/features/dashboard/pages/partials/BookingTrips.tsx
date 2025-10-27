@@ -67,8 +67,8 @@ export default function BookingTrips({ pathfinders }: Props) {
 						const day = i + 1;
 						const isSelected = selectedDays.includes(day);
 						return (
-							<div className="small" key={day} onClick={() => handleDayClick(day)}
-							className={`p-1 text-center rounded-5 ${isSelected ? "bg-primary text-white fw-bold" : "text-secondary"} `}
+							<div key={day} onClick={() => handleDayClick(day)}
+							className={`small p-1 text-center rounded-5 ${isSelected ? "bg-primary text-white fw-bold" : "text-secondary"} `}
 							style={{ cursor: "pointer", fontSize: "0.85rem" }}>
 								{day}
 							</div>

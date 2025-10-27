@@ -12,26 +12,23 @@ import ForgotPassword from "../features/auth/pages/ForgotPassword.tsx";
 // dashboard route
 import Dashboard from "../features/dashboard/pages/Dashboard.tsx";
 
-// drivers management routes
-import DriverList from "../features/drivers/pages/DriverList.tsx";
-import DriverDetail from "../features/drivers/pages/DriverDetail.tsx";
-import DriverCreate from "../features/drivers/pages/DriverCreate.tsx";
-import DriverEdit from "../features/drivers/pages/DriverEdit.tsx";
-// import DriverRequests from "../features/drivers/pages/DriverRequests.tsx";
+// vehicle-owners management routes
+import VehicleOwnerList from "../features/vehicle_owners/pages/VehicleOwnerList.tsx";
+import VehicleOwnerDetail from "../features/vehicle_owners/pages/VehicleOwnerDetail.tsx";
+import VehicleOwnerCreate from "../features/vehicle_owners/pages/VehicleOwnerCreate.tsx";
+import VehicleOwnerEdit from "../features/vehicle_owners/pages/VehicleOwnerEdit.tsx";
 
 // pathfinders management routes
 import PathfinderList from "../features/pathfinders/pages/PathfinderList.tsx";
 import PathfinderDetail from "../features/pathfinders/pages/PathfinderDetail.tsx";
 import PathfinderCreate from "../features/pathfinders/pages/PathfinderCreate.tsx";
 import PathfinderEdit from "../features/pathfinders/pages/PathfinderEdit.tsx";
-// import PathfinderRequests from "../features/pathfinders/pages/PathfinderRequests.tsx";
 
 // companies management routes
 import CompanyList from "../features/companies/pages/CompanyList.tsx";
 import CompanyDetail from "../features/companies/pages/CompanyDetail.tsx";
 import CompanyCreate from "../features/companies/pages/CompanyCreate.tsx";
 import CompanyEdit from "../features/companies/pages/CompanyEdit.tsx";
-// import CompanyRequests from "../features/companies/pages/CompanyRequests.tsx";
 
 // users management routes 
 import UserList from "../features/users/pages/UserList.tsx";
@@ -99,24 +96,21 @@ export default function AppRoutes() {
 		        {/* dashboard routes */}
 		        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'company']}><Dashboard /></ProtectedRoute>} />
 		        
-		        {/* drivers management routes */}
-		        <Route path="/drivers" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverList /></ProtectedRoute>} />
-		        <Route path="/drivers/create" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverCreate /></ProtectedRoute>} />
-		        {/* <Route path="/drivers/requests" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverRequests /></ProtectedRoute>} /> */}
-		        <Route path="/drivers/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverDetail /></ProtectedRoute>} />
-		        <Route path="/drivers/:id/edit" element={<ProtectedRoute allowedRoles={['admin', 'company']}><DriverEdit /></ProtectedRoute>} />
+		        {/* vehicle-owners management routes */}
+		        <Route path="/vehicle-owners" element={<ProtectedRoute allowedRoles={['admin', 'company']}><VehicleOwnerList /></ProtectedRoute>} />
+		        <Route path="/vehicle-owners/create" element={<ProtectedRoute allowedRoles={['admin', 'company']}><VehicleOwnerCreate /></ProtectedRoute>} />
+		        <Route path="/vehicle-owners/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><VehicleOwnerDetail /></ProtectedRoute>} />
+		        <Route path="/vehicle-owners/:id/edit" element={<ProtectedRoute allowedRoles={['admin', 'company']}><VehicleOwnerEdit /></ProtectedRoute>} />
 
 		        {/* pathfinders management routes */}
 		        <Route path="/pathfinders" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderList /></ProtectedRoute>} />
 		        <Route path="/pathfinders/create" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderCreate /></ProtectedRoute>} />
-		        {/* <Route path="/pathfinders/requests" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderRequests /></ProtectedRoute>} /> */}
 		        <Route path="/pathfinders/:id/show" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderDetail /></ProtectedRoute>} />
 		        <Route path="/pathfinders/:id/edit" element={<ProtectedRoute allowedRoles={['admin']}><PathfinderEdit /></ProtectedRoute>} />
 
 		        {/* companies management routes */}
 		        <Route path="/companies" element={<ProtectedRoute allowedRoles={['admin']}><CompanyList /></ProtectedRoute>} />
 		        <Route path="/companies/create" element={<ProtectedRoute allowedRoles={['admin']}><CompanyCreate /></ProtectedRoute>} />
-		        {/* <Route path="/companies/requests" element={<ProtectedRoute allowedRoles={['admin']}><CompanyRequests /></ProtectedRoute>} /> */}
 		        <Route path="/companies/:id/show" element={<ProtectedRoute allowedRoles={['admin', 'company']}><CompanyDetail /></ProtectedRoute>} />
 		        <Route path="/companies/:id/edit" element={<ProtectedRoute allowedRoles={['admin', 'company']}><CompanyEdit /></ProtectedRoute>} />
 

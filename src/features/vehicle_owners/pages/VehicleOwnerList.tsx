@@ -67,31 +67,14 @@ export default function VehicleOwnerList() {
     };
 
     // Get status text based on status and approval
-    const getStatusTextColor = (vehicleOwner: VehicleOwner) => {
-        if (!vehicleOwner.isApproved && vehicleOwner.status === "pending") {
-            return "text-warning-subtle text-warning";
+    const getStatusTextColor = (status: string) => {
+        switch (status) {
+            case "pending": return "text-warning";
+            case "active": return "text-success";
+            case "suspended": return "text-danger";
+            case "inactive": return "text-secondary";
+            default: return "text-dark";
         }
-        if (vehicleOwner.isApproved && vehicleOwner.status === "active") {
-            return "text-success-subtle text-success";
-        }
-        if (vehicleOwner.status === "suspended") {
-            return "text-danger-subtle text-danger";
-        }
-        if (vehicleOwner.status === "inactive") {
-            return "text-secondary-subtle text-secondary";
-        }
-        return "text-light text-dark";
-    };
-
-    // Get status display text
-    const getStatusText = (vehicleOwner: VehicleOwner) => {
-        if (!vehicleOwner.isApproved && vehicleOwner.status === "pending") {
-            return "Pending Approval";
-        }
-        if (vehicleOwner.isApproved && vehicleOwner.status === "active") {
-            return "Active";
-        }
-        return vehicleOwner.status.charAt(0).toUpperCase() + vehicleOwner.status.slice(1);
     };
 
     // Format date
@@ -104,14 +87,23 @@ export default function VehicleOwnerList() {
     };
 
     // Get KYC status badge
-    const getKycBadge = (kycStatus: string) => {
+    const getKycTextColor = (kycStatus: string) => {
         switch (kycStatus) {
-            case "completed": return "badge rounded bg-success-subtle text-success fw-semibold px-2 py-1";
-            case "pending": return "badge rounded bg-warning-subtle text-warning fw-semibold px-2 py-1";
-            case "rejected": return "badge rounded bg-danger-subtle text-danger fw-semibold px-2 py-1";
-            default: return "badge rounded bg-light text-dark fw-semibold px-2 py-1";
+            case "completed": return "text-success";
+            case "pending": return "text-warning";
+            case "rejected": return "text-danger";
+            default: return "text-dark";
         }
     };
+
+    // Capitalize first letter for display
+    const capitalizeFirst = (str: string) => (!str) ? '' : str.charAt(0).toUpperCase() + str.slice(1);
+
+    // Format wallet balance for display
+    const formatBalance = (balance: number) => new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN'
+    }).format(balance);
 
     return (
         <DashboardLayout>
@@ -207,7 +199,7 @@ export default function VehicleOwnerList() {
                                     </button>
 
                                     {/* Create Vehicle Owner */}
-                                    <Link to="/drivers/create" className="btn btn-primary btn-sm fw-bold">
+                                    <Link to="/vehicle-owners/create" className="btn btn-primary btn-sm fw-bold">
                                         <span className="fa fa-plus"></span> Create Vehicle Owner
                                     </Link>
                                 </div>
@@ -219,13 +211,13 @@ export default function VehicleOwnerList() {
                                     <thead className="table-light small">
                                         <tr>
                                             <th style={{ width: "2%" }}>#</th>
-                                            <th style={{ width: "20%" }}>VEHICLE OWNER</th>
-                                            <th style={{ width: "20%" }}>CONTACT INFORMATION</th>
+                                            <th style={{ width: "17%" }}>VEHICLE OWNER</th>
+                                            <th style={{ width: "19%" }}>CONTACT INFORMATION</th>
                                             <th style={{ width: "10%" }}>JOINED DATE</th>
-                                            <th style={{ width: "15%" }}>LAST LOGIN</th>
-                                            <th style={{ width: "10%" }}>KYC STATUS</th>
-                                            <th style={{ width: "20%" }}>ACCOUNT STATUS</th>
-                                            <th style={{ width: "5%" }}>ACTIONS</th>
+                                            <th style={{ width: "10%" }}>LAST LOGIN</th>
+                                            <th style={{ width: "19%" }}>WALLET</th>
+                                            <th style={{ width: "13%" }}>ACCOUNT STATUS</th>
+                                            <th style={{ width: "10%" }}>ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">
@@ -252,7 +244,7 @@ export default function VehicleOwnerList() {
                                                     
                                                     {/* Vehicle Owner Info */}
                                                     <td className="py-3 px-2">
-                                                        <Link to={`/drivers/${vehicleOwner._id}/show`} className="text-decoration-none text-primary fw-semibold d-block mb-1">
+                                                        <Link to={`/vehicle-owners/${vehicleOwner._id}/show`} className="text-decoration-none text-primary fw-semibold d-block mb-1">
                                                             {vehicleOwner.fullName}
                                                         </Link>
                                                         <small className="text-muted d-block">
@@ -305,10 +297,6 @@ export default function VehicleOwnerList() {
                                                                             minute: '2-digit'
                                                                         })}
                                                                     </small>
-                                                                    <small className="text-success mt-1">
-                                                                        <i className="fa fa-circle me-1" style={{ fontSize: "6px" }}></i>
-                                                                        Recently Active
-                                                                    </small>
                                                                 </>
                                                             ) : (
                                                                 <small className="text-muted">
@@ -319,91 +307,56 @@ export default function VehicleOwnerList() {
                                                         </div>
                                                     </td>
                                                     
-                                                    {/* KYC Status */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="d-flex flex-column align-items-start">
-                                                            <span className={getKycBadge(vehicleOwner.kycStatus)}>
-                                                                {vehicleOwner.kycStatus?.charAt(0).toUpperCase() + vehicleOwner.kycStatus?.slice(1) || "N/A"}
-                                                            </span>
-                                                            {vehicleOwner.wallet && (
-                                                                <small className="text-muted mt-1">
-                                                                    Balance: ₦{vehicleOwner.wallet.balance?.toLocaleString() || "0"}
-                                                                </small>
-                                                            )}
-                                                        </div>
+                                                    {/* Wallert */}
+                                                    <td className="text-muted py-3 px-2">
+                                                        <span className="text-muted">
+                                                            <strong className="me-1">Wallet ID:</strong> {vehicleOwner.walletId || 'N/A'}
+                                                        </span>
+                                                        <span className="d-block text-muted">
+                                                            <strong className="me-1">Balance:</strong> {vehicleOwner.wallet ? formatBalance(vehicleOwner.wallet.balance) : '₦0'}
+                                                        </span>
                                                     </td>
                                                     
                                                     {/* Account Status */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="gap-3 small">
-                                                            <span className={getStatusTextColor(vehicleOwner)}>
-                                                                {getStatusText(vehicleOwner)} ||
+                                                    <td className="py-3 px-2 small">
+                                                        <div className="text-muted">
+                                                            <b>KYC:</b>
+                                                            <span className={`float-end ${getKycTextColor(vehicleOwner.kycStatus)}`}>
+                                                                {capitalizeFirst(vehicleOwner.kycStatus)}
                                                             </span>
-                                                            {vehicleOwner.isVerified && (
-                                                                <span className="text-success">&nbsp; Verified</span>
-                                                            )}
-                                                            {!vehicleOwner.isVerified && (
-                                                                <span className="text-warning">&nbsp; Unverified</span>
+                                                        </div> 
+                                                        <div className="text-muted">
+                                                            <b>ACCOUNT:</b>
+                                                            <span className={`float-end ${getStatusTextColor(vehicleOwner.status)}`}>
+                                                                {capitalizeFirst(vehicleOwner.status)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-muted">
+                                                            <b>APPROVAL:</b>
+                                                            <span className={`float-end text-${vehicleOwner.isApproved ? 'success' : 'warning'}`}>
+                                                                {vehicleOwner.isApproved ? 'Approved' : 'Pending'}
+                                                            </span>
+                                                        </div>                                                        
+                                                        <div className="text-muted">
+                                                            <b>VERIFICATION:</b>
+                                                            {vehicleOwner.isVerified ? (
+                                                                <span className="float-end text-success">Verified </span> 
+                                                            ) : (
+                                                                <span className="float-end text-warning">Unverified</span>
                                                             )}
                                                         </div>
                                                     </td>
+
                                                     
                                                     {/* Actions */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="dropdown">
-                                                            <button 
-                                                                className="btn btn-sm btn-primary border-0 dropdown-toggle" 
-                                                                type="button" 
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false"
-                                                            >
-                                                                Action
-                                                            </button>
-                                                            <ul className="dropdown-menu dropdown-menu-end">
-                                                                <li>
-                                                                    <Link 
-                                                                        className="dropdown-item" 
-                                                                        to={`/drivers/${vehicleOwner._id}/show`}
-                                                                    >
-                                                                        <i className="fa fa-eye me-2"></i>View Details
-                                                                    </Link>
-                                                                </li>
-                                                                <li>
-                                                                    <Link 
-                                                                        className="dropdown-item" 
-                                                                        to={`/drivers/${vehicleOwner._id}/edit`}
-                                                                    >
-                                                                        <i className="fa fa-edit me-2"></i>Edit
-                                                                    </Link>
-                                                                </li>
-                                                                <li><hr className="dropdown-divider" /></li>
-                                                                {!vehicleOwner.isApproved && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-success">
-                                                                            <i className="fa fa-check me-2"></i>Approve
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                {vehicleOwner.status === 'active' && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-warning">
-                                                                            <i className="fa fa-pause me-2"></i>Suspend
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                {vehicleOwner.status === 'suspended' && (
-                                                                    <li>
-                                                                        <button className="dropdown-item text-info">
-                                                                            <i className="fa fa-play me-2"></i>Activate
-                                                                        </button>
-                                                                    </li>
-                                                                )}
-                                                                <li>
-                                                                    <button className="dropdown-item text-danger">
-                                                                        <i className="fa fa-trash me-2"></i>Delete
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
+                                                    <td className="text-muted py-3 px-2">
+                                                        <div className="btn-group">
+                                                            <Link to={`/vehicle-owners/${vehicleOwner._id}/show`} className="btn btn-sm btn-outline-primary" title="View User">
+                                                                View <i className="fa fa-eye small"></i>
+                                                            </Link>
+                                                            <Link to={`/vehicle-owners/${vehicleOwner._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit User">
+                                                                Edit <i className="fa fa-edit small"></i>
+                                                            </Link>
                                                         </div>
                                                     </td>
                                                 </tr>

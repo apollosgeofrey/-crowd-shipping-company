@@ -3,7 +3,7 @@
 
 interface PendingTrip {
   id: number;
-  driver: string;
+  vehicleOwner: string;
   dateSent: string;
   deliveryDate?: string; // optional since pending is not delivered
   status: "Waiting";
@@ -31,10 +31,10 @@ export default function PendingTab({
     
     // Mock demo data
     const trips: PendingTrip[] = [
-        { id: 1, driver: "23456 - Prince Emmae", dateSent: "Feb 01, 2025", status: "Waiting" },
-        { id: 2, driver: "23466 - Mercy", dateSent: "Feb 12, 2025", status: "Waiting" },
-        { id: 3, driver: "34567 - Daniel", dateSent: "April 05, 2025", status: "Waiting" },
-        { id: 4, driver: "23566 - Luke Ball", dateSent: "May 12, 2025", status: "Waiting" },
+        { id: 1, vehicleOwner: "23456 - Prince Emmae", dateSent: "Feb 01, 2025", status: "Waiting" },
+        { id: 2, vehicleOwner: "23466 - Mercy", dateSent: "Feb 12, 2025", status: "Waiting" },
+        { id: 3, vehicleOwner: "34567 - Daniel", dateSent: "April 05, 2025", status: "Waiting" },
+        { id: 4, vehicleOwner: "23566 - Luke Ball", dateSent: "May 12, 2025", status: "Waiting" },
     ];
 
     // other logic (if any)
@@ -48,7 +48,7 @@ export default function PendingTab({
                         <thead className="table-light">
                         <tr>
                             <th style={{ width: "5%" }}>#</th>
-                            <th style={{ width: "40%" }}>Driver</th>
+                            <th style={{ width: "40%" }}>Vehicle Owner</th>
                             <th style={{ width: "15%" }}>Date Sent</th>
                             <th style={{ width: "15%" }}>Delivery Date</th>
                             <th style={{ width: "15%" }}>Status</th>
@@ -58,7 +58,7 @@ export default function PendingTab({
                             {trips.map((trip) => (
                                 <tr key={trip.id}>
                                     <td className="text-muted py-2 px-2">{trip.id}</td>
-                                    <td className="text-muted py-2 px-2">{trip.driver}</td>
+                                    <td className="text-muted py-2 px-2">{trip.vehicleOwner}</td>
                                     <td className="text-muted py-2 px-2">{trip.dateSent}</td>
                                     <td className="text-muted py-2 px-2">
                                         {trip.deliveryDate ? trip.deliveryDate : "-----------"}

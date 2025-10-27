@@ -32,11 +32,22 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	// Unified route configuration
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
 		"/dashboard": { title: `Hello ${user?.fullName || 'Admin'} 👋`, subtitle: "Good Morning" },
-		"/drivers": {title:"Manage Driver", subtitle:"Drivers > Requests", parent:{label:"Drivers", path:"/drivers"}},
+		
+		"/vehicle-owners/create": {title:"Create Vehicle Owner", subtitle:"Vehicle Owners > Creation", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		"/vehicle-owners": {title:"Manage Vehicle Owner", subtitle:"Vehicle Owners > Requests", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		
+		"/pathfinders/create": {title:"Create Pathfinder", subtitle:"Pathfinders > Creation", parent:{label:"Pathfinders", path:"/pathfinders"}},
 		"/pathfinders": {title:"Manage Pathfinders", subtitle:"Pathfinders > Reports", parent:{label:"Pathfinders", path:"/pathfinders"}},
+		
+		"/companies/create": {title:"Create Company", subtitle:"Companies > Creation", parent:{label:"Companies", path:"/companies"}},
 		"/companies": {title:"Manage Companies", subtitle:"Companies > Branches", parent:{label:"Companies", path:"/companies"}},
+		
+		"/users/create": {title:"Create User", subtitle:"Users > Creation", parent:{label:"Users", path:"/users"}},
 		"/users": {title:"Manage Users", subtitle:"Users > View List", parent:{label:"Users", path:"/users"}},
-		"/admin": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
+		
+		"/admins/create": {title:"Create Admin", subtitle:"Admins > Creation", parent:{label:"Admins", path:"/admins"}},
+		"/admins": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
+		
 		"/live-map": {title:"Live Map", subtitle:"Map > Tracking", parent: {label:"Map", path:"/live-map"}},
 		"/bookings": {title: "All Bookings", subtitle:"Bookings > View List", parent:{label:"Bookings", path:"/bookings"}},
 		"/transactions": {title:"Transactions", subtitle:"Finance > Transactions", parent:{label:"Finance", path:"/transactions"}},

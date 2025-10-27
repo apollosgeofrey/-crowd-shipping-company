@@ -1,14 +1,15 @@
-// pages/users/tabs/DeclinedTab.tsx
+// pages/users/tabs/CompletedTab.tsx
+// import React from "react";
 
-interface DeclinedTrip {
+interface CompletedTrip {
   id: number;
-  driver: string;
+  vehicleOwner: string;
   dateSent: string;
-  deliveryDate?: string;
-  status: "Declined";
+  deliveryDate: string;
+  status: "Delivered" | "Pending" | "Declined";
 }
 
-export default function DeclinedTab({
+export default function CompletedTab({
     // props
 }: {
     // props types
@@ -26,19 +27,18 @@ export default function DeclinedTab({
 
     // computed values (if any)
 
-    // event handlers (if any)
+    // event handlers (if any)    
 
-    
-    // Mock/demo data
-    const trips: DeclinedTrip[] = [
-        { id: 1, driver: "23456 - Prince Emmae", dateSent: "Feb 01, 2025", deliveryDate: "Mar 05, 2025", status: "Declined" },
-        { id: 2, driver: "23466 - Mercy", dateSent: "Feb 12, 2025", deliveryDate: "April 20, 2025", status: "Declined" },
-        { id: 3, driver: "34567 - Daniel", dateSent: "April 05, 2025", deliveryDate: "October 05, 2025", status: "Declined" },
-        { id: 4, driver: "23566 - Luke Ball", dateSent: "May 12, 2025", deliveryDate: "August 12, 2025", status: "Declined" },
+
+    // Mock demo data
+    const trips: CompletedTrip[] = [
+        { id: 1, vehicleOwner: "23456 - Prince Emmae", dateSent: "Feb 01, 2025", deliveryDate: "Mar 05, 2025", status: "Delivered" },
+        { id: 2, vehicleOwner: "23466 - Mercy", dateSent: "Feb 12, 2025", deliveryDate: "April 20, 2025", status: "Delivered" },
+        { id: 3, vehicleOwner: "34567 - Daniel", dateSent: "April 05, 2025", deliveryDate: "October 05, 2025", status: "Delivered" },
+        { id: 4, vehicleOwner: "23566 - Luke Ball", dateSent: "May 12, 2025", deliveryDate: "August 12, 2025", status: "Delivered" },
     ];
 
     // other logic (if any)
-    
     // Render
     return (
         <div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
@@ -48,9 +48,9 @@ export default function DeclinedTab({
                         <thead className="table-light">
                             <tr>
                                 <th style={{ width: "5%" }}>#</th>
-                                <th style={{ width: "40%" }}>Driver</th>
+                                <th style={{ width: "40%" }}>Vehicle Owner</th>
                                 <th style={{ width: "15%" }}>Date Sent</th>
-                                <th style={{ width: "15%" }}>Declined Date</th>
+                                <th style={{ width: "15%" }}>Delivery Date</th>
                                 <th style={{ width: "15%" }}>Status</th>
                             </tr>
                         </thead>
@@ -58,13 +58,11 @@ export default function DeclinedTab({
                             {trips.map((trip) => (
                                 <tr key={trip.id}>
                                     <td className="text-muted py-2 px-2">{trip.id}</td>
-                                    <td className="text-muted py-2 px-2">{trip.driver}</td>
+                                    <td className="text-muted py-2 px-2">{trip.vehicleOwner}</td>
                                     <td className="text-muted py-2 px-2">{trip.dateSent}</td>
-                                    <td className="text-muted py-2 px-2">
-                                        {trip.deliveryDate ? trip.deliveryDate : "-----------"}
-                                    </td>
+                                    <td className="text-muted py-2 px-2">{trip.deliveryDate}</td>
                                     <td className="py-2 px-2">
-                                        <span className={`col-sm-12 badge rounded bg-danger-subtle text-danger fw-semibold px-3 py-2`}>{trip.status}</span>
+                                        <span className={`col-sm-12 badge rounded bg-success-subtle text-success fw-semibold px-3 py-2`}>{trip.status}</span>
                                     </td>
                                 </tr>
                             ))}

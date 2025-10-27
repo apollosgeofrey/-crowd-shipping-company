@@ -27,14 +27,14 @@ interface MenuItem {
 const MENU_ITEMS: MenuItem[] = [
   	{ id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard', platforms: ['admin', 'company'] },
 	{ id: 'company-profile', icon: Building2, label: 'Company Profile', path: '/companies/3234/show', platforms: ['company'] },
-	{ id: 'manage-company-driver', icon: Users, label: 'Manage Drivers', path: '/drivers', platforms: ['company'] },
+	{ id: 'manage-company-vehicle-owner', icon: Users, label: 'Manage Drivers', path: '/vehicle-owners', platforms: ['company'] },
   	{
-	    id: 'manage-driver',
+	    id: 'manage-vehicle-owner',
 	    icon: Users,
-	    label: 'Manage Drivers',
+	    label: 'Manage Vehicle Owners',
 	    children: [
-	      { id: 'drivers-list', label: 'Drivers List', path: '/drivers' },
-	      { id: 'drivers-requests', label: 'Driver Requests', path: '/drivers/requests' },
+	      	{ id: 'vehicle-owners-list', label: 'View Vehicle Owners', path: '/vehicle-owners' },
+	      	{ id: 'create-vehicle-owner', label: 'Create New Vehicle Owner', path: '/vehicle-owners/create' },
 	    ],
 	    platforms: ['admin']
   	}, {
@@ -42,8 +42,8 @@ const MENU_ITEMS: MenuItem[] = [
 	    icon: Route,
 	    label: 'Manage Pathfinders',
 	    children: [
-	      { id: 'pathfinders-list', label: 'Pathfinders List', path: '/pathfinders' },
-	      { id: 'pathfinders-requests', label: 'Pathfinder Requests', path: '/pathfinders/requests' },
+	      	{ id: 'pathfinders-list', label: 'View Pathfinders', path: '/pathfinders' },
+	      	{ id: 'create-pathfinder', label: 'Create New Pathfinder', path: '/pathfinders/create' },
 	    ],
 	    platforms: ['admin']
   	}, {
@@ -51,17 +51,29 @@ const MENU_ITEMS: MenuItem[] = [
 	    icon: Building2,
 	    label: 'Manage Companies',
 	    children: [
-	      { id: 'companies-list', label: 'Companies List', path: '/companies' },
-	      { id: 'companies-requests', label: 'Company Requests', path: '/companies/requests' },
-	      // { id: 'company-profile', label: 'Profile', path: '/company/profile' },
-	      // { id: 'company-branches', label: 'Branches', path: '/company/branches' },
+	      	{ id: 'companies-list', label: 'Companies List', path: '/companies' },
+	      	{ id: 'create-company', label: 'Create New Company', path: '/companies/create' },
 	    ],
-	    // If you want company-only visibility, uncomment platforms below:
+	    platforms: ['admin']
+  	}, {
+	    id: 'manage-users',
+	    icon: UserCheck,
+	    label: 'Manage Users',
+	    children: [
+	      	{ id: 'users-list', label: 'View Users', path: '/users' },
+	      	{ id: 'create-user', label: 'Create New User', path: '/users/create' },
+	    ],
+	    platforms: ['admin']
+  	}, {
+	    id: 'manage-admins',
+	    icon: Settings,
+	    label: 'Manage Admins',
+	    children: [
+	      	{ id: 'companies-list', label: 'View Admins', path: '/admins' },
+	      	{ id: 'create-admin', label: 'Create New Admin', path: '/admins/create' },
+	    ],
 	    platforms: ['admin']
   	},
-	{ id: 'manage-users', icon: UserCheck, label: 'Manage Users', path: '/users', platforms: ['admin'] },
-	// admin-only (example)
-	{ id: 'manage-admins', icon: Settings, label: 'Manage Admins', path: '/admins', platforms: ['admin'] },
 	{ id: 'live-map', icon: Map, label: 'Live Map', path: '/live-map', platforms: ['admin', 'company'] },
 	{ id: 'all-bookings', icon: Bookmark, label: 'All Bookings', path: '/bookings', platforms: ['admin', 'company'] },
 	{ id: 'transactions', icon: DollarSign, label: 'Transactions', path: '/transactions', platforms: ['admin', 'company'] },
@@ -88,7 +100,17 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [theme, setTheme] = useState<"dark" | "light">("light");
 	const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
-	const isActive = (path?: string) => path ? location.pathname.startsWith(path) : false;
+	const isActive = (path?: string, isChild: boolean = false) => {
+	  	if (!path) return false;	  
+	  	if (isChild) return location.pathname === path; // For children, use exact match
+		
+		// For parents, use startsWith but ensure we don't match partial segments
+	  	if (!isChild) {
+		    const normalizedPath = path.endsWith('/') ? path : path + '/';
+		    const normalizedLocation = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';		    
+		    return normalizedLocation.startsWith(normalizedPath);
+		}
+	};
 
 
 	/**
@@ -263,7 +285,7 @@ export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: Sideb
 					                        	{(isDropdownOpen && !collapsed) && (
 					                          		<div className="ms-4 d-flex flex-column gap-1">
 					                            		{item.children!.map((child) => {
-					                              			const childActive = isActive(child.path);
+					                              			const childActive = isActive(child.path, true);
 					                              			return (					                              				
 					                                			<Link key={child.id} to={child.path ?? "#"} onClick={closeMobile} className="btn text-decoration-none d-flex align-items-center p-2" title={child.label}
 					                                  				style={{ backgroundColor: childActive ? '#FDEFEB' : 'transparent', color: childActive ? '#f97316' : current.sidebarText, border: 'none',

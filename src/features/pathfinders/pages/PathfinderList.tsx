@@ -11,12 +11,7 @@ export default function PathfinderList() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pathfinders, setPathfinders] = useState<Pathfinder[]>([]);
-    const [filters, setFilters] = useState({
-        search: "",
-        status: "",
-        isApproved: "",
-        kycStatus: ""
-    });
+    const [filters, setFilters] = useState({search: "", status: "", isApproved: "", kycStatus: ""});
 
     // Fetch data whenever page, perPage, or filters change
     useEffect(() => {
@@ -54,12 +49,7 @@ export default function PathfinderList() {
 
     // Reset all filters
     const resetFilters = () => {
-        setFilters({
-            search: "",
-            status: "",
-            isApproved: "",
-            kycStatus: ""
-        });
+        setFilters({search: "", status: "", isApproved: "", kycStatus: ""});
         setPage(1);
     };
 
@@ -103,11 +93,15 @@ export default function PathfinderList() {
                             <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                 <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
                                 
+                                    {/* Filter By (first item, no border-left) */}
+                                    <button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
+                                        <i className="fa fa-filter me-1"></i> Filter By
+                                    </button>
+
                                     {/* Search Input */}
                                     <div className="d-flex align-items-center px-2">
-                                        <input 
-                                            type="text" 
-                                            className="form-control form-control-sm border-0 bg-transparent" 
+                                        <input type="text"
+                                            className="form-control form-control-sm border-1 bg-transparent" 
                                             placeholder="Search name or email..."
                                             value={filters.search}
                                             onChange={(e) => handleFilterChange("search", e.target.value)}
@@ -184,24 +178,24 @@ export default function PathfinderList() {
 
                                     {/* Create Pathfinder */}
                                     <Link to="/pathfinders/create" className="btn btn-primary btn-sm fw-bold">
-                                        <span className="fa fa-plus"></span> Create Pathfinder
+                                        <span className="fa fa-plus-square"></span> Create New Pathfinder
                                     </Link>
                                 </div>
                             </div>
 
                             {/* Table */}
                             <div className="table-responsive rounded-3 shadow-sm border">
-                                <table className="table align-middle mb-0 table-sm">
+                                <table className="table align-middle mb-0 table-sm table-striped">
                                     <thead className="table-light small">
                                         <tr>
-                                            <th style={{ width: "2%" }}>#</th>
-                                            <th style={{ width: "16%" }}>PATHFINDER</th>
-                                            <th style={{ width: "18%" }}>CONTACT INFORMATION</th>
-                                            <th style={{ width: "10%" }}>JOINED DATE</th>
-                                            <th style={{ width: "10%" }}>LAST LOGIN</th>
-                                            <th style={{ width: "19%" }}>WALLET</th>
-                                            <th style={{ width: "15%" }}>STATUSES</th>
-                                            <th style={{ width: "10%" }}>ACTIONS</th>
+                                            <th style={{ width: "2%" }} className="py-3">#</th>
+                                            <th style={{ width: "16%" }} className="py-3">PATHFINDER</th>
+                                            <th style={{ width: "18%" }} className="py-3">CONTACT INFORMATION</th>
+                                            <th style={{ width: "10%" }} className="py-3">JOINED DATE</th>
+                                            <th style={{ width: "10%" }} className="py-3">LAST LOGIN</th>
+                                            <th style={{ width: "19%" }} className="py-3">WALLET</th>
+                                            <th style={{ width: "15%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "10%" }} className="py-3">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">

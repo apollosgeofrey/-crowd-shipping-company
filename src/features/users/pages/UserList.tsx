@@ -25,37 +25,53 @@ export default function UserList() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [totalPages, setTotalPages] = useState(1);
 	const [users, setUsers] = useState<User[]>([]);
-	const [totalUsers, setTotalUsers] = useState(0);
+	const [totalItems, setTotalItems] = useState(0);
+    const [filters, setFilters] = useState({search: "", status: "", isApproved: "", kycStatus: ""});
 
-	// Fetch data whenever page or perPage changes
-	useEffect(() => {
-		async function fetchUsers() {
-		  	setIsLoading(true);
-			try {
-				const response: UsersResponse = await userApi.getAllUsers({
-					page: page, 
-					limit: perPage
-				});
-				
-				// Access users from response.data.data.items
-				setUsers(response.data.items);
-				
-				// Use the pagination meta from the API
-				if (response.data.meta) {
-					setTotalPages(response.data.meta.totalPages);
-					setTotalUsers(response.data.meta.total);
-				} else {
-					// Fallback calculation
-					setTotalPages(Math.ceil(response.data.items.length / perPage));
-				}
-			} catch (err) {
-				console.error("Failed to fetch users:", err);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		fetchUsers();
-	}, [page, perPage]);
+
+    // Fetch data whenever page, perPage, or filters change
+    useEffect(() => {
+        async function fetchUsers() {
+            setIsLoading(true);
+            try {
+                const response = await userApi.getAllUsers({
+                    page,
+                    limit: perPage,
+                    search: filters.search || undefined,
+                    status: filters.status || undefined,
+                    isApproved: filters.isApproved ? filters.isApproved === "true" : undefined,
+                    kycStatus: filters.kycStatus || undefined
+                });
+
+                if (response.code === 200) {
+                    // FIX: Access the nested data structure
+                    setUsers(response.data.items); // Changed from response.data to response.data.items
+                    setTotalPages(response.data.meta.totalPages); // Use actual pagination data
+                    setTotalItems(response.data.meta.total); // Use actual total items
+                }
+            } catch (err) {
+                console.error("Failed to fetch users:", err);
+                // Set empty array on error to prevent map error
+                setUsers([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchUsers();
+    }, [page, perPage, filters]);
+
+    // Handle filter changes
+    const handleFilterChange = (key: string, value: string) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+        setPage(1); // Reset to first page when filters change
+    };
+
+    // Reset all filters
+    const resetFilters = () => {
+        setFilters({search: "", status: "", isApproved: "", kycStatus: ""});
+        setPage(1);
+    };
+
 
 	// Format date to display
 	const formatDate = (dateString: string) => {
@@ -116,69 +132,111 @@ export default function UserList() {
 				        <div className="card-body">
 				          
 				          	{/* Filter Bar */}
-				          	<div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-					            <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
-					              	<button className="btn btn-sm btn-light border-0 fw-semibold px-3">
-					                	<i className="fa fa-filter me-1"></i> Filter By
-					              	</button>
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
+                                	
+                                	{/* Filter By (first item, no border-left) */}
+									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
+										<i className="fa fa-filter me-1"></i> Filter By
+									</button>
 
-					              	<div className="d-flex align-items-center border-start px-2">
-						                <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-						                  	<option>Date</option>
-						                </select>
-					              	</div>
+                                    {/* Search Input */}
+                                    <div className="d-flex align-items-center px-2">
+                                        <input type="text"
+                                            className="form-control form-control-sm border-1 bg-transparent" 
+                                            placeholder="Search name or email..."
+                                            value={filters.search}
+                                            onChange={(e) => handleFilterChange("search", e.target.value)}
+                                            style={{ minWidth: "200px" }}
+                                        />
+                                    </div>
+                                    
+                                    {/* Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.status}
+                                            onChange={(e) => handleFilterChange("status", e.target.value)}
+                                        >
+                                            <option value="">All Status</option>
+                                            <option value="active">Active</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="suspended">Suspended</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
 
-					              	<div className="d-flex align-items-center border-start px-2">
-						                <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-						                 	<option>Verification</option>
-						                </select>
-					              	</div>
+                                    {/* Approval Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.isApproved}
+                                            onChange={(e) => handleFilterChange("isApproved", e.target.value)}
+                                        >
+                                            <option value="">All Approval</option>
+                                            <option value="true">Approved</option>
+                                            <option value="false">Not Approved</option>
+                                        </select>
+                                    </div>
 
-					              	<div className="d-flex align-items-center border-start px-2">
-						                <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-							                <option>Active</option>
-							                <option>Inactive</option>
-						                </select>
-					              	</div>
+                                    {/* KYC Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.kycStatus}
+                                            onChange={(e) => handleFilterChange("kycStatus", e.target.value)}
+                                        >
+                                            <option value="">All KYC</option>
+                                            <option value="completed">KYC Completed</option>
+                                            <option value="pending">KYC Pending</option>
+                                            <option value="rejected">KYC Rejected</option>
+                                        </select>
+                                    </div>
 
-					              	<div className="d-flex align-items-center border-start px-2">
-						                <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger">
-						                	<i className="fa fa-undo me-1"></i> Reset Filter
-						                </button>
-					              	</div>
-					            </div>
-				          	</div>
+                                    {/* Reset Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
+                                            <i className="fa fa-undo me-1"></i> Reset Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-					        {/* Actions */}
-					        <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-					            <div className="d-flex gap-2">
-					              	<button className="btn btn-outline-secondary btn-sm fw-bold">
-					                	<span className="">Export</span> <span className="fa fa-angle-down"></span>
-					              	</button>
+                            {/* Actions and Stats */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex align-items-center gap-3">
+                                    <span className="text-muted">
+					            		Showing {users.length} of {totalItems} users
+                                    </span>
+                                </div>
+                                
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-outline-secondary btn-sm fw-bold">
+                                        <span>Export</span> <span className="fa fa-angle-down"></span>
+                                    </button>
 
-					              	<Link to="/users/create" className="btn btn-primary btn-sm fw-bold">
-					                	<span className="fa fa-plus"></span> Create User
-					              	</Link>
-					            </div>
-					            
-					            {/* Total users count */}
-					            <div className="text-muted small">
-					            	Showing {users.length} of {totalUsers} users
-					            </div>
-					        </div>
+                                    {/* Create User */}
+                                    <Link to="/users/create" className="btn btn-primary btn-sm fw-bold">
+                                        <span className="fa fa-plus-square"></span> Create New User
+                                    </Link>
+                                </div>
+                            </div>
 
 				          	{/* Table */}
 				          	<div className="table-responsive rounded-3 shadow-sm border">
-					            <table className="table align-middle mb-0 table-sm">
+					            <table className="table align-middle mb-0 table-sm table-striped">
 						             <thead className="table-light small">
 						                <tr className="m-5">
-							                <th style={{ width: "2%" }}>#</th>
-							                <th style={{ width: "20%" }}>FULL NAME</th>
-							                <th style={{ width: "18%" }}>CONTACT DETAILS</th>
-							                <th style={{ width: "15%" }}>JOINED DATE</th>
-							                <th style={{ width: "20%" }}>WALLET</th>
-							                <th style={{ width: "15%" }}>STATUSES</th>
-							                <th style={{ width: "10%" }}>ACTION</th>
+							                <th style={{ width: "2%" }} className="py-3">#</th>
+							                <th style={{ width: "20%" }} className="py-3">FULL NAME</th>
+							                <th style={{ width: "18%" }} className="py-3">CONTACT DETAILS</th>
+							                <th style={{ width: "15%" }} className="py-3">JOINED DATE</th>
+							                <th style={{ width: "20%" }} className="py-3">WALLET</th>
+							                <th style={{ width: "15%" }} className="py-3">STATUSES</th>
+							                <th style={{ width: "10%" }} className="py-3">ACTION</th>
 						                </tr>
 						             </thead>
 						             <tbody className="small">

@@ -23,39 +23,55 @@ export default function AdminList() {
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(10);
 	const [totalPages, setTotalPages] = useState(1);
+	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 	const [admins, setAdmins] = useState<Admin[]>([]);
-	const [totalAdmins, setTotalAdmins] = useState(0);
+    const [filters, setFilters] = useState({search: "", status: "", isVerified: "", role: ""});
 
-	// Fetch data whenever page or perPage changes
-	useEffect(() => {
-		async function fetchAdmins() {
-			setIsLoading(true);
-			try {
-				const response: AdminsResponse = await adminApi.getAllAdmins({
-					page: page, 
-					limit: perPage
-				});
-				
-				// Access admins from response.data.data.items
-				setAdmins(response.data.items);
-				
-				// Use the pagination meta from the API
-				if (response.data.meta) {
-					setTotalPages(response.data.meta.totalPages);
-					setTotalAdmins(response.data.meta.total);
-				} else {
-					// Fallback calculation
-					setTotalPages(Math.ceil(response.data.items.length / perPage));
-				}
-			} catch (err) {
-				console.error("Failed to fetch admins:", err);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		fetchAdmins();
-	}, [page, perPage]);
+
+    // Fetch data whenever page, perPage, or filters change
+    useEffect(() => {
+        async function fetchAdmins() {
+            setIsLoading(true);
+            try {
+                const response = await adminApi.getAllAdmins({
+                    page,
+                    limit: perPage,
+                    role: filters.role || undefined,
+                    search: filters.search || undefined,
+                    status: filters.status || undefined,
+                    isVerified: filters.isVerified ? filters.isVerified === "true" : undefined,
+                });
+
+                if (response.code === 200) {
+                    // FIX: Access the nested data structure
+                    setAdmins(response.data.items); // Changed from response.data to response.data.items
+                    setTotalPages(response.data.meta.totalPages); // Use actual pagination data
+                    setTotalItems(response.data.meta.total); // Use actual total items
+                }
+            } catch (err) {
+                console.error("Failed to fetch admins:", err);
+                // Set empty array on error to prevent map error
+                setAdmins([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchAdmins();
+    }, [page, perPage, filters]);
+
+    // Handle filter changes
+    const handleFilterChange = (key: string, value: string) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+        setPage(1); // Reset to first page when filters change
+    };
+
+    // Reset all filters
+    const resetFilters = () => {
+        setFilters({search: "", status: "", isVerified: "", role: ""});
+        setPage(1);
+    };
+
 
 	// Format date to display
 	const formatDate = (dateString: string) => {
@@ -98,75 +114,111 @@ export default function AdminList() {
 						<div className="card-body">
 
 							{/* Filter Bar */}
-							<div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-								<div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
-
-									{/* Filter By (first item, no border-left) */}
-									<button className="btn btn-sm btn-light border-0 fw-semibold px-3">
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
+                                	
+                                	{/* Filter By (first item, no border-left) */}
+									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
 										<i className="fa fa-filter me-1"></i> Filter By
 									</button>
 
-									{/* Divider applied to subsequent items */}
-									<div className="d-flex align-items-center border-start px-2">
-										<select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-											<option>Date</option>
-										</select>
-									</div>
+                                    {/* Search Input */}
+                                    <div className="d-flex align-items-center px-2">
+                                        <input type="text"
+                                            className="form-control form-control-sm border-1 bg-transparent" 
+                                            placeholder="Search name or email..."
+                                            value={filters.search}
+                                            onChange={(e) => handleFilterChange("search", e.target.value)}
+                                            style={{ minWidth: "200px" }}
+                                        />
+                                    </div>
 
-									<div className="d-flex align-items-center border-start px-2">
-										<select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-											<option>Admin Role</option>
-											<option value="super-admin">Super Admin</option>
-											<option value="admin">Admin</option>
-										</select>
-									</div>
+                                    {/* Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.status}
+                                            onChange={(e) => handleFilterChange("status", e.target.value)}
+                                        >
+                                            <option value="">All Status</option>
+                                            <option value="active">Active</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="suspended">Suspended</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
 
-									<div className="d-flex align-items-center border-start px-2">
-										<select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-											<option>Active</option>
-											<option>Inactive</option>
-										</select>
-									</div>
+                                    {/* Verification Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.isVerified}
+                                            onChange={(e) => handleFilterChange("isVerified", e.target.value)}
+                                        >
+                                            <option value="">All Verifiable</option>
+                                            <option value="true">Verified</option>
+                                            <option value="false">Not Verified</option>
+                                        </select>
+                                    </div>
 
-									<div className="d-flex align-items-center border-start px-2">
-										<button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger">
-											<i className="fa fa-undo me-1"></i> Reset Filter
-										</button>
-									</div>
-								</div>
-							</div>
+                                    {/* ROLE Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.role}
+                                            onChange={(e) => handleFilterChange("role", e.target.value)}
+                                        >
+                                            <option value="">All KYC</option>
+                                            <option value="completed">KYC Completed</option>
+                                            <option value="pending">KYC Pending</option>
+                                            <option value="rejected">KYC Rejected</option>
+                                        </select>
+                                    </div>
 
-							{/* Actions */}
-							<div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-								<div className="d-flex gap-2">
-									<button className="btn btn-outline-secondary btn-sm fw-bold">
-										<span className="">Export</span> <i className="fa fa-angle-down"></i>
-									</button>
-									
-									{/* Create Admin URL */}
-									<Link to="/admins/create" className="btn btn-primary btn-sm fw-bold">
-										<span className="fa fa-plus"></span> Create Admin
-									</Link>
-								</div>
-								
-								{/* Total admins count */}
-								<div className="text-muted small">
-									Showing {admins.length} of {totalAdmins} admins
-								</div>
-							</div>
+                                    {/* Reset Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
+                                            <i className="fa fa-undo me-1"></i> Reset Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Actions and Stats */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex align-items-center gap-3">
+                                    <span className="text-muted">
+					            		Showing {admins.length} of {totalItems} admins
+                                    </span>
+                                </div>
+                                
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-outline-secondary btn-sm fw-bold">
+                                        <span>Export</span> <span className="fa fa-angle-down"></span>
+                                    </button>
+
+                                    {/* Create Admin */}
+                                    <Link to="/admins/create" className="btn btn-primary btn-sm fw-bold">
+                                        <span className="fa fa-plus-square"></span> Create New Admin
+                                    </Link>
+                                </div>
+                            </div>
 
 							{/* Table */}
 							<div className="table-responsive rounded-3 shadow-sm border">
-								<table className="table align-middle mb-0 table-sm">
+								<table className="table align-middle mb-0 table-sm table-striped">
 									<thead className="table-light small">
 										<tr>
-											<th style={{ width: "2%" }}>#</th>
-											<th style={{ width: "20%" }}>ADMIN DETAILS</th>
-											<th style={{ width: "15%" }}>ID NUMBER</th>
-											<th style={{ width: "20%" }}>CONTACT INFO</th>
-											<th style={{ width: "15%" }}>ONBOARDING DATE</th>
-											<th style={{ width: "18%" }}>ROLE & STATUSES</th>
-											<th style={{ width: "10%" }}>ACTIONS</th>
+											<th style={{ width: "2%" }} className="py-3">#</th>
+											<th style={{ width: "20%" }} className="py-3">ADMIN DETAILS</th>
+											<th style={{ width: "15%" }} className="py-3">ID NUMBER</th>
+											<th style={{ width: "20%" }} className="py-3">CONTACT INFO</th>
+											<th style={{ width: "15%" }} className="py-3">ONBOARDING DATE</th>
+											<th style={{ width: "18%" }} className="py-3">ROLE & STATUSES</th>
+											<th style={{ width: "10%" }} className="py-3">ACTIONS</th>
 										</tr>
 									</thead>
 									<tbody className="small">

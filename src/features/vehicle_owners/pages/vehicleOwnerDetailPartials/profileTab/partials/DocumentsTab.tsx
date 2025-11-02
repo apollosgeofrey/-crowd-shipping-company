@@ -64,21 +64,11 @@ export default function DocumentsTab({ vehicleOwner }: { vehicleOwner: any }) {
                             </div>
                             <div className="border rounded overflow-hidden shadow-sm text-center bg-light">
                                 {doc.img ? (
-                                    <img 
-                                        src={doc.img} 
-                                        alt={doc.title} 
-                                        className="img-fluid w-100" 
-                                        style={{ height: "200px", objectFit: "cover" }}
-                                    />
+                                    <img src={doc.img} alt={doc.title} className="img-fluid w-100" style={{ height: "200px", objectFit: "cover" }}/>
                                 ) : (
-                                    <div 
-                                        className="d-flex align-items-center justify-content-center text-muted" 
-                                        style={{ height: "200px" }}
-                                    >
+                                    <div className="d-flex align-items-center justify-content-center text-muted" style={{ height: "200px" }}>
                                         <div>
-                                            <div className="mb-2" style={{ fontSize: "2rem" }}>
-                                                {doc.icon}
-                                            </div>
+                                            <div className="mb-2" style={{ fontSize: "2rem" }}>{doc.icon}</div>
                                             <small>{doc.fallbackText}</small>
                                         </div>
                                     </div>
@@ -106,11 +96,7 @@ export default function DocumentsTab({ vehicleOwner }: { vehicleOwner: any }) {
                                                 ID: {docId}
                                             </small>
                                             <div className="mt-2 d-flex gap-1 justify-content-center">
-                                                <button 
-                                                    className="btn btn-sm btn-outline-secondary" 
-                                                    onClick={() => navigator.clipboard.writeText(docId)} 
-                                                    title="Copy Document ID"
-                                                >
+                                                <button className="btn btn-sm btn-outline-secondary" onClick={() => navigator.clipboard.writeText(docId)} title="Copy Document ID">
                                                     Copy ID
                                                 </button>
                                             </div>
@@ -125,29 +111,6 @@ export default function DocumentsTab({ vehicleOwner }: { vehicleOwner: any }) {
                             <p>No documents uploaded</p>
                         </div>
                     )}
-                </div>
-
-                {/* Summary Card */}
-                <div className="mt-4 p-3 bg-light rounded">
-                    <div className="row text-center">
-                        <div className="col-md-4">
-                            <h5 className="fw-bold text-primary">{documentItems.filter(doc => doc.img).length}</h5>
-                            <small className="text-muted">Images Uploaded</small>
-                        </div>
-                        <div className="col-md-4">
-                            <h5 className="fw-bold text-success">{documents.length}</h5>
-                            <small className="text-muted">Documents Uploaded</small>
-                        </div>
-                        <div className="col-md-4">
-                            <h5 className="fw-bold text-info">
-                                {documentItems.filter(doc => doc.img).length === documentItems.length && documents.length > 0 
-                                    ? "Complete" 
-                                    : "Incomplete"
-                                }
-                            </h5>
-                            <small className="text-muted">Upload Status</small>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

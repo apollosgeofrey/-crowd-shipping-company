@@ -1,93 +1,97 @@
-// pages/users/tabs/PersonalInformationTab.tsx
-// import React from "react";
+export default function PersonalInformationTab({ user }: { user: any }) {
 
-export default function PersonalInformationTab({
-    // props
-}: {
-    // props types
-}) {
-    // logic
-    // props destructuring (if any)
+    // Split full name into first and last name for your layout
+    const profile = user?.profile;
+    const nameParts = user?.fullName?.split(' ') || [];
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
 
-    // helper functions (if any)
-
-    // state (if any)
-
-    // side effects (if any)
-
-    // constants (if any)
-
-    // computed values (if any)
-
-    // event handlers (if any)
-
-    // other logic (if any)
-
-    // Render
     return (
         <>
             <div className="row g-0 small">
                 <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">First Name</p>
-                    <p className="text-muted border-bottom pb-2">John</p>
-                </div>
-                <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">Last Name</p>
-                    <p className="text-muted border-bottom pb-2">Ashernine</p>
+                    <p className="fw-semibold mb-1 text-dark">Full Name</p>
+                    <p className="text-muted border-bottom pb-2">{user?.fullName || "Not specified"}</p>
                 </div>
 
                 <div className="col-md-6">
                     <p className="fw-semibold mb-1 text-dark">Mobile Number</p>
-                    <p className="text-muted border-bottom pb-2">+2347018799032</p>
+                    <p className="text-muted border-bottom pb-2">{user?.phoneNumber || "Not specified"}</p>
                 </div>
                 <div className="col-md-6">
                     <p className="fw-semibold mb-1 text-dark">Email Address</p>
-                    <p className="text-muted border-bottom pb-2">brooklyn.s@example.com</p>
+                    <p className="text-muted border-bottom pb-2">{user?.email || "Not specified"}</p>
                 </div>
-
-                <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">Date of Birth</p>
-                    <p className="text-muted border-bottom pb-2">July 14, 1995</p>
-                </div>
-                <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">Marital Status</p>
-                    <p className="text-muted border-bottom pb-2">Married</p>
-                </div>
-
                 <div className="col-md-6">
                     <p className="fw-semibold mb-1 text-dark">Gender</p>
-                    <p className="text-muted border-bottom pb-2">Female</p>
+                    <p className="text-muted border-bottom pb-2">
+                        {profile?.gender ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1) : "Not specified"}
+                    </p>
                 </div>
-                <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">Job Title</p>
-                    <p className="text-muted border-bottom pb-2">Product Designer</p>
-                </div>
-
                 <div className="col-md-6">
                     <p className="fw-semibold mb-1 text-dark">Location</p>
-                    <p className="text-muted border-bottom pb-2">2464 Royal Ln. Mesa, New Jersey</p>
+                    <p className="text-muted border-bottom pb-2">
+                        {profile?.geoLocation?.address || profile?.city || "Not specified"}
+                    </p>
                 </div>
                 <div className="col-md-6">
                     <p className="fw-semibold mb-1 text-dark">City</p>
-                    <p className="text-muted border-bottom pb-2">California</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.city || "Not specified"}</p>
+                </div>
+
+                {/* Additional fields from API that are available */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-1 text-dark">State</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.state || "Not specified"}</p>
+                </div>
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-1 text-dark">Country</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.country || "Not specified"}</p>
                 </div>
 
                 <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">NIN</p>
-                    <p className="text-muted border-bottom pb-2">2135689670</p>
+                    <p className="fw-semibold mb-1 text-dark">Status</p>
+                    <p className="text-muted border-bottom pb-2">
+                        <span className={`badge bg-${user?.status === 'active' ? 'success' : 'warning'}`}>
+                            {user?.status}
+                        </span>
+                    </p>
                 </div>
                 <div className="col-md-6">
-                    <p className="fw-semibold mb-1 text-dark">ID</p>
-                    <p className="text-muted border-bottom pb-2">35624</p>
+                    <p className="fw-semibold mb-1 text-dark">KYC Status</p>
+                    <p className="text-muted border-bottom pb-2">
+                        <span className={`badge bg-${user?.kycStatus === 'completed' ? 'success' : 'warning'}`}>
+                            {user?.kycStatus}
+                        </span>
+                    </p>
+                </div>
+
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-1 text-dark">Last Login</p>
+                    <p className="text-muted border-bottom pb-2">
+                        {user?.lastLogin ? new Date(user?.lastLogin).toLocaleString() : "Never logged in"}
+                    </p>
+                </div>
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-1 text-dark">Member Since</p>
+                    <p className="text-muted border-bottom pb-2">
+                        {new Date(user?.createdAt).toLocaleDateString()}
+                    </p>
                 </div>
             </div>
 
             {/* Footer */}
             <div className="d-flex justify-content-between align-items-center mt-4">
-                <span className="fw-semibold text-danger">Verified by:</span>(Nil)
+                <span className="fw-semibold text-danger">
+                    Verified by: {user?.isVerified ? "System" : "Pending"}
+                </span>
                 <div className="d-flex gap-3">
-                    <button className="btn btn-primary px-4 fw-semibold rounded-pill">Verify</button>
-                    <button className="btn btn-outline-primary px-4 fw-semibold rounded-pill">Decline</button>
+                    <button disabled={user?.kycStatus === 'completed'} className={`btn px-4 fw-semibold rounded-pill ${user?.kycStatus === 'completed' ? 'btn-success' : 'btn-primary'}`}>
+                        {user?.kycStatus === 'completed' ? 'Verified' : 'Verify'}
+                    </button>
+                    <button className="btn btn-outline-primary px-4 fw-semibold rounded-pill" disabled={user?.kycStatus === 'completed'}>
+                        Decline
+                    </button>
                 </div>
             </div>
         </>

@@ -21,7 +21,7 @@ interface UsersResponse {
 
 export default function UserList() {
 	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(10);
+	const [perPage, setPerPage] = useState(25);
 	const [isLoading, setIsLoading] = useState(false);
 	const [totalPages, setTotalPages] = useState(1);
 	const [users, setUsers] = useState<User[]>([]);
@@ -34,7 +34,7 @@ export default function UserList() {
         async function fetchUsers() {
             setIsLoading(true);
             try {
-                const response = await userApi.getAllUsers({
+                const response = await userApi.getUsers({
                     page,
                     limit: perPage,
                     search: filters.search || undefined,

@@ -1,10 +1,9 @@
 // components/Navbar.tsx
 import { Bell, Search, ChevronDown, User, LogOut, Settings } from "lucide-react";
+import { useLocation, matchPath, Link } from "react-router-dom";
 import { useLogout } from "../features/auth/hooks/useLogout";
 import { useState, useRef, useEffect } from "react";
 import { useUserData } from '../hooks/useUserData';
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 interface NavbarProps {
 	sidebarWidth: number;
@@ -33,18 +32,28 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
 		"/dashboard": { title: `Hello ${user?.fullName || 'Admin'} 👋`, subtitle: "Good Morning" },
 		
+		"/vehicle-owner/:id/show": {title:"Vehicle Owner Details", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		"/vehicle-owner/:id/edit": {title:"Update Vehicle Owner", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners/create": {title:"Create Vehicle Owner", subtitle:"Vehicle Owners > Creation", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners": {title:"Manage Vehicle Owner", subtitle:"Vehicle Owners > Requests", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		
+		"/pathfinders/:id/show": {title:"Pathfinder Details", subtitle:"Pathfinders > Details", parent:{label:"Pathfinders", path:"/pathfinders"}},
+		"/pathfinders/:id/edit": {title:"Update Pathfinder", subtitle:"Pathfinders > Updating", parent:{label:"Pathfinders", path:"/pathfinders"}},
 		"/pathfinders/create": {title:"Create Pathfinder", subtitle:"Pathfinders > Creation", parent:{label:"Pathfinders", path:"/pathfinders"}},
 		"/pathfinders": {title:"Manage Pathfinders", subtitle:"Pathfinders > Reports", parent:{label:"Pathfinders", path:"/pathfinders"}},
 		
+		"/companies/:id/show": {title:"Company Details", subtitle:"Companies > Details", parent:{label:"Companies", path:"/companies"}},
+		"/companies/:id/edit": {title:"Update Company", subtitle:"Companies > Updating", parent:{label:"Companies", path:"/companies"}},
 		"/companies/create": {title:"Create Company", subtitle:"Companies > Creation", parent:{label:"Companies", path:"/companies"}},
 		"/companies": {title:"Manage Companies", subtitle:"Companies > Branches", parent:{label:"Companies", path:"/companies"}},
 		
+		"/users/:id/show": {title:"User Details", subtitle:"Users > Details", parent:{label:"Users", path:"/users"}},
+		"/users/:id/edit": {title:"Update User", subtitle:"Users > Updating", parent:{label:"Users", path:"/users"}},
 		"/users/create": {title:"Create User", subtitle:"Users > Creation", parent:{label:"Users", path:"/users"}},
 		"/users": {title:"Manage Users", subtitle:"Users > View List", parent:{label:"Users", path:"/users"}},
 		
+		"/admins/:id/show": {title:"User Details", subtitle:"Admins > Details", parent:{label:"Admins", path:"/admins"}},
+		"/admins/:id/edit": {title:"Update User", subtitle:"Admins > Updating", parent:{label:"Admins", path:"/admins"}},
 		"/admins/create": {title:"Create Admin", subtitle:"Admins > Creation", parent:{label:"Admins", path:"/admins"}},
 		"/admins": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
 		
@@ -63,16 +72,22 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	};
 
 	// Helpers for fallback
-	const titleCase = (s: string) => s.replace(/[-_]+/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+	const titleCase =  (s: string) => s.replace(/[-_]+/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 	const defaultTitle = `Hello ${user?.fullName || 'Admin'} 👋`;
 	const defaultSubtitle = "Good Morning";
 
-	const pageConfig = routeConfig[pathname] || {
-		title: pathname === "/dashboard" && defaultTitle,
-		subtitle: pathname === "/dashboard" ? defaultSubtitle : titleCase(pathname.split("/").filter(Boolean)[0] || "") + " > View List",
+	// find the FIRST route key that matches the current path
+	const matchedKey = Object.keys(routeConfig).find((key) => matchPath({ path: key, end: true }, pathname));
+
+	// build pageConfig once
+	const pageConfig = matchedKey ? routeConfig[matchedKey] : {
+	    title: pathname === "/dashboard" ? defaultTitle : titleCase(pathname.split("/").filter(Boolean)[0] || "") ,
+	    subtitle: pathname === "/dashboard" ? defaultSubtitle : titleCase(pathname.split("/").filter(Boolean)[0] || "") 
 	};
 
-	const getNavbarStyles = () => isMobile ? {left:"0", width:"100%", marginLeft:"0"} : {left:`${sidebarWidth}px`, width:`calc(100% - ${sidebarWidth}px)`, marginLeft:"0"};
+	// if you want the base name: /pathfinders/:id/edit -> "pathfinders"
+	const baseSegment = pathname.split("/").filter(Boolean)[0] || "";
+  	const getNavbarStyles = () => isMobile ? {left:"0", width:"100%", marginLeft:"0"} : {left:`${sidebarWidth}px`, width:`calc(100% - ${sidebarWidth}px)`, marginLeft:"0"};
 
 	return (
 		<header className="bg-white border-bottom shadow-sm position-fixed" style={{borderBottomColor: "#e5e7eb", top: 0,zIndex: 1030,
@@ -82,18 +97,19 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 				<div className="d-flex align-items-center justify-content-between">
 					{/* Left: Title + Subtitle */}
 					<div style={{ marginLeft: isMobile ? "48px" : "0" }}>
-						<h1 className="h4 fw-semibold text-dark mb-1">{pageConfig.title}</h1>            
-							{pageConfig.subtitle && pageConfig.parent ? (
-								<p className="small text-muted mb-0 d-flex align-items-center">
-									<Link to={pageConfig.parent.path} className="text-decoration-none fw-semibold text-primary">
-										{pageConfig.parent.label}
-									</Link>
-									<i className="fa fa-angle-right mx-2 text-muted"></i>
-									<span>{pageConfig.subtitle.split(">")[1]?.trim()}</span>
-								</p>
-							) : ( // fallback if no parent is defined
-								<p className="small text-muted mb-0">{pageConfig.subtitle}</p>
-							)}
+						<h1 className="h4 fw-semibold text-dark mb-1">{pageConfig.title}</h1>
+
+			            {pageConfig.subtitle && pageConfig.parent ? (
+			             	<p className="small text-muted mb-0 d-flex align-items-center">
+			                	<Link to={pageConfig.parent.path} className="text-decoration-none fw-semibold text-primary">
+			                  		{pageConfig.parent.label}
+			                	</Link>
+			                	<i className="fa fa-angle-right mx-2 text-muted"></i>
+			                	<span>{pageConfig.subtitle.split(">")[1]?.trim()}</span>
+			             	</p>
+			            ) : ( // fallback if no parent is defined
+			              	<p className="small text-muted mb-0">{pageConfig.subtitle}</p>
+			            )}
 					</div>
 
 					{/* Right side (Search, Notifications, Profile) same as before */}

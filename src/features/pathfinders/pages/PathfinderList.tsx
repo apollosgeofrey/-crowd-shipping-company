@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-import { pathfinderApi, type Pathfinder, type PaginatedResponse } from "../services/pathfinderApi.ts";
+import { pathfinderApi, type PaginatedResponse } from "../services/pathfinderApi.ts";
 
 export default function PathfinderList() {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
-    const [isLoading, setIsLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-    const [pathfinders, setPathfinders] = useState<Pathfinder[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [pathfinders, setPathfinders] = useState([]);
     const [filters, setFilters] = useState({search: "", status: "", isApproved: "", kycStatus: ""});
 
     // Fetch data whenever page, perPage, or filters change

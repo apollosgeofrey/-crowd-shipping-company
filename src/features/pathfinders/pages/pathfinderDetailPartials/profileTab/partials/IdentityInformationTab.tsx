@@ -1,115 +1,95 @@
-// pages/users/tabs/IdentityInformationTab.tsx
-// import React from "react";
-// import { FaCar } from "react-icons/fa";
-
-export default function IdentityInformationTab({
-    // props
-}: {
-    // props types
-}) {
-    // logic
-    // props destructuring (if any)
-
-    // helper functions (if any)
-
-    // state (if any)
-
-    // side effects (if any)
-
-    // constants (if any)
-
-    // computed values (if any)
-
-    // event handlers (if any)
-
-    // other logic (if any)
-    // Mock identity info (in real case, fetch from API or props)
-    const identityInfo = {
-        nin: "1234-5678-9012",              // National Identity Number
-        identityType: "Driver’s License",  // Type of ID provided
-        idNumber: "LAG-2023-ABC-9087",     // ID number
-        fullName: "John Ashernine",
-        email: "john.ashernine@example.com",
-        dateOfBirth: "12-Apr-1985",
-        gender: "Male",
-        nationality: "Nigerian",
-        issueDate: "23-Apr-2016",
-        expiryDate: "16-Mar-2019",
-        address: "12, Bank Anthony Way, Ikeja, Lagos",
+interface IdentityInformationTabProps {
+    profile?: {
+        identificationType?: string;
+        licenseNumber?: string;
+        gender?: string;
+        country?: string;
+        state?: string;
+        city?: string;
+        geoLocation?: {
+            address?: string;
+        };
     };
+    identityInfo: {
+        identificationType?: string;
+        licenseNumber?: string;
+        gender?: string;
+    };
+}
 
-    // Render
+export default function IdentityInformationTab({ pathfinder }: {props: any}) {
+
+    // Use actual data from props with fallbacks
+    const profile = pathfinder?.profile || {}
+    const identityData = {
+        email: pathfinder.email || "Not specified",
+        nationality: profile?.country || "Not specified",
+        fullName: pathfinder.fullName || "Not specified",
+        idNumber: profile?.licenseNumber || "Not provided",
+        identityType: profile?.identificationType || "Not provided",
+        gender: profile?.gender ? profile?.gender.charAt(0).toUpperCase() + profile?.gender.slice(1) : "Not specified",
+        address: profile?.geoLocation?.address || (profile?.city && profile?.state ? `${profile.city}, ${profile.state}` : "Not specified"),
+    }; 
+
     return (
-        <div className="card border-0 shadow-sm rounded">
-            <div className="card-body">
-                <div className="row g-3">
-                    {/* NIN */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">National Identity Number (NIN)</p>
-                        <p className="text-muted small">{identityInfo.nin}</p>
-                    </div>
+        <>
+            <div className="row g-0 small">
+                {/* Identity Type */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Identification Type</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.identityType}</p>
+                </div>
 
-                    {/* Identity Type */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Identity Type</p>
-                        <p className="text-muted small">{identityInfo.identityType}</p>
-                    </div>
+                {/* ID Number */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">License Number</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.idNumber}</p>
+                </div>
 
-                    {/* ID Number */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">ID Number</p>
-                        <p className="text-muted small">{identityInfo.idNumber}</p>
-                    </div>
+                {/* Full Name - Note: This should come from parent's basicInfo */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Full Name</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.fullName}</p>
+                </div>
 
-                    {/* Full Name */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Full Name</p>
-                        <p className="text-muted small">{identityInfo.fullName}</p>
-                    </div>
+                {/* Email - Note: This should come from parent's basicInfo */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Email Address</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.email}</p>
+                </div>
 
-                    {/* Email */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Email Address</p>
-                        <p className="text-muted small">{identityInfo.email}</p>
-                    </div>
+                {/* Gender */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Gender</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.gender}</p>
+                </div>
 
-                    {/* Date of Birth */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Date of Birth</p>
-                        <p className="text-muted small">{identityInfo.dateOfBirth}</p>
-                    </div>
-
-                    {/* Gender */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Gender</p>
-                        <p className="text-muted small">{identityInfo.gender}</p>
-                    </div>
-
-                    {/* Nationality */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Nationality</p>
-                        <p className="text-muted small">{identityInfo.nationality}</p>
-                    </div>
-
-                    {/* Issue Date */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Issue Date</p>
-                        <p className="text-muted small">{identityInfo.issueDate}</p>
-                    </div>
-
-                    {/* Expiry Date */}
-                    <div className="col-md-6">
-                        <p className="fw-semibold mb-1">Expiry Date</p>
-                        <p className="text-muted small">{identityInfo.expiryDate}</p>
-                    </div>
-
-                    {/* Address */}
-                    <div className="col-12">
-                        <p className="fw-semibold mb-1">Address</p>
-                        <p className="text-muted small">{identityInfo.address}</p>
-                    </div>
+                {/* Nationality */}
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Nationality</p>
+                    <p className="text-muted border-bottom pb-2">{identityData.nationality}</p>
                 </div>
             </div>
-        </div>
+
+            {/* Additional information from API that's available */}
+            <div className="row g-0 mt-3 pt-3 small border-top">
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Country</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.country || "Not specified"}</p>
+                </div>
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">State</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.state || "Not specified"}</p>
+                </div>
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">City</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.city || "Not specified"}</p>
+                </div>
+                <div className="col-md-6">
+                    <p className="fw-semibold mb-0">Language</p>
+                    <p className="text-muted border-bottom pb-2">{profile?.language ? profile.language.charAt(0).toUpperCase() + profile.language.slice(1) : "Not specified"}</p>
+                </div>
+            </div>
+        </>
     );
 }

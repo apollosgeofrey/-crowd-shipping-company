@@ -6,7 +6,7 @@ import { pathfinderApi, type PaginatedResponse } from "../services/pathfinderApi
 
 export default function PathfinderList() {
     const [page, setPage] = useState(1);
-    const [perPage, setPerPage] = useState(20);
+    const [perPage, setPerPage] = useState(25);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [isLoading, setIsLoading] = useState(false);

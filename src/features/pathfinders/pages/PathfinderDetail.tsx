@@ -120,7 +120,7 @@ export default function PathfinderDetail() {
                 {/* Header */}
                 <div className="d-flex align-items-center mb-4">
                     <div className="d-flex align-items-center gap-3">
-                        <img src={pathfinder?.profile.profilePicUrl || userMale} alt={pathfinder?.fullName} className="rounded" style={{ width: "80px", height: "80px", objectFit: "cover" }}/>
+                        <img src={pathfinder?.profile?.profilePicUrl || userMale} alt={pathfinder?.fullName} className="rounded" style={{ width: "80px", height: "80px", objectFit: "cover" }}/>
                         <div>
                             <h5 className="fw-bold mb-2">
                                 {pathfinder?.fullName}

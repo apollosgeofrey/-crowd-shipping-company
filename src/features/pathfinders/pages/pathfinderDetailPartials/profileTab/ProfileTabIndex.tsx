@@ -1,6 +1,5 @@
 import { useState } from "react";
 import DocumentsTab from "./partials/DocumentsTab.tsx";
-import { type Pathfinder } from "../../../services/pathfinderApi";
 import { FaUser, FaFileAlt, FaLock, FaIdCard } from "react-icons/fa";
 import PaymentInformationTab from "./partials/PaymentInformationTab.tsx";
 import IdentityInformationTab from "./partials/IdentityInformationTab.tsx";

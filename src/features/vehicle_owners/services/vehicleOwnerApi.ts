@@ -2,15 +2,48 @@
 import api from '@/services/api';
 
 /**
- * Vehicle Owner-specific interface extending User
+ * Pagination metadata interface
  */
-export interface VehicleOwner extends User {
-    // Vehicle owner-specific fields can be added here if needed
-    // Currently uses all User fields
+export interface PaginationMeta {
+    total: number;                  // Total number of items
+    perPage: number;                // Items per page
+    currentPage: number;            // Current page number
+    totalPages: number;             // Total number of pages
+}
+
+/**  Paginated response interface */
+export interface PaginatedResponse<T = any> {
+    items: T[];                     // Array of items for current page
+    meta: PaginationMeta;           // Pagination metadata
+}
+
+/** Payload for updating user information || All fields are optional since we may update only specific fields */
+export interface VehicleOwnerPayload {
+    fullName?: string;              // Optional: New full name
+    email?: string;                 // Optional: New email address
+    phoneNumber?: string;           // Optional: New phone number
+    password?: string;              // Optional: New password
+    confirmPassword?: string;       // Optional: Password confirmation
+    status?: string;                // Optional: Account status update
+    role?: string;                  // Optional: Role assignment
+    userType?: string;              // Optional: User type update
+    isApproved?: boolean;           // Optional: Approval status
+    kycStatus?: string;             // Optional: KYC status update
+}
+
+/**
+ * Standard API response format from the backend
+ * @template T - Type of data payload
+ */
+export interface ApiResponse<T = any> {
+    code: number;                   // HTTP status code (e.g., 200, 400, 500)
+    message: string;                // Response message from server
+    data: T;                        // Response payload data
 }
 
 /**
  * Vehicle Owner API Service - Collection of methods for vehicle owner management operations
+ * All methods follow the backend API structure and return standardized responses
  */
 export const vehicleOwnerApi = {
     /**
@@ -25,24 +58,8 @@ export const vehicleOwnerApi = {
         status?: string;            // Filter by status
         isApproved?: boolean;       // Filter by approval status
         kycStatus?: string;         // Filter by KYC status
-    }): Promise<ApiResponse<PaginatedResponse<VehicleOwner>>> => {
+    }): Promise<ApiResponse<PaginatedResponse>> => {
         const response = await api.get('/v1/admin/vehicle-owners', { params });
-        return response.data;
-    },
-
-    /**
-     * Fetch recent vehicle owners (for dashboard)
-     * @param limit - Number of recent vehicle owners to fetch
-     * @returns Promise resolving to API response with recent vehicle owners
-     */
-    getRecentVehicleOwners: async (limit: number = 5): Promise<ApiResponse<VehicleOwner[]>> => {
-        const response = await api.get('/v1/admin/vehicle-owners', { 
-            params: { 
-                page: 1, 
-                limit,
-                sort: 'createdAt:desc' 
-            } 
-        });
         return response.data;
     },
 
@@ -51,49 +68,29 @@ export const vehicleOwnerApi = {
      * @param vehicleOwnerId - The unique identifier of the vehicle owner to fetch
      * @returns Promise resolving to API response with vehicle owner data
      */
-    getVehicleOwnerById: async (vehicleOwnerId: string): Promise<ApiResponse<VehicleOwner>> => {
+    getVehicleOwnerById: async (vehicleOwnerId: string): Promise<ApiResponse> => {
         const response = await api.get(`/v1/admin/vehicle-owners/${vehicleOwnerId}`);
+        return response.data;
+    },
+
+    /**
+     * Create a new vehicle owner account
+     * @param vehicleOwnerData - Required vehicle owner information for account creation
+     * @returns Promise resolving to API response with created vehicle owner data
+     */
+    createVehicleOwner: async (vehicleOwnerData: VehicleOwnerPayload): Promise<ApiResponse> => {
+        const response = await api.post('/v1/admin/vehicle-owners', vehicleOwnerData);
         return response.data;
     },
 
     /**
      * Update vehicle owner-specific information
      * @param vehicleOwnerId - The unique identifier of the vehicle owner to update
-     * @param userData - Partial vehicle owner data with fields to update
+     * @param vehicleOwnerData - Partial vehicle owner data with fields to update
      * @returns Promise resolving to API response with updated vehicle owner data
      */
-    updateVehicleOwner: async (vehicleOwnerId: string, userData: UpdateUserPayload): Promise<ApiResponse<VehicleOwner>> => {
-        const response = await api.put(`/v1/admin/vehicle-owners/${vehicleOwnerId}`, userData);
-        return response.data;
-    },
-
-    // =========================================================================
-    // VEHICLE OWNER-SPECIFIC STATUS MANAGEMENT METHODS
-    // =========================================================================
-
-    /**
-     * Approve a vehicle owner account
-     * @param vehicleOwnerId - The unique identifier of the vehicle owner to approve
-     * @returns Promise resolving to API response with updated vehicle owner data
-     */
-    approveVehicleOwner: async (vehicleOwnerId: string): Promise<ApiResponse<VehicleOwner>> => {
-        const response = await api.put(`/v1/admin/vehicle-owners/${vehicleOwnerId}`, {
-            status: 'active',
-            isApproved: true
-        });
-        return response.data;
-    },
-
-    /**
-     * Reject a vehicle owner account
-     * @param vehicleOwnerId - The unique identifier of the vehicle owner to reject
-     * @returns Promise resolving to API response with updated vehicle owner data
-     */
-    rejectVehicleOwner: async (vehicleOwnerId: string): Promise<ApiResponse<VehicleOwner>> => {
-        const response = await api.put(`/v1/admin/vehicle-owners/${vehicleOwnerId}`, {
-            status: 'rejected',
-            isApproved: false
-        });
+    updateVehicleOwner: async (vehicleOwnerId: string, vehicleOwnerData: VehicleOwnerPayload): Promise<ApiResponse> => {
+        const response = await api.put(`/v1/admin/vehicle-owners/${vehicleOwnerId}`, vehicleOwnerData);
         return response.data;
     },
 
@@ -103,7 +100,7 @@ export const vehicleOwnerApi = {
      * @param kycStatus - New KYC status ('pending', 'verified', 'rejected')
      * @returns Promise resolving to API response with updated vehicle owner data
      */
-    updateVehicleOwnerKyc: async (vehicleOwnerId: string, kycStatus: string): Promise<ApiResponse<VehicleOwner>> => {
+    updateVehicleOwnerKyc: async (vehicleOwnerId: string, kycStatus: string): Promise<ApiResponse> => {
         const response = await api.put(`/v1/admin/vehicle-owners/${vehicleOwnerId}`, {
             kycStatus
         });

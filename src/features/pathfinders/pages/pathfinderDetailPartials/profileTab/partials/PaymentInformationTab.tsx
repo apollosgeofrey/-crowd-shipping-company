@@ -25,29 +25,29 @@ export default function PaymentInformationTab({ pathfinder }: {props: any}) {
             {/* Wallet Balance Section */}
             <div className="row g-0 mb-4">
                 <div className="col-12">
-                    <h6 className="fw-semibold mb-3 text-primary">💰 Wallet Information</h6>
+                    <h5 className="fw-semibold mb-3 text-primary">💰 Wallet Information</h5>
                 </div>
                 
                 {/* Total Balance */}
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <p className="fw-semibold mb-0">Total Balance</p>
                     <p className="fs-5 fw-bold text-success">{formatCurrency(wallet?.balance)}</p>
                 </div>
 
                 {/* Available Balance */}
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <p className="fw-semibold mb-0">Available Balance</p>
                     <p className="fs-6 text-dark">{formatCurrency(wallet?.availableBalance)}</p>
                 </div>
 
                 {/* Locked Funds */}
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <p className="fw-semibold mb-0">Locked Funds</p>
                     <p className="fs-6 text-warning">{formatCurrency(wallet?.lockedFund)}</p>
                 </div>
 
                 {/* Wallet Status */}
-                <div className="col-12">
+                <div className="col-md-3">
                     <p className="fw-semibold mb-0">Wallet Status</p>
                     <span className={`badge bg-${getWalletStatusColor(wallet?.status)}`}>
                         {wallet?.status ? wallet.status.charAt(0).toUpperCase() + wallet.status.slice(1) : 'Unknown'}
@@ -60,7 +60,7 @@ export default function PaymentInformationTab({ pathfinder }: {props: any}) {
             {/* Bank Account Section */}
             <div className="row g-0">
                 <div className="col-12">
-                    <h6 className="fw-semibold mb-3 text-primary">🏦 Bank Account Details</h6>
+                    <h5 className="fw-semibold mb-3 text-primary">🏦 Bank Account Details</h5>
                 </div>
 
                 {/* Bank Name */}

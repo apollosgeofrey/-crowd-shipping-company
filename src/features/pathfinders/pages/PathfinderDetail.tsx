@@ -125,7 +125,7 @@ export default function PathfinderDetail() {
                             <h5 className="fw-bold mb-2">
                                 {pathfinder?.fullName}
                                 <sup className={`text-${getStatusTextColor(pathfinder?.status)} text-sm`}>
-                                    &nbsp; - ({pathfinder?.status?.toUpperCase()})
+                                    &nbsp; - <small>({pathfinder?.status?.toUpperCase()})</small>
                                 </sup>
                             </h5>
                             <p className="mb-1 fw-semibold">

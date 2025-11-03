@@ -40,7 +40,7 @@ export default function CompanyDetail    () {
                         </div>
                     </div>
                     <div className="ms-auto">
-                        <button className="btn btn-primary px-3">
+                        <button className="btn btn-sm btn-primary px-3">
                             <span className="fa fa-pencil-alt"></span> Edit Profile
                         </button>
                     </div>

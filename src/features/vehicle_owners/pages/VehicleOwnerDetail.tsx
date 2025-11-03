@@ -75,9 +75,9 @@ export default function VehicleOwnerDetail() {
     if (loading) {
         return (
             <DashboardLayout>
-                <div className="container mt-4">
+                <div className="container mt-0">
                     <div className="row justify-content-center">
-                        <div className="col-12 col-md-8">
+                        <div className="col-sm-12">
                             <div className="card shadow-sm border-0 p-5 d-flex align-items-center justify-content-center text-center" style={{ minHeight: "250px" }}>
                                 <div>
                                     <div className="spinner-border text-primary mb-3" role="status" style={{ width: "3rem", height: "3rem" }}>
@@ -140,7 +140,7 @@ export default function VehicleOwnerDetail() {
                         </div>
                     </div>
                     <div className="ms-auto d-flex gap-2">                        
-                        <Link to={`/vehicle-owners/${vehicleOwner?._id}/edit`} className="btn btn-primary px-3">
+                        <Link to={`/vehicle-owners/${vehicleOwner?._id}/edit`} className="btn btn-sm btn-primary px-3">
                             <span className="fa fa-pencil-alt me-1"></span> Edit Profile
                         </Link>
                     </div>

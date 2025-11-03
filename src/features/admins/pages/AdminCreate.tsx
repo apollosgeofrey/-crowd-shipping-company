@@ -13,16 +13,16 @@ const [userType, setUserType] = useState<"existing" | "new" | null>(null);
 
 				{/* Step 1: Choose user type */}
 				{!userType && (
-					<div className="text-center">
+					<div className="text-center py-5">
 						<h5 className="fw-bold mb-2">Choose User Type</h5>
 						<p className="text-muted">Decide whether this is a new user or an existing user</p>
 
-						<div className="d-flex justify-content-center gap-3 mt-4">
+						<div className="d-flex justify-content-center gap-5 mt-4">
 							<button className="btn btn-outline-primary px-4 py-2 fw-semibold" onClick={() => setUserType("existing")}>
-								<i className="fa fa-user me-2"></i> Existing User
+								<i className="fa fa-user me-2"></i> Promote Existing User
 							</button>
-							<button className="btn btn-outline-success px-4 py-2 fw-semibold" onClick={() => setUserType("new")}>
-								<i className="fa fa-user-plus me-2"></i> New User
+							<button className="btn btn-primary px-4 py-2 fw-semibold" onClick={() => setUserType("new")}>
+								<i className="fa fa-user-plus me-2"></i> Create New User
 							</button>
 						</div>
 					</div>
@@ -33,10 +33,10 @@ const [userType, setUserType] = useState<"existing" | "new" | null>(null);
 					<>
 						<ExistingUser />
 						<div className="text-center mt-4">
-							<button className="btn btn-secondary" onClick={() => setUserType(null)}>
-								<i className="fa fa-arrow-left me-2"></i> Back
-							</button>
-						</div>
+		                    <button className="btn btn-outline-primary" onClick={() => setUserType(null)}>
+		                        <i className="fa fa-angle-double-left me-2"></i> Go Back
+		                    </button>
+		                </div>
 					</>
 				)}
 
@@ -44,11 +44,11 @@ const [userType, setUserType] = useState<"existing" | "new" | null>(null);
 					<>
 						<NewUser />
 						<div className="text-center mt-4">
-							<button className="btn btn-secondary" onClick={() => setUserType(null)}>
-								<i className="fa fa-arrow-left me-2"></i> Back
-							</button>
-						</div>
-					</>
+		                    <button className="btn btn-outline-primary" onClick={() => setUserType(null)}>
+		                        <i className="fa fa-angle-double-left me-2"></i> Go Back
+		                    </button>
+		                </div>
+		            </>
 				)}
 			</div>
 		</DashboardLayout>

@@ -103,9 +103,9 @@ export default function UserEdit() {
     if (fetchLoading) {
         return (
             <DashboardLayout>
-                <div className="container mt-4">
+                <div className="container mt-0">
                     <div className="row justify-content-center">
-                        <div className="col-12 col-md-8">
+                        <div className="col-sm-12">
                             <div className="card shadow-sm border-0 p-5 d-flex align-items-center justify-content-center text-center" style={{ minHeight: "250px" }}>
                                 <div>
                                     <div className="spinner-border text-primary mb-3" role="status" style={{ width: "3rem", height: "3rem" }}>
@@ -123,116 +123,118 @@ export default function UserEdit() {
 
     return (
         <DashboardLayout>
-            <div className="container mt-4">
-                <div className="row justify-content-center">
-                    <div className="col-12 col-md-8">
+            <div className="card shadow-sm rounded p-4">
+                <div className="container mt-0">
+                    <div className="row justify-content-center">
+                        <div className="col-12 col-md-8">
 
-                        {/* main card */}
-                        <div className="card shadow-sm border-0 p-2">
+                            {/* main card */}
+                            <div className="card shadow-sm border-0 p-2">
 
-                            {/* Header with back button */}
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <button type="button" onClick={handleCancel} className="btn btn-link text-decoration-none text-secondary">
-                                    <i className="fa fa-arrow-left me-1"></i> Back
-                                </button>
-                                
-                                <div className="d-flex">
-                                    <button type="button" className="btn btn-link text-decoration-none text-primary fw-semibold border-bottom" style={{ borderBottom: "3px solid #E35D3F" }}>
-                                        <h5 className="mb-0">
-                                            <i className="fa fa-edit me-1"></i> Edit Information
-                                        </h5>
+                                {/* Header with back button */}
+                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                    <button type="button" onClick={handleCancel} className="btn btn-sm btn-outline-primary">
+                                        <i className="fa fa-angle-double-left me-1"></i> Go Back
                                     </button>
+                                    
+                                    <div className="d-flex">
+                                        <button type="button" className="btn btn-link text-decoration-none text-primary fw-semibold border-bottom" style={{ borderBottom: "3px solid #E35D3F" }}>
+                                            <h5 className="mb-0">
+                                                <i className="fa fa-edit me-1"></i> Edit Information
+                                            </h5>
+                                        </button>
+                                    </div>
+                                    
+                                    <div style={{ width: "80px" }}></div> {/* Spacer for balance */}
                                 </div>
-                                
-                                <div style={{ width: "80px" }}></div> {/* Spacer for balance */}
-                            </div>
 
-                            <div className="card-body">
-                                {/* alerts */}
-                                {message.text && (
-                                    <div className={`alert ${message.type === "success" ? "alert-success" : "alert-danger"} py-2`}>
-                                        {message.text}
-                                    </div>
-                                )}
+                                <div className="card-body">
+                                    {/* alerts */}
+                                    {message.text && (
+                                        <div className={`alert ${message.type === "success" ? "alert-success" : "alert-danger"} py-2`}>
+                                            {message.text}
+                                        </div>
+                                    )}
 
-                                <form onSubmit={handleSubmit}>
-                                    <div className="row g-3">
-                                        {/* Full Name */}
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                Full Name:<span className="text-danger">*</span>
-                                            </label>
-                                            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required className="form-control shadow-lg" placeholder="e.g. Emmanuel Okafor"/>
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="row g-3">
+                                            {/* Full Name */}
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    Full Name:<span className="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required className="form-control shadow-lg" placeholder="e.g. Emmanuel Okafor"/>
+                                            </div>
+
+                                            {/* Email */}
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    Email Address:<span className="text-danger">*</span>
+                                                </label>
+                                                <input type="email" name="email" value={formData.email} onChange={handleChange} required className="form-control shadow-lg" placeholder="Enter email address"/>
+                                            </div>
+
+                                            {/* Phone */}
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    Phone Number:<span className="text-danger">*</span>
+                                                </label>
+                                                <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required className="form-control shadow-lg" placeholder="+234 801 234 5678"/>
+                                            </div>
+
+                                            {/* Status */}
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    Status:<span className="text-danger">*</span>
+                                                </label>
+                                                <select name="status" value={formData.status} onChange={handleChange} required className="form-select shadow-lg">
+                                                    <option value="active">Active</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="blocked">Blocked</option>
+                                                    <option value="suspended">Suspended</option>
+                                                    <option value="deactivated">Deactivated</option>
+                                                </select>
+                                            </div>
                                         </div>
 
-                                        {/* Email */}
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                Email Address:<span className="text-danger">*</span>
-                                            </label>
-                                            <input type="email" name="email" value={formData.email} onChange={handleChange} required className="form-control shadow-lg" placeholder="Enter email address"/>
+                                        <hr className="my-4" />
+
+                                        {/* security - Optional for update */}
+                                        <p className="fw-semibold mb-3">
+                                            <span className="fa fa-lock"></span> CHANGE PASSWORD <sup className='text-danger'>(Optional)</sup>
+                                        </p>
+                                        <div className="row g-3">
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    New Password:
+                                                </label>
+                                                <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-control shadow-lg" placeholder="Leave blank to keep current password"/>
+                                                <small className="text-muted">Minimum 8 characters</small>
+                                            </div>
+
+                                            <div className="col-sm-12 col-md-6 mb-3">
+                                                <label className="form-label text-dark fw-bold mb-0 small">
+                                                    Confirm New Password:
+                                                </label>
+                                                <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="form-control shadow-lg" placeholder="Re-enter new password"/>
+                                            </div>
                                         </div>
 
-                                        {/* Phone */}
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                Phone Number:<span className="text-danger">*</span>
-                                            </label>
-                                            <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required className="form-control shadow-lg" placeholder="+234 801 234 5678"/>
+                                        {/* footer buttons */}
+                                        <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                                            <button type="button" onClick={handleCancel} className="btn btn-light border">
+                                                <span className="fa fa-times"></span> Cancel
+                                            </button>
+                                            <button type="submit" disabled={loading} className="btn btn-sm btn-primary" style={{ backgroundColor: "#E35D3F", borderColor: "#E35D3F" }}>
+                                                {loading ? (
+                                                    <><span className="spinner-border spinner-border-sm text-white" role="status"></span> Updating...</>
+                                                ) : (
+                                                    <><span className="fa fa-save"></span> Update User</>
+                                                )}
+                                            </button>
                                         </div>
-
-                                        {/* Status */}
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                Status:<span className="text-danger">*</span>
-                                            </label>
-                                            <select name="status" value={formData.status} onChange={handleChange} required className="form-select shadow-lg">
-                                                <option value="active">Active</option>
-                                                <option value="pending">Pending</option>
-                                                <option value="blocked">Blocked</option>
-                                                <option value="suspended">Suspended</option>
-                                                <option value="deactivated">Deactivated</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <hr className="my-4" />
-
-                                    {/* security - Optional for update */}
-                                    <p className="fw-semibold mb-3">
-                                        <span className="fa fa-lock"></span> CHANGE PASSWORD (Optional)
-                                    </p>
-                                    <div className="row g-3">
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                New Password:
-                                            </label>
-                                            <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-control shadow-lg" placeholder="Leave blank to keep current password"/>
-                                            <small className="text-muted">Minimum 8 characters</small>
-                                        </div>
-
-                                        <div className="col-sm-12 col-md-6 mb-3">
-                                            <label className="form-label text-dark fw-bold mb-0">
-                                                Confirm New Password:
-                                            </label>
-                                            <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="form-control shadow-lg" placeholder="Re-enter new password"/>
-                                        </div>
-                                    </div>
-
-                                    {/* footer buttons */}
-                                    <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-                                        <button type="button" onClick={handleCancel} className="btn btn-light border">
-                                            <span className="fa fa-times"></span> Cancel
-                                        </button>
-                                        <button type="submit" disabled={loading} className="btn btn-primary" style={{ backgroundColor: "#E35D3F", borderColor: "#E35D3F" }}>
-                                            {loading ? (
-                                                <><span className="spinner-border spinner-border-sm text-white" role="status"></span> Updating...</>
-                                            ) : (
-                                                <><span className="fa fa-save"></span> Update User</>
-                                            )}
-                                        </button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

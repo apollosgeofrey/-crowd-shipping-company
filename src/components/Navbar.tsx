@@ -32,8 +32,8 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
 		"/dashboard": { title: `Hello ${user?.fullName || 'Admin'} 👋`, subtitle: "Good Morning" },
 		
-		"/vehicle-owner/:id/show": {title:"Vehicle Owner Details", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
-		"/vehicle-owner/:id/edit": {title:"Update Vehicle Owner", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		"/vehicle-owners/:id/show": {title:"Vehicle Owner Details", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		"/vehicle-owners/:id/edit": {title:"Update Vehicle Owner", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners/create": {title:"Create Vehicle Owner", subtitle:"Vehicle Owners > Creation", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners": {title:"Manage Vehicle Owner", subtitle:"Vehicle Owners > Requests", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		
@@ -52,8 +52,8 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 		"/users/create": {title:"Create User", subtitle:"Users > Creation", parent:{label:"Users", path:"/users"}},
 		"/users": {title:"Manage Users", subtitle:"Users > View List", parent:{label:"Users", path:"/users"}},
 		
-		"/admins/:id/show": {title:"User Details", subtitle:"Admins > Details", parent:{label:"Admins", path:"/admins"}},
-		"/admins/:id/edit": {title:"Update User", subtitle:"Admins > Updating", parent:{label:"Admins", path:"/admins"}},
+		"/admins/:id/show": {title:"Admin Details", subtitle:"Admins > Details", parent:{label:"Admins", path:"/admins"}},
+		"/admins/:id/edit": {title:"Update Admin", subtitle:"Admins > Updating", parent:{label:"Admins", path:"/admins"}},
 		"/admins/create": {title:"Create Admin", subtitle:"Admins > Creation", parent:{label:"Admins", path:"/admins"}},
 		"/admins": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
 		

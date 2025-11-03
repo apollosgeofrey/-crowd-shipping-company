@@ -231,18 +231,18 @@ export default function UserList() {
 						             <thead className="table-light small">
 						                <tr className="m-5">
 							                <th style={{ width: "2%" }} className="py-3">#</th>
-							                <th style={{ width: "20%" }} className="py-3">FULL NAME</th>
+							                <th style={{ width: "18%" }} className="py-3">FULL NAME</th>
 							                <th style={{ width: "18%" }} className="py-3">CONTACT DETAILS</th>
 							                <th style={{ width: "15%" }} className="py-3">JOINED DATE</th>
 							                <th style={{ width: "20%" }} className="py-3">WALLET</th>
 							                <th style={{ width: "15%" }} className="py-3">STATUSES</th>
-							                <th style={{ width: "10%" }} className="py-3">ACTION</th>
+							                <th style={{ width: "12%" }} className="py-3">ACTION</th>
 						                </tr>
 						             </thead>
 						             <tbody className="small">
 						                {isLoading ? (
 						                  	<tr>
-						                    	<td colSpan={6} className="text-center text-muted py-3">
+						                    	<td colSpan={7} className="text-center text-muted py-3">
 						                    		<div className="spinner-border spinner-border-sm me-2"></div>
 						                    		Loading users...
 						                    	</td>
@@ -250,7 +250,7 @@ export default function UserList() {
 						                ) : (
 						                  	users.length === 0 ? (
 						                    	<tr>
-						                    		<td colSpan={6} className="text-center text-muted py-3">
+						                    		<td colSpan={7} className="text-center text-muted py-3">
 						                    			No users found
 						                    		</td>
 						                    	</tr>
@@ -325,10 +325,10 @@ export default function UserList() {
                                                     </td>
 							                        <td className="text-muted py-3 px-2">
 							                        	<div className="btn-group">
-															<Link to={`/users/${user._id}/show`} className="btn btn-sm btn-outline-primary" title="View User">
+															<Link to={`/users/${user._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View User">
 																View <i className="fa fa-eye small"></i>
 															</Link>
-															<Link to={`/users/${user._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit User">
+															<Link to={`/users/${user._id}/edit`} className="btn btn-sm px-1 py-0 btn-outline-secondary" title="Edit User">
 																Edit <i className="fa fa-edit small"></i>
 															</Link>
 														</div>
@@ -342,13 +342,7 @@ export default function UserList() {
 				          	</div>
 
 				          	{/* Pagination Bar */}
-				          	<PaginationBar 
-				          		page={page} 
-				          		perPage={perPage} 
-				          		totalPages={totalPages} 
-				          		onPageChange={setPage} 
-				          		onPerPageChange={setPerPage} 
-				          	/>
+				          	<PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
 				        </div>
 				    </div>
 			    </div>

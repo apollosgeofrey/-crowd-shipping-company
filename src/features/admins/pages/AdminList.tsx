@@ -21,7 +21,7 @@ interface AdminsResponse {
 
 export default function AdminList() {
 	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(10);
+	const [perPage, setPerPage] = useState(25);
 	const [totalPages, setTotalPages] = useState(1);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function AdminList() {
         async function fetchAdmins() {
             setIsLoading(true);
             try {
-                const response = await adminApi.getAllAdmins({
+                const response = await adminApi.getAdmins({
                     page,
                     limit: perPage,
                     role: filters.role || undefined,
@@ -213,18 +213,18 @@ export default function AdminList() {
 									<thead className="table-light small">
 										<tr>
 											<th style={{ width: "2%" }} className="py-3">#</th>
-											<th style={{ width: "20%" }} className="py-3">ADMIN DETAILS</th>
+											<th style={{ width: "18%" }} className="py-3">ADMIN DETAILS</th>
 											<th style={{ width: "15%" }} className="py-3">ID NUMBER</th>
 											<th style={{ width: "20%" }} className="py-3">CONTACT INFO</th>
 											<th style={{ width: "15%" }} className="py-3">ONBOARDING DATE</th>
 											<th style={{ width: "18%" }} className="py-3">ROLE & STATUSES</th>
-											<th style={{ width: "10%" }} className="py-3">ACTIONS</th>
+											<th style={{ width: "12%" }} className="py-3">ACTIONS</th>
 										</tr>
 									</thead>
 									<tbody className="small">
 										{isLoading ? (
 											<tr>
-												<td colSpan={6} className="text-center text-muted py-3">
+												<td colSpan={7} className="text-center text-muted py-3">
 													<div className="spinner-border spinner-border-sm me-2"></div>
 													Loading admins...
 												</td>
@@ -232,7 +232,7 @@ export default function AdminList() {
 										) : (
 											admins.length === 0 ? (
 												<tr>
-													<td colSpan={6} className="text-center text-muted py-3">
+													<td colSpan={7} className="text-center text-muted py-3">
 														No admins found
 													</td>
 												</tr>
@@ -297,10 +297,10 @@ export default function AdminList() {
 
 														<td className="text-muted py-3 px-2">
 															<div className="btn-group">
-																<Link to={`/admins/${admin._id}/show`} className="btn btn-sm btn-outline-primary" title="View Admin">
+																<Link to={`/admins/${admin._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Admin">
 																	View <i className="fa fa-eye small"></i>
 																</Link>
-																<Link to={`/admins/${admin._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit Admin">
+																<Link to={`/admins/${admin._id}/edit`} className="btn btn-sm px-1 py-0 btn-outline-secondary" title="Edit Admin">
 																	Edit <i className="fa fa-edit small"></i>
 																</Link>
 															</div>

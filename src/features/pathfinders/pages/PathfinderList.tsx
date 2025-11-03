@@ -189,40 +189,37 @@ export default function PathfinderList() {
                                     <thead className="table-light small">
                                         <tr>
                                             <th style={{ width: "2%" }} className="py-3">#</th>
-                                            <th style={{ width: "16%" }} className="py-3">PATHFINDER</th>
-                                            <th style={{ width: "18%" }} className="py-3">CONTACT INFORMATION</th>
-                                            <th style={{ width: "10%" }} className="py-3">JOINED DATE</th>
-                                            <th style={{ width: "10%" }} className="py-3">LAST LOGIN</th>
-                                            <th style={{ width: "19%" }} className="py-3">WALLET</th>
-                                            <th style={{ width: "15%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "15%" }} className="py-3">PATHFINDER</th>
+                                            <th style={{ width: "20%" }} className="py-3">CONTACT INFORMATION</th>
+                                            <th style={{ width: "19%" }} className="py-3">DATES</th>
+                                            <th style={{ width: "20%" }} className="py-3">WALLET</th>
+                                            <th style={{ width: "14%" }} className="py-3">STATUSES</th>
                                             <th style={{ width: "10%" }} className="py-3">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">
                                         {isLoading ? (
                                             <tr>
-                                                <td colSpan={8} className="text-center text-muted py-4">
+                                                <td colSpan={7} className="text-center text-muted py-4">
                                                     <div className="spinner-border spinner-border-sm me-2" role="status"></div>
                                                     Loading pathfinders...
                                                 </td>
                                             </tr>
                                         ) : pathfinders.length === 0 ? (
                                             <tr>
-                                                <td colSpan={8} className="text-center text-muted py-4">
-                                                    No pathfinders found
-                                                </td>
+                                                <td colSpan={7} className="text-center text-muted py-4">No pathfinders found</td>
                                             </tr>
                                         ) : (
                                             pathfinders.map((pathfinder, index) => (
                                                 <tr key={pathfinder._id}>
                                                     {/* Sequential Number */}
-                                                    <td className="text-muted py-3 px-2 text-center fw-bold">
+                                                    <td className="text-muted py-2 px-1 text-center fw-bold">
                                                         {(page - 1) * perPage + index + 1}
                                                     </td>
                                                     
                                                     {/* Pathfinder Info */}
-                                                    <td className="py-3 px-2">
-                                                        <Link to={`/pathfinders/${pathfinder._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-1">
+                                                    <td className="py-2 px-1">
+                                                        <Link to={`/pathfinders/${pathfinder._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-0">
                                                             {pathfinder.fullName}
                                                         </Link>
                                                         <small className="text-muted d-block">
@@ -231,10 +228,10 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Contact Information */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="d-flex align-items-center mb-2">
+                                                    <td className="py-2 px-1">
+                                                        <div className="d-flex align-items-center mb-0">
                                                             <a href={`mailto:${pathfinder.email}`} className="text-decoration-none text-primary" title={`Send email to ${pathfinder.email}`}>
-                                                                <i className="fa fa-envelope me-2" style={{ width: "16px" }}></i>
+                                                                <i className="fa fa-envelope me-1" style={{ width: "16px" }}></i>
                                                                 <small className="text-truncate" style={{ maxWidth: "160px" }} title={pathfinder.email}>
                                                                     {pathfinder.email || "N/A"}
                                                                 </small>
@@ -242,7 +239,7 @@ export default function PathfinderList() {
                                                         </div>
                                                         <div className="d-flex align-items-center">
                                                             <a href={`tel:${pathfinder.phoneNumber}`} className="text-decoration-none text-dark" title={`Call ${pathfinder.phoneNumber}`}>
-                                                                <i className="fa fa-phone text-muted me-2" style={{ width: "16px" }}></i>
+                                                                <i className="fa fa-phone text-muted me-1" style={{ width: "16px" }}></i>
                                                                 <small className="text-muted text-truncate" style={{ maxWidth: "160px" }} title={pathfinder.phoneNumber}>
                                                                     {pathfinder.phoneNumber || "N/A"}
                                                                 </small>
@@ -251,43 +248,28 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Joined Date */}
-                                                    <td className="text-muted py-3 px-2">
-                                                        <div className="d-flex flex-column">
-                                                            <small className="fw-semibold">{formatDate(pathfinder.createdAt)}</small>
+                                                    <td className="text-muted py-2 px-1">
+                                                        <div className="col-sm-12">
+                                                            <small className="fw-semibold me-1">JOINED:</small>
                                                             <small className="text-muted">
-                                                                {new Date(pathfinder.createdAt).toLocaleTimeString('en-US', {
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit'
-                                                                })}
+                                                                {formatDate(pathfinder.createdAt)} - {new Date(pathfinder.createdAt).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'})}
+                                                            </small>
+                                                        </div>
+                                                        <div className="col-sm-12">
+                                                            <small className="fw-semibold me-1">LAST LOGIN:</small>
+                                                            <small className="text-muted">
+                                                                {pathfinder.lastLogin ? (
+                                                                    <>{formatDate(pathfinder.lastLogin)} - {new Date(pathfinder.lastLogin).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'})}</>
+                                                                ) : (
+                                                                    <><i className="fa fa-circle me-1" style={{ fontSize: "6px" }}></i>  Never Logged In</>
+                                                                )}
                                                             </small>
                                                         </div>
                                                     </td>
                                                     
-                                                    {/* Last Login */}
-                                                    <td className="text-muted py-3 px-2">
-                                                        <div className="d-flex flex-column">
-                                                            {pathfinder.lastLogin ? (
-                                                                <>
-                                                                    <small className="fw-semibold">{formatDate(pathfinder.lastLogin)}</small>
-                                                                    <small className="text-muted">
-                                                                        {new Date(pathfinder.lastLogin).toLocaleTimeString('en-US', {
-                                                                            hour: '2-digit',
-                                                                            minute: '2-digit'
-                                                                        })}
-                                                                    </small>
-                                                                </>
-                                                            ) : (
-                                                                <small className="text-muted">
-                                                                    <i className="fa fa-circle me-1" style={{ fontSize: "6px" }}></i>
-                                                                    Never Logged In
-                                                                </small>
-                                                            )}
-                                                        </div>
-                                                    </td>
-                                                    
                                                     {/* KYC Status */}
-                                                    <td className="py-3 px-2">
-                                                        <div className="d-flex flex-column align-items-start">
+                                                    <td className="py-2 px-1">
+                                                        <div className="d-flex flex-column align-items-start small">
                                                             {pathfinder.wallet ? (
                                                                 <>
                                                                     <div className="text-muted mt-1">
@@ -304,7 +286,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Account Statuses */}
-                                                    <td className="py-3 px-2 small">
+                                                    <td className="py-2 px-1 small">
                                                         <div className="text-muted">
                                                             <b>KYC:</b>
                                                             <span className={`float-end ${getKycTextColor(pathfinder.kycStatus)}`}>
@@ -334,13 +316,13 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Actions */}
-                                                    <td className="text-muted py-3 px-2">
+                                                    <td className="text-muted py-2 px-1">
                                                         <div className="btn-group">
-                                                            <Link to={`/pathfinders/${pathfinder._id}/show`} className="btn btn-sm btn-outline-primary" title="View Pathfinder">
-                                                                View <i className="fa fa-eye small"></i>
+                                                            <Link to={`/pathfinders/${pathfinder._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Pathfinder">
+                                                                <i className="fa fa-eye small"></i>View
                                                             </Link>
-                                                            <Link to={`/pathfinders/${pathfinder._id}/edit`} className="btn btn-sm btn-outline-secondary" title="Edit Pathfinder">
-                                                                Edit <i className="fa fa-edit small"></i>
+                                                            <Link to={`/pathfinders/${pathfinder._id}/edit`} className="btn btn-sm px-1 py-0 btn-outline-secondary" title="Edit Pathfinder">
+                                                                <i className="fa fa-edit small"></i>Edit
                                                             </Link>
                                                         </div>
                                                     </td>                                                    
@@ -352,13 +334,7 @@ export default function PathfinderList() {
                             </div>
                                 
                             {/* Pagination Bar */}
-                            <PaginationBar 
-                                page={page} 
-                                perPage={perPage} 
-                                totalPages={totalPages} 
-                                onPageChange={setPage} 
-                                onPerPageChange={setPerPage} 
-                            />
+                            <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
                         </div>
                     </div>
                 </div>

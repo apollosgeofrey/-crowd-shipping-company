@@ -1,134 +1,172 @@
-// pages/admin/adminCreatePartials/NewUser.tsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { adminApi } from "../../services/adminApi";
 
 export default function NewUser() {
-    const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        mobile: "",
-        email: "",
-        dob: "",
-        maritalStatus: "",
-        gender: "",
-        role: "",
-        address: "",
-        city: "",
-        state: "",
-        staffId: "",
-    });
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({type: "", text: ""});    
+    const [formData, setFormData] = useState({userId:"", fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", role:"admin", status:"active"});
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.currentTarget; // currentTarget is strongly typed
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        // setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    // gandlue clear
+    const handleClear = () => setFormData({userId:"", fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", role:"admin", status:"active"});
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (formData.password !== formData.confirmPassword) {
+            setMessage({ type: "error", text: "Passwords do not match." });
+            return;
+        }
+
+        if (formData.password.length < 8) {
+            setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            return;
+        }
+
+        setLoading(true);
+        setMessage({ type: "", text: "" });
+
+        try {
+            // Remove userId if empty (optional field)
+            const submitData = { ...formData };
+            if (!submitData.userId) delete submitData.userId;
+
+            const res = await adminApi.createAdmin(submitData);
+            if (res.code === 201) {
+                setMessage({ type: "success", text: res.message || "Admin created successfully." });
+                handleClear();
+            } else {
+                setMessage({ type: "error", text: res.message || "Failed to create admin." });
+            }
+        } catch (err: any) {
+            setMessage({type: "error", text: err?.response?.data?.message || "An error occurred."});
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="card shadow-sm rounded p-4">
-        {/* Header */}
-        <div className="d-flex align-items-center mb-3 border-bottom pb-2">
-            <i className="fa fa-user text-danger me-2"></i>
-            <h6 className="fw-bold text-danger mb-0">Personal Information</h6>
-        </div>
+        <div className="container mt-0">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-8">
 
-        <form method="">
-            <div className="row g-3">
-                {/* Upload Image */}
-                <div className="col-12 col-md-3 col-lg-2 text-center">
-                    <div className="border rounded d-flex align-items-center justify-content-center"
-                    style={{ width: "150px", height: "150px", cursor: "pointer" }}>
-                        <i className="fa fa-camera text-muted"></i>
-                    </div>
-                </div>
+                    <div className="card shadow-sm border-0 p-2">
+                        {/* Header */}
+                        <div className="d-flex mb-4">
+                            <button type="button" className="btn btn-link text-decoration-none text-primary fw-semibold border-bottom" style={{ borderBottom: "3px solid #E35D3F" }}>
+                                <h5><i className="fa fa-user-shield me-1"></i> Create New Admin</h5>
+                            </button>
+                        </div>
 
-                <div className="col-12 col-md-9 col-lg-10">
-                    <div className="row g-3">
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="firstName">First Name:<sup className="text-danger">*</sup></label> */}
-                            <input type="text" name="firstName" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="lastName">Last Name:<sup className="text-danger">*</sup></label> */}
-                            <input type="text" name="lastName" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFocol-lg-10r="mobile">Mobile Number:<sup className="text-danger">(Optional)</sup></label> */}
-                            <input type="text" name="mobile" className="form-control" placeholder="Mobile Number" value={formData.mobile} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="email">Email Address:<sup className="text-danger">*</sup></label> */}
-                            <input type="email" name="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="dob">Date of Birth:<sup className="text-danger">*</sup></label> */}
-                            <input type="date" name="dob" className="form-control" value={formData.dob} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="maritalStatus">Marital Status:<sup className="text-danger">*</sup></label> */}
-                            <select name="maritalStatus" className="form-select" value={formData.maritalStatus} onChange={handleChange}>
-                                <option value="">Marital Status</option>
-                                <option>Single</option>
-                                <option>Married</option>
-                                <option>Divorced</option>
-                            </select>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="gender">Gender:<sup className="text-danger">*</sup></label> */}
-                            <select name="gender" className="form-select" value={formData.gender} onChange={handleChange}>
-                                <option value="">Gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            {/* <label className="fw-bold" htmlFor="role">Role:<sup className="text-danger">*</sup></label> */}
-                            <select name="role" className="form-select" value={formData.role} onChange={handleChange}>
-                                <option value="">Role</option>
-                                <option>Admin</option>
-                                <option>Super Admin</option>
-                                <option>Admin 1</option>
-                                <option>Admin 2</option>
-                                <option>Admin 3</option>
-                            </select>
-                        </div>
-                        <div className="col-12 mb-3">
-                            {/* <label className="fw-bold" htmlFor="address">Address:<sup className="text-danger">*</sup></label> */}
-                            <textarea name="address" className="form-control" placeholder="House Address" value={formData.address} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            {/* <label className="fw-bold" htmlFor="city">City:<sup className="text-danger">*</sup></label> */}
-                            <input type="text" name="city" className="form-control" placeholder="City" value={formData.city} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            {/* <label className="fw-bold" htmlFor="state">State:<sup className="text-danger">*</sup></label> */}
-                            <input type="text" name="state" className="form-control" placeholder="State" value={formData.state} onChange={handleChange}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            {/* <label className="fw-bold" htmlFor="staffId">Staff ID:<sup className="text-danger">*</sup></label> */}
-                            <input type="text" name="staffId" className="form-control" placeholder="Staff ID No." value={formData.staffId} onChange={handleChange}/>
+                        <div className="card-body">
+                            {/* alerts */}
+                            {message.text && (
+                                <div className={`alert ${message.type === "success" ? "alert-success" : "alert-danger"} py-2`}>{message.text}</div>
+                            )}
+
+                            <form onSubmit={handleSubmit}>
+                                <div className="row g-3">
+                                    {/* Staff ID (Optional) */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">Staff ID:</label>
+                                        <input type="text" name="userId" value={formData.userId} onChange={handleChange} className="form-control shadow-lg" placeholder="CS/STAFF/2025/002 (Optional)"/>
+                                    </div>
+
+                                    {/* Full Name */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Full Name:<span className="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required className="form-control shadow-lg" placeholder="e.g. Jane Admin"/>
+                                    </div>
+
+                                    {/* Email */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Email Address:<span className="text-danger">*</span>
+                                        </label>
+                                        <input type="email" name="email" value={formData.email} onChange={handleChange}required className="form-control shadow-lg" placeholder="Enter email address"/>
+                                    </div>
+
+                                    {/* Phone Number */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Phone Number:<span className="text-danger">*</span>
+                                        </label>
+                                        <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange}required className="form-control shadow-lg" placeholder="+2348012345678"/>
+                                    </div>
+
+                                    {/* Role */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Role:<span className="text-danger">*</span>
+                                        </label>
+                                        <select name="role" value={formData.role} onChange={handleChange}required className="form-select shadow-lg">
+                                            <option value="admin">Admin</option>
+                                            <option value="super-admin">Super Admin</option>
+                                            <option value="moderator">Moderator</option>
+                                            <option value="support">Support</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Status */}
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Status:<span className="text-danger">*</span>
+                                        </label>
+                                        <select name="status" value={formData.status} onChange={handleChange}required className="form-select shadow-lg">
+                                            <option value="active">Active</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="blocked">Blocked</option>
+                                            <option value="suspended">Suspended</option>
+                                            <option value="deactivated">Deactivated</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr className="my-4" />
+
+                                {/* security */}
+                                <p className="fw-semibold mb-3">
+                                    <span className="fa fa-lock"></span> SECURITY ACCESS
+                                </p>
+                                <div className="row g-3">
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Password:<span className="text-danger">*</span>
+                                        </label>
+                                        <input type="password" name="password" value={formData.password} onChange={handleChange}required className="form-control shadow-lg" placeholder="Minimum 8 characters"/>
+                                    </div>
+
+                                    <div className="col-sm-12 col-md-6 mb-3">
+                                        <label className="form-label text-dark fw-bold mb-0 small">
+                                            Confirm Password:<span className="text-danger">*</span>
+                                        </label>
+                                        <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}required className="form-control shadow-lg" placeholder="Re-enter password"/>
+                                    </div>
+                                </div>
+
+                                {/* footer buttons */}
+                                <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                                    <button type="button" onClick={handleClear} className="btn btn-secondary border">
+                                        <span className="fa fa-times"></span> Clear
+                                    </button>
+                                    <button type="submit" disabled={loading} className="btn btn-sm btn-primary" style={{ backgroundColor: "#E35D3F", borderColor: "#E35D3F" }}>
+                                        {loading ? (
+                                            <><span className="spinner-border spinner-border-sm text-white" role="status"></span> Creating...</>
+                                        ) : (
+                                            <><span className="fa fa-save"></span> Create Admin</>
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/* Footer Buttons */}
-            <div className="d-flex justify-content-end mt-4 gap-2">
-                <button type="button" className="btn btn-outline-secondary">
-                    <span className="fa fa-times"></span>Cancel
-                </button>
-                {/* <button type="submit" className="btn btn-primary">
-                    Next<span className="fa fa-chevron-right"></span>
-                </button> */}
-                <Link to="/admins/1/show" className="btn btn-primary d-flex align-items-center gap-2">
-                    Next <span className="fa fa-chevron-right"></span>
-                </Link>
-
-            </div>
-        </form>
         </div>
     );
 }

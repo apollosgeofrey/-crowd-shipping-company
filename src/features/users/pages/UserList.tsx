@@ -265,7 +265,7 @@ export default function UserList() {
 							                        		{user.fullName}
 							                        	</Link>
 							                        	<small className="text-muted d-block">
-                                                            <b>ID:</b> {user.userId}
+                                                            <b>ID:</b> {user.userId} - ({user?.userType?.toUpperCase() || "USER"})
                                                         </small>
 							                        </td>
 							                     	<td className="text-muted py-3 px-2">

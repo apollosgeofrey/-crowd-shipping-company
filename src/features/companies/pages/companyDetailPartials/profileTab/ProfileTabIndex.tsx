@@ -5,27 +5,14 @@ import PaymentInformationTab from "./partials/PaymentInformationTab.tsx";
 import IdentityInformationTab from "./partials/IdentityInformationTab.tsx";
 import CompanyInformationTab from "./partials/CompanyInformationTab.tsx";
 
-export default function ProfileTabIndex({
-    // props
-}: {
-    // props types
-}) {
-    // logic
-    // props destructuring (if any)
+interface Props {
+    company: any;
+    onCompanyUpdate?: (updatedCompany: any) => void;
+}
 
-    // helper functions (if any)
-
-    // state (if any)
-
-    // side effects (if any)
-
-    // constants (if any)
-
-    // computed values (if any)
-
-    // event handlers (if any)
-
+export default function ProfileTabIndex({ company, onCompanyUpdate }: Props) {
     const [activeProfileTab, setActiveProfileTab] = useState("company-information");
+    
     const profileTabs = [
         { id: "company-information", label: "Company Information", icon: <FaUniversity /> },
         { id: "identity-information", label: "Identity Information", icon: <FaIdCard /> },
@@ -33,35 +20,33 @@ export default function ProfileTabIndex({
         { id: "payment-information", label: "Payment Information", icon: <FaLock /> },
     ];
 
-    // other logic (if any)
-
-    // Render
     return (
         <div className="">
             {/* Profile Tabs */}
             <ul className="nav nav-tabs mb-3">
                 {profileTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">
-                        <button type="button" onClick={() => setActiveProfileTab(tab.id)} className={`nav-link fw-semibold d-inline-flex align-items-center gap-2 border-0 border-bottom
-                        ${activeProfileTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}>
+                        <button type="button" onClick={() => setActiveProfileTab(tab.id)}
+                            className={`nav-link fw-semibold d-inline-flex align-items-center gap-2 border-0 border-bottom
+                                ${activeProfileTab === tab.id ? "border-primary text-primary active" : "border-transparent text-dark"}`}
+                        >
                             {tab.icon} <span>{tab.label}</span>
                         </button>
                     </li>
                 ))}
             </ul>
 
-
             {/* Company Info Tab Content */}
-            {activeProfileTab === "company-information" && (<CompanyInformationTab />)}
+            {activeProfileTab === "company-information" && (<CompanyInformationTab company={company} onCompanyUpdate={onCompanyUpdate} />)}
 
             {/* Identity Info Tab Content */}
-            {activeProfileTab === "identity-information" && (<IdentityInformationTab />)}
+            {activeProfileTab === "identity-information" && (<IdentityInformationTab company={company} onCompanyUpdate={onCompanyUpdate} />)}
 
             {/* Documents Tab Content */}
-            {activeProfileTab === "documents" && (<DocumentsTab />)}
+            {activeProfileTab === "documents" && (<DocumentsTab company={company} onCompanyUpdate={onCompanyUpdate} />)}
 
-            {/* Account Access Tab Content */}
-            {activeProfileTab === "payment-information" && (<PaymentInformationTab />)}
+            {/* Payment Info Tab Content */}
+            {activeProfileTab === "payment-information" && (<PaymentInformationTab company={company} onCompanyUpdate={onCompanyUpdate} />)}
         </div>
     );
 }

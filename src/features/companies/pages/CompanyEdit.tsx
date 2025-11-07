@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { companyApi } from "../services/companyApi";
-import { adminApi } from "../../admins/services/adminApi";
+import { userApi } from "../../users/services/userApi";
 import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 
@@ -75,7 +75,7 @@ export default function CompanyEdit() {
     const fetchUsers = async () => {
         setLoadingUsers(true);
         try {
-            const res = await adminApi.getAdmins({ 
+            const res = await userApi.getUsers({ 
                 limit: 100, 
                 status: 'active',
                 search: searchTerm || undefined

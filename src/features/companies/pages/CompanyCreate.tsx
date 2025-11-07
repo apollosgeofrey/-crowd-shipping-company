@@ -41,9 +41,7 @@ export default function CompanyCreate() {
 
     // Fetch users when component mounts or when switching to existing contact person
     useEffect(() => {
-        if (companyOnboardingType === "existing_contact_person") {
-            fetchUsers();
-        }
+        if (companyOnboardingType === "existing_contact_person") fetchUsers();
     }, [companyOnboardingType]);
 
     // Fetch users from API

@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     // Render empty state
     if (!response) return <StateEmpty onRetry={refetch} />;	
-console.log('response:', response);
+
 	// Render dashboard layout WITH DATA PASSED TO COMPONENTS
 	return (
 		<DashboardLayout>

@@ -131,7 +131,7 @@ export default function UserDetail() {
                             </p>
                             <p className="mb-0 fw-semibold">
                                 <span className="fa fa-wallet me-2"></span>
-                                <span className="text-dark">{user?.userId || "User"}</span>
+                                <span className="text-dark">{user?.userId || "User"} - ({user?.userType?.toUpperCase() || "USER"})</span>
                             </p>
                             <p className="mb-0 text-muted small">
                                 <span className="fa fa-calendar me-1"></span>

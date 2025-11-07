@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import { vehicleOwnerApi } from "../services/vehicleOwnerApi";
@@ -23,11 +24,13 @@ export default function VehicleOwnerCreate() {
 
         if (formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", "Passwords do not match.", "error");
             return;
         }
 
         if (formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", "Password must be at least 8 characters.", "error");
             return;
         }
 
@@ -38,12 +41,15 @@ export default function VehicleOwnerCreate() {
             const res = await vehicleOwnerApi.createVehicleOwner(formData);
             if (res.code === 201) {
                 setMessage({ type: "success", text: res.message || "Vehicle Owner created successfully." });
+                Swal.fire("Success", (res.message || "Vehicle Owner created successfully."), "success");
                 handleClear();
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to create vehicle owner." });
+                Swal.fire("Error", (res.message || "Failed to create vehicle owner."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred."), "error");
         } finally {
             setLoading(false);
         }

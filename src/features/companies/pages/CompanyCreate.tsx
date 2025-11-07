@@ -195,12 +195,15 @@ export default function CompanyCreate() {
             const res = await companyApi.createCompany(payload);
             if (res.code === 201) {
                 setMessage({ type: "success", text: res.message || "Company created successfully." });
+                Swal.fire("Success", (res.message || "Company created successfully."), "success");
                 handleClear();
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to create company." });
+                Swal.fire("Error", (res.message || "Failed to create company."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred while creating company."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred while creating company."), "error");
         } finally {
             setLoading(false);
         }

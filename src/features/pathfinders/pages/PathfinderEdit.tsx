@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { pathfinderApi } from "../services/pathfinderApi";
@@ -56,17 +57,20 @@ export default function PathfinderEdit() {
 
         if (!id) {
             setMessage({ type: "error", text: "Invalid pathfinder ID." });
+            Swal.fire("Error", "Invalid pathfinder ID.", "error");
             return;
         }
 
         // Only validate passwords if they are provided (for update)
         if (formData.password && formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", "Passwords do not match.", "error");
             return;
         }
 
         if (formData.password && formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", "Password must be at least 8 characters.", "error");
             return;
         }
 
@@ -87,11 +91,14 @@ export default function PathfinderEdit() {
                 
                 // Clear password fields after successful update
                 setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
+                Swal.fire("Success", (res.message || "Pathfinder updated successfully."), "success");
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update pathfinder." });
+                Swal.fire("Error", (res.message || "Failed to update pathfinder."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred while updating."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred while updating."), "error");
         } finally {
             setLoading(false);
         }

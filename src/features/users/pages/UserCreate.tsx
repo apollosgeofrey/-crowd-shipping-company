@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { userApi } from "../services/userApi";
 import DashboardLayout from "../../../layouts/DashboardLayout";
@@ -25,11 +26,13 @@ export default function UserCreate() {
 
         if (formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Success", ("Passwords do not match."), "success");
             return;
         }
 
         if (formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Success", ("Password must be at least 8 characters."), "success");
             return;
         }
 
@@ -40,12 +43,15 @@ export default function UserCreate() {
             const res = await userApi.createUser(formData);
             if (res.code === 201) {
                 setMessage({ type: "success", text: res.message || "User created successfully." });
+                Swal.fire("Success", (res.message || "User created successfully."), "success");
                 handleClear();
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to create user." });
+                Swal.fire("Error", (res.message || "Failed to create user."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred."), "error");
         } finally {
             setLoading(false);
         }

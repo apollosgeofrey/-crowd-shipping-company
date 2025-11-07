@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../../layouts/DashboardLayout";
@@ -63,17 +64,20 @@ export default function VehicleOwnerEdit() {
 
         if (!id) {
             setMessage({ type: "error", text: "Invalid vehicle owner ID." });
+            Swal.fire("Error", "Invalid vehicle owner ID.", "error");
             return;
         }
 
         // Only validate passwords if they are provided (for update)
         if (formData.password && formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", "Passwords do not match.", "error");
             return;
         }
 
         if (formData.password && formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", "Password must be at least 8 characters.", "error");
             return;
         }
 
@@ -91,14 +95,17 @@ export default function VehicleOwnerEdit() {
             const res = await vehicleOwnerApi.updateVehicleOwner(id, updateData);
             if (res.code === 200) {
                 setMessage({ type: "success", text: res.message || "Vehicle owner updated successfully." });
+                Swal.fire("Success", (res.message || "Vehicle owner updated successfully."), "success");
                 
                 // Clear password fields after successful update
                 setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update vehicle owner." });
+                Swal.fire("Error", (res.message || "Failed to update vehicle owner."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred while updating."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred while updating."), "error");
         } finally {
             setLoading(false);
         }

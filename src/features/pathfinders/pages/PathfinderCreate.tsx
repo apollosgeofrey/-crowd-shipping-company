@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import { pathfinderApi } from "../services/pathfinderApi";
@@ -25,11 +26,13 @@ export default function PathfinderCreate() {
 
         if (formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", "Passwords do not match.", "error");
             return;
         }
 
         if (formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", "Password must be at least 8 characters.", "error");
             return;
         }
 
@@ -40,12 +43,15 @@ export default function PathfinderCreate() {
             const res = await pathfinderApi.createPathfinder(formData);
             if (res.code === 201) {
                 setMessage({ type: "success", text: res.message || "Pathfinder created." });
+                Swal.fire("Success", (res.message || "Pathfinder created."), "success");
                 handleClear();
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to create pathfinder." });
+                Swal.fire("Error", (res.message || "Failed to create pathfinder."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred."), "error");
         } finally {
             setLoading(false);
         }

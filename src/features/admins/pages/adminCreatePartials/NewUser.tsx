@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { adminApi } from "../../services/adminApi";
 
@@ -18,11 +19,13 @@ export default function NewUser() {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", "Passwords do not match.", "error");
             return;
         }
 
         if (formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", "Password must be at least 8 characters.", "error");
             return;
         }
 
@@ -37,12 +40,15 @@ export default function NewUser() {
             const res = await adminApi.createAdmin(submitData);
             if (res.code === 201) {
                 setMessage({ type: "success", text: res.message || "Admin created successfully." });
+                Swal.fire("Success", (res.message || "Admin created successfully."), "success");
                 handleClear();
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to create admin." });
+                Swal.fire("Error", (res.message || "Failed to create admin."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred."), "error");
         } finally {
             setLoading(false);
         }

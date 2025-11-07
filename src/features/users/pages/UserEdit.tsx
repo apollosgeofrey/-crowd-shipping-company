@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { userApi } from "../services/userApi";
 import { useParams, useNavigate } from "react-router-dom";
@@ -56,17 +57,20 @@ export default function UserEdit() {
 
         if (!id) {
             setMessage({ type: "error", text: "Invalid user ID." });
+            Swal.fire("Error", ("Invalid user ID."), "error");
             return;
         }
 
         // Only validate passwords if they are provided (for update)
         if (formData.password && formData.password !== formData.confirmPassword) {
             setMessage({ type: "error", text: "Passwords do not match." });
+            Swal.fire("Error", ("Passwords do not match."), "error");
             return;
         }
 
         if (formData.password && formData.password.length < 8) {
             setMessage({ type: "error", text: "Password must be at least 8 characters." });
+            Swal.fire("Error", ("Password must be at least 8 characters."), "error");
             return;
         }
 
@@ -84,14 +88,17 @@ export default function UserEdit() {
             const res = await userApi.updateUser(id, updateData);
             if (res.code === 200) {
                 setMessage({ type: "success", text: res.message || "User updated successfully." });
+                Swal.fire("Success", (res.message || "User updated successfully."), "success");
                 
                 // Clear password fields after successful update
                 setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update user." });
+                Swal.fire("Error", (res.message || "Failed to update user."), "error");
             }
         } catch (err: any) {
             setMessage({type: "error", text: err?.response?.data?.message || "An error occurred while updating."});
+            Swal.fire("Error", (err?.response?.data?.message || "An error occurred while updating."), "error");
         } finally {
             setLoading(false);
         }

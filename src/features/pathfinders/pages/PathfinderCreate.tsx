@@ -56,7 +56,7 @@ export default function PathfinderCreate() {
             <div className="card shadow-sm rounded p-4">
                 <div className="container mt-0">
                     <div className="row justify-content-center">
-                        <div className="col-12 col-md-8">
+                        <div className="col-12 col-md-10">
 
                             {/* main card */}
                             <div className="card shadow-sm border-0 p-2">

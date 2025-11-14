@@ -13,7 +13,7 @@ import { FaUser, FaMoneyBillWave, FaClipboardCheck, FaChartBar, FaExchangeAlt } 
 export default function PathfinderDetail() {
     const { id } = useParams<{ id: string }>();
     const [loading, setLoading] = useState(true);
-    const [pathfinder, setPathfinder] = useState(null);
+    const [pathfinder, setPathfinder] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
     // Separate states for main tab and profile sub-tab

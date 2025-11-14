@@ -12,7 +12,7 @@ import ReportTabIndex from "./companyDetailPartials/reportsTab/ReportTabIndex.ts
 export default function CompanyDetail() {
     const { id } = useParams<{ id: string }>();
     const [loading, setLoading] = useState(true);
-    const [company, setCompany] = useState(null);
+    const [company, setCompany] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
     // Handle company update from child components

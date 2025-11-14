@@ -5,7 +5,7 @@ import PaymentInformationTab from "./partials/PaymentInformationTab.tsx";
 import IdentityInformationTab from "./partials/IdentityInformationTab.tsx";
 import PersonalInformationTab from "./partials/PersonalInformationTab.tsx";
 
-export default function ProfileTabIndex({pathfinder}: props) {
+export default function ProfileTabIndex({pathfinder}: any) {
     const [activeProfileTab, setActiveProfileTab] = useState("personal-information");
     
     const profileTabs = [

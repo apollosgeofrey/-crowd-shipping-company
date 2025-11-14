@@ -90,7 +90,7 @@ export default function PathfinderEdit() {
                 setMessage({ type: "success", text: res.message || "Pathfinder updated successfully." });
                 
                 // Clear password fields after successful update
-                setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
+                setFormData((prev: any) => ({ ...prev, password: "", confirmPassword: ""}));
                 Swal.fire("Success", (res.message || "Pathfinder updated successfully."), "success");
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update pathfinder." });

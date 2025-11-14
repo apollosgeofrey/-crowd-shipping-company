@@ -10,7 +10,7 @@ import PaymentTabIndex from "./userDetailPartials/paymentsTab/PaymentTabIndex.ts
 import BookingTabIndex from "./userDetailPartials/bookingsTab/BookingTabIndex.tsx";
 
 export default function UserDetail() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<any>(null);
     const { id } = useParams<{ id: string }>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

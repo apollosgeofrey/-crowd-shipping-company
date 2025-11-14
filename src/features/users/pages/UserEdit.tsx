@@ -91,7 +91,7 @@ export default function UserEdit() {
                 Swal.fire("Success", (res.message || "User updated successfully."), "success");
                 
                 // Clear password fields after successful update
-                setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
+                setFormData((prev: any) => ({ ...prev, password: "", confirmPassword: ""}));
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update user." });
                 Swal.fire("Error", (res.message || "Failed to update user."), "error");

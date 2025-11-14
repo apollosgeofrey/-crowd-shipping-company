@@ -6,7 +6,7 @@ import VehicleInformationTab from "./partials/VehicleInformationTab.tsx";
 import PersonalInformationTab from "./partials/PersonalInformationTab.tsx";
 
 
-export default function ProfileTabIndex({vehicleOwner}: props) {
+export default function ProfileTabIndex({vehicleOwner}: any) {
     const [activeProfileTab, setActiveProfileTab] = useState("personal-information");
     
     const profileTabs = [

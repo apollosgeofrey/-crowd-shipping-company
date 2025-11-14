@@ -12,8 +12,8 @@ import ReportTabIndex from "./vehicleOwnerDetailPartials/reportsTab/ReportTabInd
 export default function VehicleOwnerDetail() {
     const { id } = useParams<{ id: string }>();
     const [loading, setLoading] = useState(true);
-    const [vehicleOwner, setVehicleOwner] = useState(null);
     const [error, setError] = useState<string | null>(null);
+    const [vehicleOwner, setVehicleOwner] = useState<any>(null);
 
     // Separate states for main tab and profile sub-tab
     const [activeMainTab, setActiveMainTab] = useState("profile");

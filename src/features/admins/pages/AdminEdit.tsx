@@ -105,7 +105,7 @@ export default function AdminEdit() {
                 Swal.fire("Success", (res.message || "Admin updated successfully."), "success");
                 
                 // Clear password fields after successful update
-                setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
+                setFormData((prev: any) => ({ ...prev, password: "", confirmPassword: ""}));
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update admin." });
                 Swal.fire("Error", (res.message || "Failed to update admin."), "error");

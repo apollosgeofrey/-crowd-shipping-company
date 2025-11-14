@@ -98,7 +98,7 @@ export default function VehicleOwnerEdit() {
                 Swal.fire("Success", (res.message || "Vehicle owner updated successfully."), "success");
                 
                 // Clear password fields after successful update
-                setFormData(prev => ({...prev, password: "", confirmPassword: ""}));
+                setFormData((prev: any) => ({ ...prev, password: "", confirmPassword: ""}));
             } else {
                 setMessage({ type: "error", text: res.message || "Failed to update vehicle owner." });
                 Swal.fire("Error", (res.message || "Failed to update vehicle owner."), "error");

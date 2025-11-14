@@ -83,7 +83,7 @@ export default function CompanyCreate() {
         setCompanyOnboardingType(type);
         // Reset contact person fields when switching types
         if (type === "new_contact_person") {
-            setFormData(prev => ({...prev, contactPersonId: ""}));
+            setFormData((prev: any) => ({ ...prev, contactPersonId: ""}));
         } else {
             setFormData(prev => ({
                 ...prev,

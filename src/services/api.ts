@@ -5,7 +5,7 @@ import axios from 'axios';
 const appMode = import.meta.env.VITE_API_APP_MODE; // "development" or "production"
 const defaultBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5005';
 const devBaseUrl = import.meta.env.VITE_API_DEVELOPMENT_BASE_URL || 'http://localhost:5008/api';
-const prodBaseUrl = import.meta.env.VITE_API_PRODUCTION_BASE_URL || 'https://crowdshipping-ruby.vercel.app/api/v1' || 'https://api.crowdshipping.com/api';
+const prodBaseUrl = import.meta.env.VITE_API_PRODUCTION_BASE_URL || 'https://crowdshipping-ruby.vercel.app/api' || 'https://api.crowdshipping.com/api';
 
 // Determine the base URL based on the app mode (development or production)
 let API_BASE_URL = defaultBaseUrl;

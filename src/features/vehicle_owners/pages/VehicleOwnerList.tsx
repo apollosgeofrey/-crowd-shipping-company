@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { vehicleOwnerApi } from "../services/vehicleOwnerApi.ts";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-import { vehicleOwnerApi, type VehicleOwner } from "../services/vehicleOwnerApi.ts";
 
 export default function VehicleOwnerList() {
     const [page, setPage] = useState(1);
@@ -10,7 +10,7 @@ export default function VehicleOwnerList() {
     const [isLoading, setIsLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-    const [vehicleOwners, setVehicleOwners] = useState<VehicleOwner[]>([]);
+    const [vehicleOwners, setVehicleOwners] = useState<any[]>([]);
     const [filters, setFilters] = useState({search: "", status: "", isApproved: "", kycStatus: ""});
 
     // Fetch data whenever page, perPage, or filters change

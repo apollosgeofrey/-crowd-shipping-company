@@ -12,7 +12,7 @@ export default function UserEdit() {
     const [loading, setLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({type: "", text: ""});
-    const [formData, setFormData] = useState({fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", status:"active"});
+    const [formData, setFormData] = useState<any>({fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", status:"active"});
 
     // Fetch user data on component mount
     useEffect(() => {

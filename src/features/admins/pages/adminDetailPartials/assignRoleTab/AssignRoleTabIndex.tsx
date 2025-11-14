@@ -10,7 +10,7 @@ interface AssignRoleTabIndexProps {
 
 export default function AssignRoleTabIndex({ admin, onAdminUpdate }: AssignRoleTabIndexProps) {
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<any>({
         status: admin?.status || "active",
         role: admin?.role || "",
         notes: ""

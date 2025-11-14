@@ -86,7 +86,7 @@ export default function DocumentsTab({ vehicleOwner }: { vehicleOwner: any }) {
                     
                     {documents.length > 0 ? (
                         <div className="row g-3">
-                            {documents.map((docId, index) => (
+                            {{documents.map((docId: string, index: number) => (
                                 <div key={index} className="col-md-6 col-lg-4">
                                     <div className="card border shadow-sm">
                                         <div className="card-body text-center py-3">

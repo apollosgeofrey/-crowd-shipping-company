@@ -10,7 +10,7 @@ interface ChargeModalProps {
 }
 
 export default function TripChargeModal({ show, onClose, onSave, initialData }: ChargeModalProps) {
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<any>({
 		chargeType: initialData?.chargeType || "",
 	    amount: initialData?.amount || "",
 	    area: initialData?.area || "",

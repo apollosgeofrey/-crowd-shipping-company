@@ -16,7 +16,7 @@ export default function CompanyCreate() {
     const [searchTerm, setSearchTerm] = useState("");
     
     // form data
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<any>({
         // Company basic info
         name: "",
         email: "",

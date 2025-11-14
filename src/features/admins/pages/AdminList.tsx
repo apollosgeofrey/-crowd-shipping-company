@@ -7,10 +7,10 @@ import PaginationBar from "../../../components/PaginationBar.tsx";
 export default function AdminList() {
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(25);
+	const [admins, setAdmins] = useState<any[]>([]);
 	const [totalPages, setTotalPages] = useState(1);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [admins, setAdmins] = useState<Admin[]>([]);
     const [filters, setFilters] = useState({search: "", status: "", isVerified: "", role: ""});
 
 

@@ -5,7 +5,7 @@ import { adminApi } from "../../services/adminApi";
 export default function NewUser() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({type: "", text: ""});    
-    const [formData, setFormData] = useState({userId:"", fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", role:"admin", status:"active"});
+    const [formData, setFormData] = useState<any>({userId:"", fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", role:"admin", status:"active"});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;

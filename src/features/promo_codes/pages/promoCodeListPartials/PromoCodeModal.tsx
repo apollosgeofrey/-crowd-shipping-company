@@ -10,7 +10,7 @@ interface ChargeModalProps {
 }
 
 export default function PromoCodeModal({ show, onClose, onSave, initialData }: ChargeModalProps) {
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<any>({
 		promoCode: initialData?.promoCode || "",
 	    discount: initialData?.discount || "",
 	    validFrom: initialData?.validFrom || "",

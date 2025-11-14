@@ -7,7 +7,7 @@ export default function UserCreate() {
     // form states
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({type: "", text: ""});
-    const [formData, setFormData] = useState({fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", status:"active"});
+    const [formData, setFormData] = useState<any>({fullName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", status:"active"});
 
     // handlers for form inputs
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

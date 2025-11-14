@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { pathfinderApi } from "../services/pathfinderApi.ts";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-import { pathfinderApi, type PaginatedResponse } from "../services/pathfinderApi.ts";
 
 export default function PathfinderList() {
     const [page, setPage] = useState(1);

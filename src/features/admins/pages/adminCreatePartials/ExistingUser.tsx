@@ -2,9 +2,9 @@
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { adminApi } from "../../services/adminApi";
+import { FaCheck, FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { userApi } from "../../../users/services/userApi";
-import { FaCheck, FaUser, FaSearch } from "react-icons/fa";
 
 export default function AdminCreate() {
     const navigate = useNavigate();

@@ -12,7 +12,7 @@ export default function VehicleOwnerCreate() {
     // handlers for form inputs
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
     // handlers for form actions like clear

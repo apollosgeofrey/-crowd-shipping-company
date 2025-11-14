@@ -49,7 +49,7 @@ export const useLogout = () => {
 				text: logout.fulfilled.match(resultAction) ? resultAction.payload.message : 'You have been logged out successfully',
 				icon: 'success',
 				timer: 2000,
-				showConfirmButton: false
+				showConfirmButton: true
 			});
 			navigate('/login', { replace: true }); // Redirect to login
 
@@ -61,7 +61,7 @@ export const useLogout = () => {
 				text: 'You have been logged out',
 				icon: 'info',
 				timer: 2000,
-				showConfirmButton: false
+				showConfirmButton: true
 			});
 			navigate('/login', { replace: true });
 		}

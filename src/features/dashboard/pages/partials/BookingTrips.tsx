@@ -85,8 +85,8 @@ export default function BookingTrips({ pathfinders }: Props) {
 			        🚢 Maritime Pathfinder Trips <FaEllipsisV />
 			    </h6>
 			    
-			    {pathfinders.maritime.length > 0 ? (
-			        pathfinders.maritime.slice(0, 2).map((pathfinder, index) => (
+			    {pathfinders?.maritime?.length > 0 ? (
+			    	pathfinders?.maritime?.slice(0, 2).map((pathfinder: any) => (
 			            <div key={pathfinder.id} className="mb-0 p-2 py-1 border-0 border-bottom">
 			                <div className="d-flex align-items-start">
 			                    <span className="fw-bold me-3 small" style={{ color: "#9b5cff", minWidth: "60px" }}>
@@ -129,8 +129,8 @@ export default function BookingTrips({ pathfinders }: Props) {
 			        ✈️ Air Pathfinder Trips <FaEllipsisV />
 			    </h6>
 			    
-			    {pathfinders.air.length > 0 ? (
-			        pathfinders.air.slice(0, 2).map((pathfinder, index) => (
+			    {pathfinders?.air?.length > 0 ? (
+			    	pathfinders?.air?.slice(0, 2).map((pathfinder: any) => (
 			            <div key={pathfinder.id} className="mb-0 p-2 py-1 pb-0 border-0 border-bottom">
 			                <div className="d-flex align-items-start">
 			                    <span className="fw-bold small me-3" style={{ color: "#9b5cff", minWidth: "60px" }}>

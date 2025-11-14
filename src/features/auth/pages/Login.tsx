@@ -1,7 +1,6 @@
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { setAuth } from "../store/authSlice";
-import { LogIn, Loader2 } from "lucide-react";
 import { loginApi } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import type { LoginPayload } from "../services/authService";

@@ -1,7 +1,7 @@
 import { FaEye, FaDownload, FaUser, FaIdCard } from "react-icons/fa";
 
-export default function DocumentsTab({ user }: { user: any }) {
-    const profile = user?.profile || {};
+export default function DocumentsTab({ admin }: { admin: any }) {
+    const profile = admin?.profile || {};
     const documents = profile?.documentIds || [];
     const profileImage = profile?.profilePicUrl || '';
     const identificationType = profile?.identificationType;

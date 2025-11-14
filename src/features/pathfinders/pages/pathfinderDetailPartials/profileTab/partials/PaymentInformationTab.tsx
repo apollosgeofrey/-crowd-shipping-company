@@ -1,4 +1,6 @@
-export default function PaymentInformationTab({ pathfinder }: {props: any}) {
+
+
+export default function PaymentInformationTab({ pathfinder }: any) {
     
     const wallet = pathfinder?.wallet || {};
     const paymentInfo = wallet?.wallet || {

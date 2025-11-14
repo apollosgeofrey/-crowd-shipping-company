@@ -13,10 +13,10 @@ export default function IdentityInformationTab({ company }: Props) {
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({ type: "", text: "" });
 
     // Helper function to format date
-    const formatDate = (dateString: string) => {
-        if (!dateString) return "N/A";
-        return new Date(dateString).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-    };
+    // const formatDate = (dateString: string) => {
+    //     if (!dateString) return "N/A";
+    //     return new Date(dateString).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+    // };
 
     // Check if contact person exists and get their status
     const hasContactPerson = !!contactPerson;
@@ -61,7 +61,7 @@ export default function IdentityInformationTab({ company }: Props) {
     };
 
     // Handle document download
-    const handleDownloadDocuments = () => setMessage({ type: "success", text: "Document download functionality coming soon!" });
+    // const handleDownloadDocuments = () => setMessage({ type: "success", text: "Document download functionality coming soon!" });
 
     return (
         <div className="card border-0 shadow-sm rounded">

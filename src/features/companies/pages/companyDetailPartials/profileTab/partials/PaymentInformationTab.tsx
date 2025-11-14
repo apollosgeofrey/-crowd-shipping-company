@@ -2,6 +2,7 @@
 
 interface Props {
     company: any;
+    onCompanyUpdate?: (updatedCompany: any) => void;
 }
 
 export default function PaymentInformationTab({ company }: Props) {

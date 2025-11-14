@@ -1,6 +1,6 @@
 
 
-export default function PersonalInformationTab({pathfinder}: { props: any }) {
+export default function PersonalInformationTab({pathfinder}: any) {
     // Job title (not available in API, using user type as placeholder)
     const profile = pathfinder?.profile;
     const jobTitle = pathfinder?.userType ? pathfinder?.userType.charAt(0).toUpperCase() + pathfinder?.userType.slice(1) : "Not specified";

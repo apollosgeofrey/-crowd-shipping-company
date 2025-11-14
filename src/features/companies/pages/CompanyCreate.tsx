@@ -85,7 +85,7 @@ export default function CompanyCreate() {
         if (type === "new_contact_person") {
             setFormData((prev: any) => ({ ...prev, contactPersonId: ""}));
         } else {
-            setFormData(prev => ({
+            setFormData((prev: any) => ({
                 ...prev,
                 contactPersonFullName: "",
                 contactPersonEmail: "",
@@ -100,12 +100,12 @@ export default function CompanyCreate() {
 
     // Select user handler
     const handleSelectUser = (userId: string) => {
-        setFormData(prev => ({ ...prev, contactPersonId: userId }));
+        setFormData((prev: any) => ({ ...prev, contactPersonId: userId }));
         setSearchTerm(""); // Clear search after selection
     };
 
     // Clear selected user
-    const handleClearSelectedUser = () => setFormData(prev => ({ ...prev, contactPersonId: "" }));
+    const handleClearSelectedUser = () => setFormData((prev: any) => ({ ...prev, contactPersonId: "" }));
 
     // handlers for form actions like clear
     const handleClear = () => {

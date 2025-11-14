@@ -104,12 +104,12 @@ export default function CompanyEdit() {
 
     // Select user handler
     const handleSelectUser = (userId: string) => {
-        setFormData(prev => ({ ...prev, contactPersonId: userId }));
+        setFormData((prev: any) => ({ ...prev, contactPersonId: userId }));
         setSearchTerm(""); // Clear search after selection
     };
 
     // Clear selected user
-    const handleClearSelectedUser = () => setFormData(prev => ({ ...prev, contactPersonId: "" }));
+    const handleClearSelectedUser = () => setFormData((prev: any) => ({ ...prev, contactPersonId: "" }));
 
     // form submit handler for updating company
     const handleSubmit = async (e: React.FormEvent) => {

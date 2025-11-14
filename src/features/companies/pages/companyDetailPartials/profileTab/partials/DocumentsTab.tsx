@@ -1,6 +1,7 @@
 // pages/users/tabs/DocumentsTab.tsx
 import { useState } from "react";
-import { FaEye, FaDownload, FaUpload, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+// import { FaEye, FaDownload, FaUpload, FaTimes } from "react-icons/fa";
 
 interface Props {
     company: any;
@@ -12,7 +13,7 @@ export default function DocumentsTab({ company }: Props) {
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({ type: "", text: "" });
 
     // Mock documents data - in real app, this would come from API
-    const documents = [
+    const documents: any[] = company?.documents || [
         // {
         //     id: 1,
         //     title: "Certificate of Incorporation",

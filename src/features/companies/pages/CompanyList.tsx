@@ -10,7 +10,7 @@ export default function CompanyList() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [companies, setCompanies] = useState([]);
+    const [companies, setCompanies] = useState<any[]>([]);
     const [filters, setFilters] = useState({search: "", status: "", verification: ""});
 
     // Fetch data whenever page, perPage, or filters change
@@ -62,18 +62,6 @@ export default function CompanyList() {
         return "text-dark";
     };
 
-    // Get status badge class
-    const getStatusBadge = (status: string) => {
-        switch (status) {
-            case "active": return "badge bg-success-subtle text-success fw-semibold px-3 py-2 rounded";
-            case "inactive": return "badge bg-light text-secondary fw-semibold px-3 py-2 rounded";
-            case "rejected": return "badge bg-danger-subtle text-danger fw-semibold px-3 py-2 rounded";
-            case "processing": 
-            case "pending": return "badge bg-info-subtle text-info fw-semibold px-3 py-2 rounded";
-            default: return "badge rounded bg-light text-dark fw-semibold px-3 py-2";
-        }
-    };
-
     // Format date
     const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -96,7 +84,7 @@ export default function CompanyList() {
                                 <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
                                 
                                     {/* Filter By (first item, no border-left) */}
-                                    <button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
+                                    <button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled={true}>
                                         <i className="fa fa-filter me-1"></i> Filter By
                                     </button>
 
@@ -206,7 +194,7 @@ export default function CompanyList() {
                                                     
                                                     {/* Company Info */}
                                                     <td className="py-2 px-1">
-                                                        <Link to={`/companies/${company._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-0">
+                                                        <Link to={`/companies/${company?._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-0">
                                                             {company.name}
                                                         </Link>
                                                         <small className="text-muted d-block">

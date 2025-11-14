@@ -1,7 +1,7 @@
 import { FaEye, FaDownload, FaUser, FaIdCard } from "react-icons/fa";
 
 
-export default function DocumentsTab({ pathfinder }: {props: any}) {
+export default function DocumentsTab({ pathfinder }: any) {
     const profile = pathfinder?.profile || {};
     const documents = profile?.documentIds || [];
     const profileImage = profile?.profilePicUrl || '';

@@ -5,11 +5,7 @@ import CompletedTab from "./partials/CompletedTab.tsx";
 import InProgressTab from "./partials/InProgressTab.tsx";
 import { FaCheckSquare, FaSpinner, FaHourglassHalf, FaTimesCircle } from "react-icons/fa";
 
-export default function BookingTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function BookingTabIndex({ user }: any) {
     // logic
     // props destructuring (if any)
 
@@ -38,6 +34,7 @@ export default function BookingTabIndex({
     // Render
     return (
         <div className="">
+            <div className="col-sm-12">{user?.fullName}</div>
             {/* Booking Tabs */}
             <ul className="nav nav-tabs mb-3">
                 {bookingTabs.map((tab) => (

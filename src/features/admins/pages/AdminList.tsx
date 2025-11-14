@@ -103,7 +103,7 @@ export default function AdminList() {
                                 <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
                                 	
                                 	{/* Filter By (first item, no border-left) */}
-									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
+									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled={true}>
 										<i className="fa fa-filter me-1"></i> Filter By
 									</button>
 

@@ -3,11 +3,7 @@ import ReportTab from "./partials/ReportTab.tsx"
 // import TransactionTab from "./partials/TransactionTab.tsx"
 import { FaInfoCircle } from "react-icons/fa";
 
-export default function ReportTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function ReportTabIndex({ vehicleOwner }: any) {
     // logic
     // props destructuring (if any)
 
@@ -33,6 +29,7 @@ export default function ReportTabIndex({
     // Render
     return (
         <div className="">
+            {vehicleOwner?.fullName}
             {/* Report Tabs */}
             <ul className="nav nav-tabs mb-3">
                 {reportTabs.map((tab) => (

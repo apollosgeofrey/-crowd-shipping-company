@@ -2,9 +2,6 @@ export default function PersonalInformationTab({ user }: { user: any }) {
 
     // Split full name into first and last name for your layout
     const profile = user?.profile;
-    const nameParts = user?.fullName?.split(' ') || [];
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
 
     return (
         <>

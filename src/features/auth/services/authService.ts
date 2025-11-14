@@ -21,12 +21,12 @@ export interface ResetPayload {
 	confirm: string;
 }
 
-
-export interface ApiResponse<T> {
+export interface ApiResponse {
 	code: number;
 	message: string;
-	data?: T;
+	data?: any | null;
 }
+
 
 
 export const loginApi = async (payload: LoginPayload): Promise<ApiResponse> => {

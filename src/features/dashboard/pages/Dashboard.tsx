@@ -24,18 +24,18 @@ export default function Dashboard() {
 			<div className="row mb-4">
 				<div className="col-sm-12 col-md-8">
 					{/* Pass stats response data to StatisticalSummary */}
-					<StatisticalSummary stats={response?.data?.stats} /><br />
+					<StatisticalSummary stats={response?.stats ?? {}} /><br />
 					
 					{/* Pass revenue response data to RevenueChart */}
-					<RevenueChart revenueData={response?.data?.revenue} /><br />
+					<RevenueChart revenueData={response?.revenue ?? []} /><br />
 				</div>
 				<div className="col-sm-12 col-md-4">
 					{/* Pass pathfinders response data to BookingTrips */}
-					<BookingTrips pathfinders={response?.data?.pathfinders} /><br />
+					<BookingTrips pathfinders={response?.pathfinders ?? []} /><br />
 				</div>
 				<div className="col-sm-12 col-md-12">
 					{/* Pass bookings response data to BookingOverviews */}
-					<BookingOverviews recentBookings={response?.data?.recentBookings} /><br />
+					<BookingOverviews recentBookings={response?.recentBookings ?? []} /><br />
 				</div>
 			</div>
 		</DashboardLayout>

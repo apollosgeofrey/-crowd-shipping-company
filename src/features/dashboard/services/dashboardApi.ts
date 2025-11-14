@@ -34,7 +34,7 @@ export const dashboardApi = {
 	// Single API call to get ALL dashboard data
 	getSummary: async (): Promise<DashboardSummary> => {
 		const response = await api.get('v1/admin/dashboard');
-		return response.data;
+		return response.data.data;
 	}
 };
 

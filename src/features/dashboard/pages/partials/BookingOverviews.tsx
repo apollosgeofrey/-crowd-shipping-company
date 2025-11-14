@@ -1,6 +1,6 @@
 // import { ProgressBar } from "react-bootstrap";
 
-export default function BookingOverview({ recentBookings }: Props) {
+export default function BookingOverview({ recentBookings }: any) {
     // Helper function to get status color
     const getStatusColor = (status: string) => {
         const statusMap: { [key: string]: string } = {
@@ -82,7 +82,7 @@ export default function BookingOverview({ recentBookings }: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {recentBookings.map((trip: any) => {
+                        {recentBookings?.map((trip: any) => {
                             const statusColor = getStatusColor(trip.status);
                             const progress = getProgress(trip.status);
                             

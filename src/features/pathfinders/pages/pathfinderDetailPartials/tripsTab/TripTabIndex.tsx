@@ -5,11 +5,7 @@ import CompletedTab from "./partials/CompletedTab.tsx";
 import AcceptedTab from "./partials/AcceptedTab.tsx";
 import { FaCheckSquare, FaBriefcase, FaHourglassHalf, FaTimesCircle } from "react-icons/fa";
 
-export default function TripTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function BookingTabIndex({ pathfinder }: any) {
     // logic
     // props destructuring (if any)
 
@@ -39,6 +35,7 @@ export default function TripTabIndex({
     return (
         <div className="">
             {/* Trip Tabs */}
+            <div className="col-sm-12">{pathfinder?.fullName}</div>
             <ul className="nav nav-tabs mb-3">
                 {tripTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">

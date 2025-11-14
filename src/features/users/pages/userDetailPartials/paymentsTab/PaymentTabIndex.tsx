@@ -4,11 +4,7 @@ import TransactionTab from "./partials/TransactionTab.tsx";
 import PaymentDetailTab from "./partials/PaymentDetailTab.tsx";
 import { FaWallet, FaCreditCard, FaExchangeAlt } from "react-icons/fa";
 
-export default function PaymentTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function BookingTabIndex({ user }: any) {
     // logic
     // props destructuring (if any)
 
@@ -37,6 +33,7 @@ export default function PaymentTabIndex({
     return (
         <div className="">
             {/* Wallet Tabs */}
+            <div className="col-sm-12">{user?.fullName}</div>
             <ul className="nav nav-tabs mb-3">
                 {paymentTabs.map((tab) => (
                     <li key={tab.id} className="nav-item">

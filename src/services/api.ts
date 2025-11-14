@@ -1,7 +1,24 @@
 // servicess/api.ts
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5005';
+// Get the current hostname (it can be localhost, production domain, etc.)
+const currentHostname = window.location.hostname;
+
+// Read environment variables for base URLs
+const developmentHostnames = import.meta.env.VITE_ADMIN_HOSTNAMES?.split(',') || [];
+const productionHostnames = import.meta.env.VITE_COMPANY_HOSTNAMES?.split(',') || [];
+const defaultBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5005';
+const devBaseUrl = import.meta.env.VITE_API_DEVELOPMENT_BASE_URL || 'http://localhost:5008/api';
+const prodBaseUrl = import.meta.env.VITE_API_PRODUCTION_BASE_URL || 'https://api.crowdshipping.com/api';
+
+// Determine the API base URL based on the current hostname
+let API_BASE_URL = defaultBaseUrl;
+
+if (developmentHostnames.includes(currentHostname)) { // Use development base URL if the hostname is in the development list
+  API_BASE_URL = devBaseUrl;
+} else if (productionHostnames.includes(currentHostname)) { // Use production base URL if the hostname is in the production list
+  API_BASE_URL = prodBaseUrl;
+}
 
 export const api = axios.create({
 	baseURL: API_BASE_URL,

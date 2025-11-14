@@ -1,4 +1,4 @@
-import { FaShieldAlt, FaMobileAlt, FaEnvelope, FaCalendarAlt, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaShieldAlt, FaMobileAlt, FaEnvelope, FaCalendarAlt, FaCheckCircle } from "react-icons/fa";
 
 export default function AccountAccessTab({ user }: { user: any }) {
     

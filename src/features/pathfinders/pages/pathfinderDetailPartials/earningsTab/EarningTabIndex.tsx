@@ -2,11 +2,7 @@
 // import { ProgressBar } from "react-bootstrap";
 // import { FaCalendarAlt, FaWallet, FaClipboardList, FaFileAlt } from "react-icons/fa";
 
-export default function EarningTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function BookingTabIndex({ pathfinder }: any) {
     // logic
     // props destructuring (if any)
 
@@ -27,6 +23,7 @@ export default function EarningTabIndex({
     // Render
     return (
         <div className="row g-3">
+            <div className="col-sm-12">{pathfinder?.fullName}</div>
             <div className="col-md-6">
                 <div className="card p-3 shadow-sm">
                     <div className="d-flex align-items-center w-100 mt-2">

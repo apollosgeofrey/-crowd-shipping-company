@@ -1,31 +1,16 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { userApi, type User } from "../services/userApi.ts";
+import { userApi } from "../services/userApi.ts";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-
-// Interface for the API response structure
-interface UsersResponse {
-    code: number;
-    message: string;
-    data: {
-        items: User[];
-        meta: {
-            total: number;
-            perPage: number;
-            currentPage: number;
-            totalPages: number;
-        };
-    };
-}
 
 export default function UserList() {
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(25);
-	const [isLoading, setIsLoading] = useState(false);
-	const [totalPages, setTotalPages] = useState(1);
-	const [users, setUsers] = useState<User[]>([]);
+	const [users, setUsers] = useState<any[]>([]);
 	const [totalItems, setTotalItems] = useState(0);
+	const [totalPages, setTotalPages] = useState(1);
+	const [isLoading, setIsLoading] = useState(false);
     const [filters, setFilters] = useState({search: "", status: "", isApproved: "", kycStatus: ""});
 
 
@@ -136,7 +121,7 @@ export default function UserList() {
                                 <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
                                 	
                                 	{/* Filter By (first item, no border-left) */}
-									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled='disabled'>
+									<button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled={true}>
 										<i className="fa fa-filter me-1"></i> Filter By
 									</button>
 

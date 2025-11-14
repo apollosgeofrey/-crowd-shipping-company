@@ -1,15 +1,15 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { setAuth } from "../store/authSlice";
+// import { setAuth } from "../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../store/index.ts";
-import { registerApi, meApi } from "../services/authService";
+import { registerApi } from "../services/authService";
+// import { useAppDispatch } from "../../../store/index.ts";
 import type { RegisterPayload } from "../services/authService";
 import { CompanyAuthLayout } from "../../../layouts/AuthLayout";
 
 export default function Register() {
 	const nav = useNavigate();
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(false);
 	const [form, setForm] = useState<RegisterPayload>({ email: "", password: "", confirm_password: "" });
 
@@ -17,14 +17,20 @@ export default function Register() {
 		e.preventDefault();
 		try {
 			setLoading(true);
-			const { token } = await registerApi(form);
-			const user = await meApi();
-			dispatch(setAuth({ token, user }));
-			Swal.fire("Success", "Register successful", "success");
-			nav("/login");
+			const registerResponse = await registerApi(form);
+
+			// Validate the full response structure
+		    if (!registerResponse?.data || !(registerResponse?.code === 201 || registerResponse?.code === 200)) {
+		    	throw new Error("Invalid response from server");
+		    }
+
+		    Swal.fire("Success", (registerResponse.message || "Registered successfully"), "success");
+			nav("/dashboard", { replace: true });
+			// nav("/login", { replace: true });
 		} catch (e: any) {
-			// Swal.fire("Error", e?.response?.data?.message || "Invalid credentials", "error");
-			nav("/login");
+			console.log("ERROR caught:", e);
+		    console.log("Error details:", e?.response);
+		    Swal.fire("Error", (e?.response?.data?.message || "Failed to register"), "error");
 		} finally {
 			setLoading(false);
 		}

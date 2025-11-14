@@ -1,23 +1,6 @@
-interface IdentityInformationTabProps {
-    profile?: {
-        identificationType?: string;
-        licenseNumber?: string;
-        gender?: string;
-        country?: string;
-        state?: string;
-        city?: string;
-        geoLocation?: {
-            address?: string;
-        };
-    };
-    identityInfo: {
-        identificationType?: string;
-        licenseNumber?: string;
-        gender?: string;
-    };
-}
 
-export default function IdentityInformationTab({ pathfinder }: {props: any}) {
+
+export default function IdentityInformationTab({ pathfinder }: any) {
 
     // Use actual data from props with fallbacks
     const profile = pathfinder?.profile || {}

@@ -6,11 +6,7 @@ import OfflineTab from "./partials/OfflineTab.tsx";
 import { FaGlobe, FaPlug, FaPauseCircle, FaTrashAlt } from "react-icons/fa";
 
 
-export default function DriverTabIndex({
-    // props
-}: {
-    // props types
-}) {
+export default function DriverTabIndex({ company }: any) {
     // logic
     // props destructuring (if any)
 
@@ -39,6 +35,7 @@ export default function DriverTabIndex({
     // Render
     return (
         <div className="">
+            <div className="col-sm-12">{company?.rcNumber}</div>
             {/* Driver Tabs */}
             <ul className="nav nav-tabs mb-3">
                 {driverTabs.map((tab) => (

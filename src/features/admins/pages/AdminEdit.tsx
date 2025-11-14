@@ -12,7 +12,7 @@ export default function AdminEdit() {
     const [loading, setLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
     const [message, setMessage] = useState<{ type: "success" | "error" | ""; text: string }>({type: "", text: ""});
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] =  useState<any>({
         userId: "",
         fullName: "", 
         email: "", 

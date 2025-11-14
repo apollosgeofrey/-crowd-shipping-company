@@ -90,7 +90,8 @@ const MENU_ITEMS: MenuItem[] = [
 interface SidebarProps { onLogout?: () => void; collapsed: boolean; onToggleCollapse: (collapsed: boolean) => void;}
 
 // Sidebar menu implementation
-export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: SidebarProps) {
+// export default function Sidebar({ onLogout, collapsed, onToggleCollapse }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 	// platform flags from redux (set at startup in main.tsx/store)
 	const isAdmin = useIsAdmin();
 	const location = useLocation();

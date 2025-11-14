@@ -45,6 +45,7 @@ export const adminApi = {
         search?: string;
         status?: string;
         role?: string;
+        isVerified?: boolean;
     }): Promise<ApiResponse<PaginatedResponse>> => {
         const response = await api.get('/v1/admin/admins', { params });
         return response.data;

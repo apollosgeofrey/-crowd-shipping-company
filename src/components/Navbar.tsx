@@ -86,7 +86,7 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	};
 
 	// if you want the base name: /pathfinders/:id/edit -> "pathfinders"
-	const baseSegment = pathname.split("/").filter(Boolean)[0] || "";
+	// const baseSegment = pathname.split("/").filter(Boolean)[0] || "";
   	const getNavbarStyles = () => isMobile ? {left:"0", width:"100%", marginLeft:"0"} : {left:`${sidebarWidth}px`, width:`calc(100% - ${sidebarWidth}px)`, marginLeft:"0"};
 
 	return (
@@ -139,7 +139,8 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 				            <button className="btn d-flex align-items-center gap-2 border-0 bg-transparent" onClick={() => setDropdownOpen(!dropdownOpen)} style={{ cursor: 'pointer' }}>
 				                <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ 
 				                width: "32px", height: "32px", backgroundColor: "#f97316", color: "white", fontSize: "14px", fontWeight: "500"}}>
-				                  	{ user?.fullName ? user.fullName.split(' ').slice(0, 2).map(word => word.charAt(0)).join('') : 'CS' }
+				                  	{ user?.fullName ? user.fullName.split(' ').slice(0, 2).map((word: string) => word.charAt(0)).join('') : 'CS' }
+
 				                </div>
 				                <div className="d-none d-sm-block text-start">
 				                  	<p className="mb-0 fw-medium" style={{ fontSize: "14px", color: "#212529" }}>

@@ -1,23 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { adminApi, type Admin } from "../services/adminApi.ts";
+import { adminApi } from "../services/adminApi.ts";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import PaginationBar from "../../../components/PaginationBar.tsx";
-
-// Interface for the API response structure
-interface AdminsResponse {
-    code: number;
-    message: string;
-    data: {
-        items: Admin[];
-        meta: {
-            total: number;
-            perPage: number;
-            currentPage: number;
-            totalPages: number;
-        };
-    };
-}
 
 export default function AdminList() {
 	const [page, setPage] = useState(1);

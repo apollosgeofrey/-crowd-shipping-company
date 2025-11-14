@@ -1,23 +1,20 @@
 // servicess/api.ts
 import axios from 'axios';
 
-// Get the current hostname (it can be localhost, production domain, etc.)
-const currentHostname = window.location.hostname;
-
-// Read environment variables for base URLs
-const developmentHostnames = import.meta.env.VITE_ADMIN_HOSTNAMES?.split(',') || [];
-const productionHostnames = import.meta.env.VITE_COMPANY_HOSTNAMES?.split(',') || [];
+// Read environment variables
+const appMode = import.meta.env.VITE_API_APP_MODE; // "development" or "production"
 const defaultBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5005';
 const devBaseUrl = import.meta.env.VITE_API_DEVELOPMENT_BASE_URL || 'http://localhost:5008/api';
-const prodBaseUrl = import.meta.env.VITE_API_PRODUCTION_BASE_URL || 'https://api.crowdshipping.com/api';
+const prodBaseUrl = import.meta.env.VITE_API_PRODUCTION_BASE_URL || 'https://crowdshipping-ruby.vercel.app/api/v1' || 'https://api.crowdshipping.com/api';
 
-// Determine the API base URL based on the current hostname
+// Determine the base URL based on the app mode (development or production)
 let API_BASE_URL = defaultBaseUrl;
-
-if (developmentHostnames.includes(currentHostname)) { // Use development base URL if the hostname is in the development list
+if (appMode === 'development') {
   API_BASE_URL = devBaseUrl;
-} else if (productionHostnames.includes(currentHostname)) { // Use production base URL if the hostname is in the production list
+} else if (appMode === 'production') {
   API_BASE_URL = prodBaseUrl;
+} else {
+  console.warn('Unknown app mode. Falling back to default base URL.');
 }
 
 export const api = axios.create({

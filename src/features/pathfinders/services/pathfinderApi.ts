@@ -1,5 +1,5 @@
 // services/pathfinderApi.ts
-import api from '@/services/api';
+import api from '../../../services/api';
 
 
 /**

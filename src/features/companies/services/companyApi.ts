@@ -1,5 +1,5 @@
 // services/companyApi.ts
-import api from '@/services/api';
+import api from '../../../services/api';
 
 /**
  * Pagination metadata interface

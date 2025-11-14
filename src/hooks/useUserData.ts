@@ -6,6 +6,6 @@ import { useSelector } from 'react-redux';
 export function useUserData() {
     const localUser = localStorage.getItem('authUser');    
     return {
-        user: useSelector(state => state.authUser) || (localUser ? JSON.parse(localUser) : null),
+        user: useSelector((state: any) => state.authUser) || (localUser ? JSON.parse(localUser) : null),
     };
 }

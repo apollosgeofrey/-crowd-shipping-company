@@ -32,7 +32,7 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
 		"/dashboard": { title: `Hello ${user?.fullName || 'Admin'} 👋`, subtitle: "Good Morning" },
 		
-		"/vehicle-owners/:id/show": {title:"Vehicle Owner Details", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
+		"/vehicle-owners/:id/show": {title:"Vehicle Owner Details", subtitle:"Vehicle Owners > Details", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners/:id/edit": {title:"Update Vehicle Owner", subtitle:"Vehicle Owners > Updating", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners/create": {title:"Create Vehicle Owner", subtitle:"Vehicle Owners > Creation", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
 		"/vehicle-owners": {title:"Manage Vehicle Owner", subtitle:"Vehicle Owners > Requests", parent:{label:"Vehicle Owners", path:"/vehicle-owners"}},
@@ -63,7 +63,10 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 		"/promo-codes": {title:"Promo Codes", subtitle:"Discounts > Promo Codes", parent:{label:"Discounts", path:"/promo-codes"}},
 		"/trip-charges": {title:"Trip Charges", subtitle:"Trips > Charges", parent:{label:"Trips", path:"/trip-charges"}},
 		"/reports": {title:"Reports", subtitle:"Analytics > Reports", parent:{label:"Analytics", path:"/reports"}},
+		
+		"/ratings/:id/show": {title:"Rating Details", subtitle:"Ratings > Details", parent:{label:"Ratings", path:"/ratings"}},
 		"/ratings": {title: "Ratings", subtitle: "Feedback > Ratings", parent: { label: "Feedback", path: "/ratings"}},
+
 		"/support-data": {title: "Support Data", subtitle: "Support > Data", parent: { label: "Support", path: "/support-data"}},
 		"/system-settings": {title: "System Settings", subtitle: "System > Settings", parent: { label: "System", path: "/system-settings"}},
 		"/notifications": {title:"Notifications", subtitle:"System > Notifications", parent: {label:"System", path:"/notifications"}}

@@ -1,366 +1,427 @@
-// import Swal from "sweetalert2";
-// import { Link } from "react-router-dom";
-// import { FaSearch } from "react-icons/fa";
+// BookingList.tsx
 import { useState, useEffect } from "react";
-import PackageImage from "../../../assets/images/package_image.png";
+import { Link } from "react-router-dom";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-import BookingStatsCards from "./bookingListPartials/BookingStatsCards.tsx"
-import BookingDetailModal from "./bookingListPartials/BookingDetailModal.tsx"
-
+import BookingStatsCards from "./bookingListPartials/BookingStatsCards.tsx";
+import bookingApi, { type BookingFilters } from "../services/bookingApi.ts";
+import BookingDetailModal from "./bookingListPartials/BookingDetailModal.tsx";
 
 export default function BookingList() {
-	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(10);
-	const [isLoading, setIsLoading] = useState(false);
-	const [totalPages, setTotalPages] = useState(2);
-	const [showModal, setShowModal] = useState(false);
-	// const [editCharge, setEditCharge] = useState<any | null>(null);
-	const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(25);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [bookings, setBookings] = useState<any[]>([]);
+    const [metaData, setMetaData] = useState<any>(null);
+    const [filters, setFilters] = useState<BookingFilters>({
+        search: "",
+        status: "",
+        paymentStatus: "",
+        fleetType: ""
+    });
+    const [showModal, setShowModal] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
 
-	// handleView Implementation
-	const handleView = (booking: any) => {
-	    setSelectedBooking(booking);   // save the clicked row data
-	    setShowModal(true);             // show the modal
-	};
+    // Fetch bookings from API
+    useEffect(() => {
+        async function fetchBookings() {
+            setIsLoading(true);
+            try {
+                const response = await bookingApi.getBookings({page, limit: perPage, ...filters});
+                if (response.code === 200) {
+                    setBookings(response.data.items);
+                    setTotalPages(response.data.meta.totalPages);
+                    setTotalItems(response.data.meta.total);
+                    setMetaData(response.data.meta);
+                }
+            } catch (err) {
+                console.error("Failed to fetch bookings:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchBookings();
+    }, [page, perPage, filters]);
 
-	// const handleClose = () => {
-	//     setShowModal(false);
-	//     setSelectedBooking(null);
-	// };
+    // Handle filter changes
+    const handleFilterChange = (key: keyof BookingFilters, value: string) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+        setPage(1); // Reset to first page when filters change
+    };
 
-	const [bookings, setBookings] = useState<any[]>([
-		{
-		    id: "TRP-001",
-		    description: "MacBook Pro",
-		    value: 450000,
-		    status: "In Transit",
-		    progress: 65,
-		    eta: "2:30 PM",
-		    routeFrom: "Lagos Island",
-		    routeTo: "Victoria Island",
-		    distance: 12.5,
-		    started: "1:15 PM",
-		    beforeImage: PackageImage,
-		    afterImage: PackageImage,
-		    sender: {
-		      	name: "John Smith",
-		      	phone: "+234-801-234-5678",
-		      	address: "Lagos Island",
-		    },
-		    receiver: {
-		      	name: "Sarah Johnson",
-		      	phone: "+234-801-234-5678",
-		      	address: "Victoria Island",
-		    },
-		    driver: {
-		      	name: "Michael Brown",
-		      	phone: "+234-801-234-5678",
-		      	vehicle: "Toyota Camry - ABC123XY",
-		      	currentLocation: "Tafawa Balewa Square",
-		    },
-	  	}, {
-		    id: "TRP-002",
-		    description: "Legal Papers",
-		    value: 25000,
-		    status: "Picking Up",
-		    progress: 20,
-		    eta: "2:30 PM",
-		    routeFrom: "Ikeja",
-		    routeTo: "Maryland",
-		    distance: 8.2,
-		    started: "12:45 PM",
-		    beforeImage: "/images/before-papers.jpg",
-		    afterImage: "/images/after-papers.jpg",
-		    sender: {
-		      	name: "Samuel Ade",
-		      	phone: "+234-802-111-2233",
-		      	address: "Ikeja",
-		    },
-		    receiver: {
-		      	name: "Grace Bello",
-		      	phone: "+234-802-444-5566",
-		      	address: "Maryland",
-		    },
-		    driver: {
-		      	name: "James Anderson",
-		      	phone: "+234-803-777-8899",
-		      	vehicle: "Honda Accord - XYZ789AB",
-		      	currentLocation: "Oregun Road",
-		    },
-	  	}, {
-		    id: "TRP-003",
-		    description: "Legal Papers",
-		    value: 25000,
-		    status: "Delivered",
-		    progress: 100,
-		    eta: "2:30 PM",
-		    routeFrom: "Lekki Phase 1",
-		    routeTo: "Ajah",
-		    distance: 15.7,
-		    started: "11:30 AM",
-		    beforeImage: "/images/before-docs.jpg",
-		    afterImage: "/images/after-docs.jpg",
-		    sender: {
-				name: "Ngozi Okafor",
-				phone: "+234-805-123-4567",
-				address: "Lekki Phase 1",
-		    },
-		    receiver: {
-				name: "David Mark",
-				phone: "+234-806-321-4321",
-				address: "Ajah",
-		    },
-		    driver: {
-				name: "Daniel Lee",
-				phone: "+234-809-888-9999",
-				vehicle: "Nissan Altima - DEF456CD",
-				currentLocation: "Ajah Bus Stop",
-		    },
-		}, {
-		    id: "TRP-004",
-		    description: "Designer Clothes",
-		    value: 185000,
-		    status: "Delivered",
-		    progress: 100,
-		    eta: "2:30 PM",
-		    routeFrom: "San Francisco",
-		    routeTo: "San Bay",
-		    distance: 6.5,
-		    started: "12:00 PM",
-		    beforeImage: "/images/before-clothes.jpg",
-		    afterImage: "/images/after-clothes.jpg",
-		    sender: {
-				name: "Aisha Bello",
-				phone: "+234-810-222-3344",
-				address: "San Francisco",
-		    },
-		    receiver: {
-				name: "Olu Adeyemi",
-				phone: "+234-811-999-8877",
-				address: "San Bay",
-		    },
-		    driver: {
-				name: "James Anderson",
-				phone: "+234-803-777-8899",
-				vehicle: "Honda Accord - XYZ789AB",
-				currentLocation: "Third Mainland Bridge",
-		    },
-	  	},
-	]);
+    // Reset all filters
+    const resetFilters = () => {
+        setFilters({ search: "", status: "", paymentStatus: "", fleetType: "" });
+        setPage(1);
+    };
 
+    // Handle view booking details
+    const handleView = (booking: Booking) => {
+        setSelectedBooking(booking);
+        setShowModal(true);
+    };
 
+    // Handle export bookings
+    const handleExport = async () => {
+        try {
+            const blob = await bookingApi.exportBookings(filters);
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `bookings-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Failed to export bookings:", err);
+        }
+    };
 
-	// Simulate fetch
-	useEffect(() => {
-		async function fetchBookings() {
-		  setIsLoading(true);
-			try {
-				// Example API call (replace with your backend endpoint)
-                // const res = await fetch(`/api/bookings?page=${page}`);
-                // const data = await res.json();
-                // Laravel paginate-style response often has: data, total, per_page, current_page
-			    setBookings(bookings);
-			    setTotalPages(totalPages);
-                // optionally update totalPages dynamically: setTotalPages(data.last_page);
-			} catch (err) {
-			    console.error(err);
-			} finally {
-			    setIsLoading(false);
-			}
-		}
-		fetchBookings();
-	}, [page, perPage]);
+    // Format date
+    const formatDate = (dateString: string) => {
+        if (!dateString) return "N/A";
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
 
+    // Format currency
+    const formatCurrency = (amount: number, currency: string = "NGN") => {
+        return new Intl.NumberFormat('en-NG', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2
+        }).format(amount);
+    };
 
+    // Get status badge color
+    const getStatusBadge = (status: string) => {
+        const statusMap: { [key: string]: string } = {
+            'PENDING': 'bg-warning text-dark',
+            'IN_PROGRESS': 'bg-primary text-white',
+            'ARRIVED_DESTINATION': 'bg-info text-white',
+            'DELIVERED': 'bg-success text-white',
+            'CANCELLED': 'bg-danger text-white',
+            'REJECTED': 'bg-secondary text-white'
+        };
+        return statusMap[status] || 'bg-secondary text-white';
+    };
 
-	// // handle the add of charge
-	// const handleAdd = () => {
-    // 	setEditCharge(null);
-    // 	setShowModal(true);
-  	// };
+    // Get payment status badge
+    const getPaymentStatusBadge = (paymentStatus: string) => {
+        const statusMap: { [key: string]: string } = {
+            'paid': 'bg-success text-white',
+            'unpaid': 'bg-warning text-dark',
+            'failed': 'bg-danger text-white',
+            'refunded': 'bg-info text-white'
+        };
+        return statusMap[paymentStatus] || 'bg-secondary text-white';
+    };
 
-  	// // // handle the edit of charge
-  	// const handleEdit = (booking: any) => {
-    // 	setEditCharge(booking);
-    // 	setShowModal(true);
-  	// };
+    // Get fleet type badge
+    const getFleetTypeBadge = (fleetType: string) => {
+        const typeMap: { [key: string]: string } = {
+            'road': 'bg-primary text-white',
+            'air': 'bg-info text-white',
+            'maritime': 'bg-success text-white'
+        };
+        return typeMap[fleetType] || 'bg-secondary text-white';
+    };
 
-  	// // // handle the save of charge
-  	// const handleSave = (data: any) => {
-    // 	if (editCharge) {
-    //   		// Edit existing
-    //   		setBookings(bookings.map(c => (c.id === editCharge.id ? { ...c, ...data } : c)));
-    // 	} else {
-    //   		// Add new
-    //   		setBookings([...bookings, { id: bookings.length + 1, ...data }]);
-    // 	}
-  	// };
+    // Capitalize first letter
+    const capitalizeFirst = (str: string) => {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
 
+    // Format status for display
+    const formatStatus = (status: string) => {
+        return status.toLowerCase().split('_').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+    };
 
-	// handle the delete of charge
-	// const handleDelete = (charge) => {
-	// 	Swal.fire({
-	// 	    title: "Are you sure?",
-	// 	    text: `You are about to delete "${charge.chargeType}" charge applied on "${charge.dateApplied}".`,
-	// 	    icon: "warning",
-	// 	    showCancelButton: true,
-	// 	    confirmButtonColor: "#d33",
-	// 	    cancelButtonColor: "#3085d6",
-	// 	    confirmButtonText: "Yes, delete it!",
-	// 	    cancelButtonText: "No, don't delete it!",
-	// 	}).then((result) => {
-	// 	    if (result.isConfirmed) {
-	// 	      	// your delete logic
-	// 	      	// onDelete(charge.id);
+    return (
+        <DashboardLayout>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
+                        <div className="card-body">
+                            {/* Statistics Cards - Pass the stats data */}
+                            <div className="mb-4">
+                                <BookingStatsCards 
+                                    metaData={metaData} 
+                                    loading={isLoading} 
+                                />
+                            </div>
 
-	// 	      	Swal.fire("Deleted!", "The charge has been removed.", "success");
-	// 	    }
-	// 	});
-	// };
+                            {/* Filter Bar */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
+                                
+                                    {/* Filter By (first item, no border-left) */}
+                                    <button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled={true}>
+                                        <i className="fa fa-filter me-1"></i> Filter By
+                                    </button>
 
-  	return (
-	    <DashboardLayout>
-		    <div className="row mb-4">
-		    	{/* Filter Bar */}
-		        <div className="col-md-12">
-			        <div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
-			            <div className="card-body">
-			            	{/* Statistica Cards */}
-			            	<div className="mb-4">
-			            		<BookingStatsCards />
-			            	</div>
+                                    {/* Search Input */}
+                                    <div className="d-flex align-items-center px-2">
+                                        <input 
+                                            type="text"
+                                            className="form-control form-control-sm border-1 bg-transparent" 
+                                            placeholder="Search booking reference..."
+                                            value={filters.search}
+                                            onChange={(e) => handleFilterChange("search", e.target.value)}
+                                            style={{ minWidth: "200px" }}
+                                        />
+                                    </div>
 
-			                <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-			                    <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
-			                    
-			                        {/* Filter By (first item, no border-left) */}
-			                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3">
-			                            <i className="fa fa-filter me-1"></i> Filter By
-			                        </button>
+                                    {/* Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.status}
+                                            onChange={(e) => handleFilterChange("status", e.target.value)}
+                                        >
+                                            <option value="">All Status</option>
+                                            <option value="PENDING">Pending</option>
+                                            <option value="IN_PROGRESS">In Progress</option>
+                                            <option value="ARRIVED_DESTINATION">Arrived</option>
+                                            <option value="DELIVERED">Delivered</option>
+                                            <option value="CANCELLED">Cancelled</option>
+                                        </select>
+                                    </div>
 
-			                        {/* Divider applied to subsequent items */}
-			                        <div className="d-flex align-items-center border-start px-2">
-			                            <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-			                            <option>Date</option>
-			                            </select>
-			                        </div>
+                                    {/* Payment Status Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.paymentStatus}
+                                            onChange={(e) => handleFilterChange("paymentStatus", e.target.value)}
+                                        >
+                                            <option value="">All Payment</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="unpaid">Unpaid</option>
+                                        </select>
+                                    </div>
 
-			                        <div className="d-flex align-items-center border-start px-2">
-			                            <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-			                            <option>Verification</option>
-			                            </select>
-			                        </div>
+                                    {/* Fleet Type Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.fleetType}
+                                            onChange={(e) => handleFilterChange("fleetType", e.target.value)}
+                                        >
+                                            <option value="">All Fleet Types</option>
+                                            <option value="road">Road</option>
+                                            <option value="air">Air</option>
+                                            <option value="maritime">Maritime</option>
+                                        </select>
+                                    </div>
 
-			                        <div className="d-flex align-items-center border-start px-2">
-			                            <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }}>
-			                            <option>Active</option>
-			                            <option>Inactive</option>
-			                            </select>
-			                        </div>
+                                    {/* Reset Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
+                                            <i className="fa fa-undo me-1"></i> Reset Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-			                        <div className="d-flex align-items-center border-start px-2">
-			                            <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger">
-			                            <i className="fa fa-undo me-1"></i> Reset Filter
-			                            </button>
-			                        </div>
-			                    </div>
-			                </div>
-			              	
-			              	{/* Table */}
-							<div className="table-responsive rounded-3 shadow-sm border">
-								<table className="table align-middle mb-0">
-								    <thead className="table-light">
-									    <tr>
-									        <th style={{ width: "5%" }}>#</th>
-									        <th style={{ width: "10%" }}>Trip ID</th>
-									        <th style={{ width: "20%" }}>Description</th>
-									        <th style={{ width: "20%" }}>Driver</th>
-									        <th style={{ width: "15%" }}>Route</th>
-									        <th style={{ width: "10%" }}>Status</th>
-									        <th style={{ width: "10%" }}>Progress</th>
-									        <th style={{ width: "5%" }}>ETA</th>
-									        <th style={{ width: "5%" }}>Action</th>
-									    </tr>
-								    </thead>
-								    <tbody>
-									    {isLoading ? (
-									        <tr>
-									          	<td colSpan={8} className="text-center text-muted py-3">Loading...</td>
-									        </tr>
-									    ) : bookings.length === 0 ? (
-									        <tr>
-									          	<td colSpan={8} className="text-center text-muted py-3">No bookings found.</td>
-									        </tr>
-									    ) : (
-									        bookings.map((booking, i) => (
-										        <tr key={booking.id}>
-										            <td className="fw-semibold text-muted py-3">{i+1}</td>
+                            {/* Actions and Stats */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex align-items-center gap-3">
+                                    <span className="text-muted">
+                                        Showing {((page - 1) * perPage) + 1} to {Math.min(page * perPage, totalItems)} of {totalItems} bookings
+                                    </span>
+                                </div>
+                                
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-outline-secondary btn-sm fw-bold" onClick={handleExport}>
+                                        <span>Export</span> <span className="fa fa-angle-down"></span>
+                                    </button>
+                                </div>
+                            </div>
 
-										            {/* Trip ID */}
-										            <td className="fw-semibold text-muted py-3">{booking.id}</td>
+                            {/* Table */}
+                            <div className="table-responsive rounded-3 shadow-sm border">
+                                <table className="table align-middle mb-0 table-sm table-striped">
+                                    <thead className="table-light small">
+                                        <tr>
+                                            <th style={{ width: "3%" }} className="py-3">#</th>
+                                            <th style={{ width: "15%" }} className="py-3">BOOKING REF</th>
+                                            <th style={{ width: "15%" }} className="py-3">SENDER & RECEIVER</th>
+                                            <th style={{ width: "15%" }} className="py-3">PATHFINDER</th>
+                                            <th style={{ width: "15%" }} className="py-3">ROUTE</th>
+                                            <th style={{ width: "14%" }} className="py-3">FINANCIAL INFO</th>
+                                            <th style={{ width: "8%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "10%" }} className="py-3">DATES</th>
+                                            <th style={{ width: "5%" }} className="py-3">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="small">
+                                        {isLoading ? (
+                                            <tr>
+                                                <td colSpan={9} className="text-center text-muted py-4">
+                                                    <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                    Loading bookings...
+                                                </td>
+                                            </tr>
+                                        ) : bookings.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={9} className="text-center text-muted py-4">No bookings found</td>
+                                            </tr>
+                                        ) : (
+                                            bookings.map((booking, index) => (
+                                                <tr key={booking._id}>
+                                                    {/* Sequential Number */}
+                                                    <td className="text-muted py-2 px-1 text-center fw-bold align-top">
+                                                        {(page - 1) * perPage + index + 1}
+                                                    </td>
+                                                    
+                                                    {/* Booking Reference */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="fw-semibold text-primary">{booking.bookingRef}</div>
+                                                        <small className="text-muted">
+                                                            Tracking: {booking.parcelGroup?.trackingId || "N/A"}
+                                                        </small>
+                                                    </td>
+                                                    
+                                                    {/* Sender & Receiver */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-1">
+                                                            <div className="small">
+                                                            	<span className="fw-semibold text-muted me-1">Sender:</span>
+                                                                {booking.sender?.fullName || "N/A"}
+                                                            </div>
+                                                            <small className="text-muted">
+                                                                {booking.sender?.phoneNumber || ""}
+                                                            </small>
+                                                        </div>
+                                                        <div>
+                                                            <div className="small">
+                                                            	<span className="fw-semibold text-muted me-1">Receiver:</span>
+                                                                {booking.parcelGroup?.receiverName || "N/A"}
+                                                            </div>
+                                                            <small className="text-muted">
+                                                                {booking.parcelGroup?.receiverPhone || ""}
+                                                            </small>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Pathfinder */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="fw-semibold">
+                                                            {booking.traveller?.fullName || "N/A"}
+                                                        </div>
+                                                        <small className="text-muted d-block">
+                                                            {booking.traveller?.email || "N/A"}
+                                                        </small>
+                                                        <small className="text-muted">
+                                                            {booking.traveller?.phoneNumber || "N/A"}
+                                                        </small>
+                                                    </td>
+                                                    
+                                                    {/* Route Information */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-1">
+                                                            <div className="small text-truncate" style={{ maxWidth: "150px" }} title={booking.parcelGroup?.pickUpLocation?.address}>
+                                                            	<small className="fw-semibold text-muted me-1">From:</small>
+                                                                {booking.parcelGroup?.pickUpLocation?.address || "N/A"}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div className="small text-truncate" style={{ maxWidth: "150px" }} title={booking.parcelGroup?.dropOffLocation?.address}>
+                                                            	<small className="fw-semibold text-muted me-1">To:</small>
+                                                                {booking.parcelGroup?.dropOffLocation?.address || "N/A"}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Financial Information */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-0">
+                                                            <div className="fw-semibold text-success">
+                                                            	<span className="fw-semibold text-muted me-1">Total:</span>
+                                                                {formatCurrency(booking.total, booking.currency)}
+                                                            </div>
+                                                        </div>
+                                                        <div className="mb-0">
+                                                            <div className="small">
+                                                            	<small className="fw-semibold text-muted me-1">Weight:</small>
+                                                                {booking.parcelGroup?.weight || "0"} kg
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <span className={`badge ${getPaymentStatusBadge(booking.paymentStatus)}`}>
+                                                                {capitalizeFirst(booking.paymentStatus)}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Statuses */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-0 col-sm">
+                                                            <span className={`badge ${getStatusBadge(booking.status)} col-sm-12`}>
+                                                                {formatStatus(booking.status)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-0">
+                                                            <span className={`badge ${getFleetTypeBadge(booking.fleetType)} col-sm-12`}>
+                                                                {capitalizeFirst(booking.fleetType)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="small text-muted col-sm-12">
+                                                            Parcel: {capitalizeFirst(booking.parcelGroup?.status || "N/A")}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Dates */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="small text-muted">
+                                                            <div className="mb-1">
+                                                                <span className="fw-semibold me-1">Created:</span>
+                                                                {formatDate(booking.createdAt)}
+                                                            </div>
+                                                            <div>
+                                                                <span className="fw-semibold me-1">Updated:</span>
+                                                                {formatDate(booking.updatedAt)}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Actions */}
+                                                    <td className="text-muted py-2 px-1 align-top">
+                                                        <div className="btn-group">
+                                                            <button className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Booking" onClick={() => handleView(booking)}>
+                                                                <i className="fa fa-eye small"></i> View
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                                
+                            {/* Pagination Bar */}
+                            <PaginationBar page={page} perPage={perPage} onPageChange={setPage} onPerPageChange={setPerPage}/>
 
-										            {/* Description */}
-										            <td className="py-3">
-										              	<div className="fw-bold">{booking.description}</div>
-										              	<small className="text-muted">₦{booking.value.toLocaleString()}</small>
-										            </td>
-
-										            {/* Driver */}
-										            <td className="py-3">
-										              	<div className="fw-bold">{booking.driver.name}</div>
-										              	<small className="text-muted">{booking.driver.vehicle}</small>
-										            </td>
-
-										            {/* Route */}
-										            <td className="py-3">
-										              	<div>{booking.routeFrom}</div>
-										              	<span className="text-primary">→</span>
-										              	<div>{booking.routeTo}</div>
-										            </td>
-
-										            {/* Status */}
-										            <td className="py-3">
-											            <span className={`badge rounded-3 px-3 py-2 col-sm-12 fw-semibold ${
-											                booking.status === "In Transit" ? "bg-primary text-white" : booking.status === "Delivered"
-											                    ? "bg-success text-white" : booking.status === "Picking Up" ? "bg-warning text-dark" : "bg-secondary text-white"}`}>
-											                {booking.status}
-											            </span>
-										            </td>
-
-										            {/* Progress Bar */}
-										            <td className="py-3">
-										              	<div className="progress" style={{ height: "6px" }}>
-											                <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${booking.progress}%` }} aria-valuenow={booking.progress} aria-valuemin={0} aria-valuemax={100}/>
-											            </div>
-										              	<small className="text-muted">{booking.progress}%</small>
-										            </td>
-
-										            {/* ETA */}
-										            <td className="fw-semibold text-muted py-3">{booking.eta}</td>
-
-										            {/* Actions */}
-										            <td className="py-3">
-										              	<button className="btn btn-sm border-0 text-primary" title="View Trip" onClick={() => handleView(booking)} >
-										                	<i className="fa fa-eye"></i>
-										              	</button>
-										            </td>
-										        </tr>
-									        ))
-									    )}
-								    </tbody>
-								</table>
-							</div>
-
-							{/* Modal */}
-      						<BookingDetailModal show={showModal} onClose={() => setShowModal(false)} booking={selectedBooking}/>
-
-			              	{/* Pagination Bar */}
-			              	<PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
-			            </div>
-			        </div>
-		        </div>
-		    </div>
-	    </DashboardLayout>
-  	);
+                            {/* Booking Detail Modal - Pass the selected booking */}
+                            <BookingDetailModal show={showModal} onClose={() => setShowModal(false)} booking={selectedBooking} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </DashboardLayout>
+    );
 }

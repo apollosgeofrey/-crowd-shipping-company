@@ -1,212 +1,383 @@
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+// RatingList.tsx
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
-
-
+import RatingStatsCards from "./ratingListPartials/RatingStatsCards.tsx";
+import ratingApi, { type RatingFilters } from "../services/ratingApi.ts";
 
 export default function RatingList() {
-	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(10);
-	const [isLoading, setIsLoading] = useState(false);
-	const [totalPages, setTotalPages] = useState(2);
+    const navigate = useNavigate();
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(20);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [metaData, setMetaData] = useState<any>(null);
+    const [ratings, setRatings] = useState<any[]>([]);
+    const [filters, setFilters] = useState<RatingFilters>({search: "", ratingType: "", minRating: "", maxRating: "", hasReview: ""});
 
-	const [ratings, setRatings] = useState<any[]>([
-	  	{
-		    id: "01",
-		    name: "Shelly Williams",
-		    rating: 3,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Open",
-	  	}, {
-		    id: "02",
-		    name: "Shelly Williams",
-		    rating: 4,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Open",
-		}, {
-		    id: "03",
-		    name: "Shelly Williams",
-		    rating: 5,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Open",
-		}, {
-		    id: "04",
-		    name: "Shelly Williams",
-		    rating: 2,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Answered",
-		}, {
-		    id: "05",
-		    name: "Shelly Williams",
-		    rating: 4,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Open",
-		}, {
-		    id: "06",
-		    name: "Alfred Murray",
-		    rating: 3,
-		    language: "English",
-		    updatedDate: "July 12, 2025",
-		    updatedTime: "11:23AM",
-		    status: "Answered",
-		}
-	]);
+    // Fetch ratings from API
+    useEffect(() => {
+        async function fetchRatings() {
+            setIsLoading(true);
+            try {
+                const response = await ratingApi.getRatings({page, limit: perPage, ...filters});
+                if (response.code === 200) {
+                    setRatings(response.data.items);
+                    setTotalPages(response.data.meta.totalPages);
+                    setTotalItems(response.data.meta.total);
+                    setMetaData(response.data.meta);
+                }
+            } catch (err) {
+                console.error("Failed to fetch ratings:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchRatings();
+    }, [page, perPage, filters]);
 
+    // Handle filter changes
+    const handleFilterChange = (key: keyof RatingFilters, value: string) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+        setPage(1);
+    };
 
-	// Simulate fetch
-	useEffect(() => {
-		async function fetchRatings() {
-		  setIsLoading(true);
-			try {
-				// Example API call (replace with your backend endpoint)
-                // const res = await fetch(`/api/ratings?page=${page}`);
-                // const data = await res.json();
-                // Laravel paginate-style response often has: data, total, per_page, current_page
-			    setRatings(ratings);
-			    setTotalPages(totalPages);
-                // optionally update totalPages dynamically: setTotalPages(data.last_page);
-			} catch (err) {
-			    console.error(err);
-			} finally {
-			    setIsLoading(false);
-			}
-		}
-		fetchRatings();
-	}, [page, perPage]);
+    // Reset all filters
+    const resetFilters = () => {
+        setFilters({ search: "", ratingType: "", minRating: "", maxRating: "", hasReview: "" });
+        setPage(1);
+    };
 
+    // Handle view rating details
+    const handleView = (rating: any) => navigate(`/ratings/${rating._id}/show`);
 
-	// Badge style
-	const getStatusBadge = (status: string) => {
-		switch (status) {
-	  		case "Open":
-	    		return "badge rounded bg-success-subtle text-success fw-semibold px-3 py-2";
-	  		case "Answered":
-	    		return "badge rounded bg-warning-subtle text-warning fw-semibold px-3 py-2";
-	  		default:
-	    		return "badge rounded bg-light text-dark fw-semibold px-3 py-2";
-		}
-	};
+    // Handle export ratings
+    const handleExport = async () => {
+        try {
+            const blob = await ratingApi.exportRatings(filters);
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `ratings-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Failed to export ratings:", err);
+        }
+    };
 
-  	return (
-	    <DashboardLayout>
-		    <div className="row mb-4">
-		    	<div className="d-flex justify-content-between align-items-center mb-4">
-				    {/* Left: Title & Description */}
-				    <p className="text-muted small mb-0">Manage ratings and feedbacks</p>
+    // Format date
+    const formatDate = (dateString: string) => {
+        if (!dateString) return "N/A";
+        try {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (error) {
+            return "Invalid Date";
+        }
+    };
 
-				    {/* Right: Button */}
-				    {/*<button className="btn btn-danger fw-semibold px-4 rounded d-flex align-items-center gap-2">
-				        <i className="fa fa-plus"></i> Resolved
-				    </button>*/}
-				</div>
+    // Render star rating
+    const renderStars = (rating: number) => {
+        return Array.from({ length: 5 }).map((_, i) => (
+            <i key={i} className={`fa fa-star ${i < rating ? "text-warning" : "text-muted"}`}></i>
+        ));
+    };
 
-			    {/* Search Box */}
-			    <div className="col-sm-12 col-md-4 mb-3">
-			    	<label className="form-label fw-semibold mb-0">Search</label>
-			    	<div className="input-group rounded shadow-sm">
-				        <button className="btn btn-white border fw-semibold"><FaSearch className="text-muted" /></button>
-				        <input type="text" className="form-control border-start-0" placeholder="Enter Search" />
-				    </div>
-			    </div>
+    // Get rating type badge
+    const getRatingTypeBadge = (type: string) => {
+        const typeMap: { [key: string]: string } = {
+            'customer': 'bg-primary text-white',
+            'driver': 'bg-success text-white'
+        };
+        return typeMap[type] || 'bg-secondary text-white';
+    };
 
-		      	{/* Status Filter */}
-			    <div className="col-sm-12 col-md-4 mb-3">
-			    	<label className="form-label fw-semibold mb-0">Status</label>
-			      	<div className="input-group rounded shadow-sm">
-			        	<select className="form-select fw-semibold">
-			          		<option>All</option>
-			          		<option>Open</option>
-			          		<option>Answered</option>
-			          		<option>Closed</option>
-			        	</select>
-				    </div>
-		      	</div>
+    // Get booking status badge
+    const getBookingStatusBadge = (status: string) => {
+        const statusMap: { [key: string]: string } = {
+            'COMPLETED': 'bg-success text-white',
+            'in-progress': 'bg-warning text-dark',
+            'pending': 'bg-secondary text-white',
+            'cancelled': 'bg-danger text-white'
+        };
+        return statusMap[status] || 'bg-secondary text-white';
+    };
 
-			    {/* Language Filter */}
-				<div className="col-sm-12 col-md-4 mb-3">
-				    <label className="form-label fw-semibold mb-0">Language</label>
-				    <div className="input-group rounded shadow-sm">
-				        <select className="form-select fw-semibold">
-				        	<option>All languages</option>
-				        	<option>English</option>
-				        	<option>French</option>
-				        	<option>Spanish</option>
-				        </select>
-				    </div>
-			    </div>
-			    <div className="col-md-12">
-					<div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
-					    <div className="card-body">
-						    {/* Table */}
-						    <div className="table-responsive rounded-3 shadow-sm border">
-						        <table className="table align-middle mb-0">
-							        <thead className="table-light">
-							            <tr>
-											<th style={{ width: "5%" }}>ID</th>
-											<th style={{ width: "20%" }}>Name</th>
-											<th style={{ width: "20%" }}>Rating</th>
-											<th style={{ width: "15%" }}>Language</th>
-											<th style={{ width: "20%" }}>Date</th>
-											<th style={{ width: "10%" }}>Status</th>
-							            </tr>
-							        </thead>
-							        <tbody>
-							            {isLoading ? (
-							              <tr>
-							                <td colSpan={6} className="text-center text-muted py-3">Loading...</td>
-							              </tr>
-							            ) : ratings.length === 0 ? (
-							              	<tr>
-							                	<td colSpan={6} className="text-center text-muted py-3">No ratings found</td>
-							              	</tr>
-							            ) : (
-							              	ratings.map((c) => (
-							                	<tr key={c.id}>
-							                  		<td className="text-muted py-3 px-2">{c.id}</td>
-							                  		<td className="fw-semibold text-dark py-3 px-2">
-							                  			<Link to={`/ratings/${c.id}/show`} className="text-decoration-none text-primary">{c.name}</Link>
-							                  		</td>
-							                  		{/* Ratings Stars */}
-							                  		<td className="py-3 px-2">
-							                    		{[...Array(5)].map((_, i) => (
-							                      			<i key={i} className={`fa fa-star ${i < c.rating ? "text-warning" : "text-muted"}`}></i>
-							                    		))}
-							                  		</td>
-									                <td className="text-muted py-3 px-2">{c.language}</td>
-							                  		<td className="text-muted py-3 px-2">
-							                    		<div className="fw-semibold">
-							                      			{c.updatedDate}{" "}
-							                      			<small className="text-secondary">{c.updatedTime}</small>
-							                    		</div>
-							                  		</td>
-							                  		<td className="text-muted py-3 px-2">
-							                    		<span className={`col-sm-12 ${getStatusBadge(c.status)}`}>{c.status}</span>
-							                  		</td>
-							                	</tr>
-							              	))
-							            )}
-							        </tbody>
-						        </table>
-						    </div>
+    // Capitalize first letter
+    const capitalizeFirst = (str: string) => {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
 
-						    {/* Pagination Bar */}
-						    <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage} />
-					    </div>
-					</div>
-				</div>
-		    </div>
-	    </DashboardLayout>
-  	);
+    // Format currency
+    const formatCurrency = (amount: number, currency: string = "NGN") => {
+        if (amount === undefined || amount === null) return "N/A";
+        return new Intl.NumberFormat('en-NG', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2
+        }).format(amount / 100);
+    };
+
+    return (
+        <DashboardLayout>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <div className="card border-0 shadow-sm rounded" style={{ overflowX: "auto", maxWidth: "100vw" }}>
+                        <div className="card-body">
+                            {/* Statistics Cards */}
+                            <div className="mb-4">
+                                <RatingStatsCards metaData={metaData} loading={isLoading} />
+                            </div>
+
+                            {/* Filter Bar */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex flex-wrap bg-light border rounded-3 shadow-sm gap-0 ps-0 pe-0 p-2">
+                                
+                                    {/* Filter By */}
+                                    <button className="btn btn-sm btn-light border-0 fw-semibold px-3" disabled={true}>
+                                        <i className="fa fa-filter me-1"></i> Filter By
+                                    </button>
+
+                                    {/* Search Input */}
+                                    <div className="d-flex align-items-center px-2">
+                                        <input type="text" className="form-control form-control-sm border-1 bg-transparent" 
+                                            placeholder="Search reviews or names..."
+                                            value={filters.search}
+                                            onChange={(e) => handleFilterChange("search", e.target.value)}
+                                            style={{ minWidth: "200px" }}
+                                        />
+                                    </div>
+
+                                    {/* Rating Type Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.ratingType}
+                                            onChange={(e) => handleFilterChange("ratingType", e.target.value)}
+                                        >
+                                            <option value="">All Types</option>
+                                            <option value="customer">Customer Ratings</option>
+                                            <option value="driver">Driver Ratings</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Min Rating Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.minRating}
+                                            onChange={(e) => handleFilterChange("minRating", e.target.value)}
+                                        >
+                                            <option value="">Min Rating</option>
+                                            <option value="1">1 Star</option>
+                                            <option value="2">2 Stars</option>
+                                            <option value="3">3 Stars</option>
+                                            <option value="4">4 Stars</option>
+                                            <option value="5">5 Stars</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Max Rating Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.maxRating}
+                                            onChange={(e) => handleFilterChange("maxRating", e.target.value)}
+                                        >
+                                            <option value="">Max Rating</option>
+                                            <option value="1">1 Star</option>
+                                            <option value="2">2 Stars</option>
+                                            <option value="3">3 Stars</option>
+                                            <option value="4">4 Stars</option>
+                                            <option value="5">5 Stars</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Has Review Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.hasReview}
+                                            onChange={(e) => handleFilterChange("hasReview", e.target.value)}
+                                        >
+                                            <option value="">All Reviews</option>
+                                            <option value="yes">With Reviews</option>
+                                            <option value="no">Without Reviews</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Reset Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
+                                            <i className="fa fa-undo me-1"></i> Reset Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Actions and Stats */}
+                            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div className="d-flex align-items-center gap-3">
+                                    <span className="text-muted">
+                                        Showing {((page - 1) * perPage) + 1} to {Math.min(page * perPage, totalItems)} of {totalItems} ratings
+                                    </span>
+                                </div>
+                                
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-outline-secondary btn-sm fw-bold" onClick={handleExport}>
+                                        <span>Export</span> <span className="fa fa-angle-down"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Table */}
+                            <div className="table-responsive rounded-3 shadow-sm border">
+                                <table className="table align-middle mb-0 table-sm table-striped">
+                                    <thead className="table-light small">
+                                        <tr>
+                                            <th style={{ width: "3%" }} className="py-3">#</th>
+                                            <th style={{ width: "15%" }} className="py-3">REFERENCE</th>
+                                            <th style={{ width: "18%" }} className="py-3">RATER & RATEE</th>
+                                            <th style={{ width: "8%" }} className="py-3">RATING TYPE</th>
+                                            <th style={{ width: "12%" }} className="py-3">RATING</th>
+                                            <th style={{ width: "20%" }} className="py-3">REVIEW</th>
+                                            <th style={{ width: "7%" }} className="py-3">STATUS</th>
+                                            <th style={{ width: "10%" }} className="py-3">DATE</th>
+                                            <th style={{ width: "7%" }} className="py-3">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="small">
+                                        {isLoading ? (
+                                            <tr>
+                                                <td colSpan={9} className="text-center text-muted py-4">
+                                                    <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                    Loading ratings...
+                                                </td>
+                                            </tr>
+                                        ) : ratings.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={9} className="text-center text-muted py-4">No ratings found</td>
+                                            </tr>
+                                        ) : (
+                                            ratings.map((rating, index) => (
+                                                <tr key={rating._id}>
+                                                    {/* Sequential Number */}
+                                                    <td className="text-muted py-2 px-1 text-center fw-bold align-top">
+                                                        {(page - 1) * perPage + index + 1}
+                                                    </td>
+                                                    
+                                                    {/* Booking Reference */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="fw-semibold text-primary">
+                                                            {rating.booking?.bookingRef ?? 'N/A'}
+                                                        </div>
+                                                        <small className="text-muted">
+                                                            FEE: &nbsp; {formatCurrency(rating.booking?.total, rating.booking?.currency)}
+                                                        </small>
+                                                    </td>
+                                                    
+                                                    {/* Rater & Ratee */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-1">
+                                                            <div className="small">
+                                                            	<span className="fw-semibold text-muted me-1">Rater:</span>
+                                                                {rating.rater?.fullName ?? 'N/A'}
+                                                            </div>
+                                                            <small className="text-muted">{rating.rater?.email ?? ''}</small>
+                                                        </div>
+                                                        <div>
+                                                            <div className="small">
+                                                            	<span className="fw-semibold text-muted me-1">Ratee:</span>
+                                                                {rating.ratee?.fullName ?? 'N/A'}
+                                                            </div>
+                                                            <small className="text-muted">{rating.rater?.email ?? ''}</small>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Rating Type */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <span className={`badge ${getRatingTypeBadge(rating.ratingType)} col-sm-12`}>
+                                                            {capitalizeFirst(rating.ratingType ?? 'N/A')}
+                                                        </span>
+                                                    </td>
+                                                    
+                                                    {/* Rating */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="mb-1">
+                                                            {renderStars(rating.rating)}
+                                                        </div>
+                                                        <div className="fw-semibold text-warning">
+                                                            {rating.rating}/5
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Review */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="small">
+                                                            {rating.review ? (
+                                                                <>
+                                                                    <div className="text-truncate" title={rating.review}>
+                                                                        {rating.review.length > 100 ? `${rating.review.substring(0, 100)}...` : rating.review}
+                                                                    </div>
+                                                                    {rating.review.length > 100 && (
+                                                                        <small className="text-primary cursor-pointer">
+                                                                            Read more
+                                                                        </small>
+                                                                    )}
+                                                                </>
+                                                            ) : (
+                                                                <span className="text-muted">No review</span>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Booking Status */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <span className={`badge ${getBookingStatusBadge(rating.booking?.status)} col-sm-12`}>
+                                                            {capitalizeFirst(rating.booking?.status ?? 'N/A')}
+                                                        </span>
+                                                    </td>
+                                                    
+                                                    {/* Date */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <div className="small text-muted">
+                                                            {formatDate(rating.createdAt)}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    {/* Actions */}
+                                                    <td className="text-muted py-2 px-1 align-top">
+                                                        <div className="btn-group">
+                                                            <button className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Rating Details" onClick={() => handleView(rating)}>
+                                                                <i className="fa fa-eye small"></i> View
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                                
+                            {/* Pagination Bar */}
+                            <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </DashboardLayout>
+    );
 }

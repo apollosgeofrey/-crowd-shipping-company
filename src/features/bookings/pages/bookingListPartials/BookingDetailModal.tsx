@@ -1,115 +1,107 @@
-import { useEffect } from "react";
-import { X } from "lucide-react";
+// BookingDetailModal.tsx
+export default function BookingDetailModal({ show, onClose, booking }) {
+    if (!show || !booking) return null;
 
-interface BookingDetailModalProps {
-  	show: boolean;
-  	onClose: () => void;
-  	booking?: any;
-}
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
-export default function BookingDetailModal({ show, onClose, booking }: BookingDetailModalProps) {
-	useEffect(() => {
-	    if (show) {
-	      	document.body.classList.add("modal-open");
-	    } else {
-	      	document.body.classList.remove("modal-open");
-	    }
-	}, [show]);
+    const formatCurrency = (amount, currency = "NGN") => {
+        return new Intl.NumberFormat('en-NG', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2
+        }).format(amount);
+    };
 
-	if (!show || !booking) return null;
-	return (
-	    <>
-		    {/* Backdrop */}
-		    <div className="modal-backdrop fade show"></div>
+    return (
+        <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title fw-bold">Booking Details - {booking.bookingRef}</h5>
+                        <button type="button" className="btn-close" onClick={onClose}></button>
+                    </div>
+                    <div className="modal-body">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Sender Information</h6>
+                                <p><strong>Name:</strong> {booking.sender?.fullName || "N/A"}</p>
+                                <p><strong>Email:</strong> {booking.sender?.email || "N/A"}</p>
+                                <p><strong>Phone:</strong> {booking.sender?.phoneNumber || "N/A"}</p>
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Receiver Information</h6>
+                                <p><strong>Name:</strong> {booking.parcelGroup?.receiverName || "N/A"}</p>
+                                <p><strong>Phone:</strong> {booking.parcelGroup?.receiverPhone || "N/A"}</p>
+                            </div>
+                        </div>
 
-		    <div className="modal fade show d-block" tabIndex={-1}>
-		        <div className="modal-dialog modal-dialog-centered modal-md">
-			        <div className="modal-content rounded-4 border-0 shadow">
-			            {/* Header */}
-			            <div className="modal-header border-0 d-flex justify-content-between align-items-center">
-						  	{/* Left aligned text */}
-						  	<h5 className="fw-bold mb-0">
-						    	Booking Details - {booking.id}
-						  	</h5>
+                        <hr />
 
-						  	{/* Right aligned close button */}
-						  	<button className="btn btn-sm border-0 text-muted" onClick={onClose}>
-						    	<X size={20} />
-						  	</button>
-						</div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Pathfinder Information</h6>
+                                <p><strong>Name:</strong> {booking.traveller?.fullName || "N/A"}</p>
+                                <p><strong>Email:</strong> {booking.traveller?.email || "N/A"}</p>
+                                <p><strong>Phone:</strong> {booking.traveller?.phoneNumber || "N/A"}</p>
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Route Information</h6>
+                                <p><strong>From:</strong> {booking.parcelGroup?.pickUpLocation?.address || "N/A"}</p>
+                                <p><strong>To:</strong> {booking.parcelGroup?.dropOffLocation?.address || "N/A"}</p>
+                                <p><strong>Weight:</strong> {booking.parcelGroup?.weight || "0"} kg</p>
+                            </div>
+                        </div>
 
+                        <hr />
 
-			            {/* Body */}
-			            <div className="modal-body">
-			              	{/* Package Info */}
-			              	<div className="mb-4">
-				                <h6 className="fw-bold">Package Information</h6>
-				                <p className="mb-1">{booking.package}</p>
-				                <p className="fw-semibold">Value: ₦{booking.value}</p>
-			              	</div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Financial Information</h6>
+                                <p><strong>Total:</strong> {formatCurrency(booking.total, booking.currency)}</p>
+                                <p><strong>Subtotal:</strong> {formatCurrency(booking.subtotal, booking.currency)}</p>
+                                <p><strong>Fees:</strong> {formatCurrency(booking.fees, booking.currency)}</p>
+                                <p><strong>Taxes:</strong> {formatCurrency(booking.taxes, booking.currency)}</p>
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Status Information</h6>
+                                <p><strong>Booking Status:</strong> {booking.status}</p>
+                                <p><strong>Payment Status:</strong> {booking.paymentStatus}</p>
+                                <p><strong>Fleet Type:</strong> {booking.fleetType}</p>
+                                <p><strong>Parcel Status:</strong> {booking.parcelGroup?.status || "N/A"}</p>
+                            </div>
+                        </div>
 
-				            {/* Before / After Delivery */}
-				            <div className="row mb-4">
-				                <div className="col-6">
-				                  	<p className="fw-bold">Before Delivery</p>
-				                  	<img src={booking.beforeImage} className="img-fluid rounded shadow-sm" alt="Before" />
-				                </div>
-				                <div className="col-6">
-				                  	<p className="fw-bold">After Delivery</p>
-				                  	<img src={booking.afterImage || "https://via.placeholder.com/200x150?text=No+Image"} className="img-fluid rounded shadow-sm" alt="After" />
-				                </div>
-				            </div>
+                        <hr />
 
-				            {/* Progress */}
-				            <div className="mb-4">
-				                <p className="fw-bold mb-1">Progress</p>
-				                <div className="progress" style={{ height: "8px" }}>
-				                  	<div className="progress-bar bg-warning" role="progressbar" style={{ width: `${booking.progress}%` }}/>  	
-				                </div>
-				               	<small className="text-muted">{booking.progress}% Complete</small>
-				            </div>
-
-				            {/* Sender */}
-				            <div className="mb-4">
-				                <h6 className="fw-bold"><i className="fa fa-user me-2"></i>Sender Details</h6>
-				                <div className="bg-light p-3 rounded pt-1">
-				                  	<p className="fw-bold mb-1">{booking.sender.name}</p>
-				                  	<p className="mb-1"><i className="fa fa-phone me-2"></i>{booking.sender.phone}</p>
-				                  	<p className="mb-0"><i className="fa fa-map-marker me-2"></i>{booking.sender.address}</p>
-				                </div>
-				            </div>
-
-				            {/* Receiver */}
-				            <div className="mb-4">
-				                <h6 className="fw-bold"><i className="fa fa-user me-2"></i>Receiver Details</h6>
-				                <div className="bg-light p-3 rounded pt-1">
-				                  	<p className="fw-bold mb-1">{booking.receiver.name}</p>
-				                  	<p className="mb-1"><i className="fa fa-phone me-2"></i>{booking.receiver.phone}</p>
-				                  	<p className="mb-0"><i className="fa fa-map-marker me-2"></i>{booking.receiver.address}</p>
-				                </div>
-				            </div>
-
-				            {/* Driver */}
-				            <div className="mb-4">
-				                <h6 className="fw-bold"><i className="fa fa-car me-2"></i>Driver Details</h6>
-				                <div className="bg-light p-3 rounded pt-1">
-					                <p className="fw-bold mb-1">{booking.driver.name}</p>
-					                <p className="mb-1"><i className="fa fa-phone me-2"></i>{booking.driver.phone}</p>
-					                <p className="mb-1"><i className="fa fa-car me-2"></i>{booking.driver.vehicle}</p>
-					                <p className="mb-0"><i className="fa fa-map-marker me-2"></i>Current: {booking.driver.currentLocation}</p>
-				                </div>
-				            </div>
-
-				            {/* Meta Info */}
-				            <div className="d-flex justify-content-between small text-muted mb-3">
-				                <span><b>Distance:</b> {booking.distance} km</span>
-				                <span><b>Started:</b> {booking.started}</span>
-				                <span><b>ETA:</b> {booking.eta}</span>
-				            </div>
-			            </div>
-			        </div>
-		        </div>
-		    </div>
-	    </>
-	);
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Dates</h6>
+                                <p><strong>Created:</strong> {formatDate(booking.createdAt)}</p>
+                                <p><strong>Updated:</strong> {formatDate(booking.updatedAt)}</p>
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className="fw-semibold text-muted mb-3">Tracking</h6>
+                                <p><strong>Tracking ID:</strong> {booking.parcelGroup?.trackingId || "N/A"}</p>
+                                <p><strong>Booking Ref:</strong> {booking.bookingRef}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

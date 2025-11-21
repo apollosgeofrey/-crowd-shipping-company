@@ -24,12 +24,7 @@ export default function TripMapList() {
     const [isLoading, setIsLoading] = useState(false);
     const [metaData, setMetaData] = useState<any>(null);
     const [trips, setTrips] = useState<any[]>([]);
-    const [filters, setFilters] = useState<TripFilters>({
-        search: "", 
-        fleetType: "", 
-        status: "",
-        dateRange: ""
-    });
+    const [filters, setFilters] = useState<TripFilters>({search:"", fleetType:"", status:"",dateFrom:"", dateTo:""});
 
     // Fetch trips from API
     useEffect(() => {
@@ -61,30 +56,25 @@ export default function TripMapList() {
 
     // Reset all filters
     const resetFilters = () => {
-        setFilters({ 
-            search: "", 
-            fleetType: "", 
-            status: "",
-            dateRange: ""
-        });
+        setFilters({search: "", fleetType: "", status: "",dateFrom: "", dateTo: ""});
         setPage(1);
     };
 
     // Format date
-    const formatDate = (dateString: string) => {
-        if (!dateString) return "N/A";
-        try {
-            return new Date(dateString).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        } catch (error) {
-            return "Invalid Date";
-        }
-    };
+    // const formatDate = (dateString: string) => {
+    //     if (!dateString) return "N/A";
+    //     try {
+    //         return new Date(dateString).toLocaleDateString('en-US', {
+    //             year: 'numeric',
+    //             month: 'short',
+    //             day: 'numeric',
+    //             hour: '2-digit',
+    //             minute: '2-digit'
+    //         });
+    //     } catch (error) {
+    //         return "Invalid Date";
+    //     }
+    // };
 
     // Get fleet type color
     const getFleetTypeColor = (fleetType: string) => {
@@ -117,15 +107,15 @@ export default function TripMapList() {
         return statusMap[status] || 'bg-secondary-subtle text-secondary';
     };
 
-    // Create custom marker icon
-    const createIcon = (color: string): L.DivIcon => {
-        return new L.DivIcon({
-            className: "custom-marker",
-            html: `<div style="background:${color};width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.3);"></div>`,
-            iconSize: [16, 16],
-            iconAnchor: [8, 8]
-        });
-    };
+    // // Create custom marker icon
+    // const createIcon = (color: string): L.DivIcon => {
+    //     return new L.DivIcon({
+    //         className: "custom-marker",
+    //         html: `<div style="background:${color};width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.3);"></div>`,
+    //         iconSize: [16, 16],
+    //         iconAnchor: [8, 8]
+    //     });
+    // };
 
     // Process trips for map rendering - FIXED VERSION
 	const getTripCoordinates = (trip: any) => {

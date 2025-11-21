@@ -1,8 +1,15 @@
 // BookingDetailModal.tsx
-export default function BookingDetailModal({ show, onClose, booking }) {
+
+interface BookingDetailModalProps {
+  show: boolean;
+  onClose: () => void;
+  booking: any; // Replace 'any' with your actual booking type
+}
+
+export default function BookingDetailModal({ show, onClose, booking }: BookingDetailModalProps) {
     if (!show || !booking) return null;
 
-    const formatDate = (dateString) => {
+    const formatDate = (dateString: string | null | undefined) => {
         if (!dateString) return "N/A";
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -13,7 +20,7 @@ export default function BookingDetailModal({ show, onClose, booking }) {
         });
     };
 
-    const formatCurrency = (amount, currency = "NGN") => {
+    const formatCurrency = (amount: number, currency: string = "NGN") => {
         return new Intl.NumberFormat('en-NG', {
             style: 'currency',
             currency: currency,

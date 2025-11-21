@@ -93,15 +93,11 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
         }
     };
 
-     // Advanced promo code generator function
-    const generatePromoCode = (type?: string) => {
-        const typePrefixes: Record<string, string[]> = {
-            percentage: ['SAVE', 'OFF', 'DISCOUNT', 'PERCENT'],
-            flat: ['FLAT', 'CASHBACK', 'CREDIT', 'AMOUNT'],
-            free: ['FREE', 'SHIPFREE', 'DELIVERFREE', 'ZERO']
-        };
+    // Advanced promo code generator function - FIXED
+    const generatePromoCode = () => {
+        const typePrefixes: Record<string, string[]> = {percentage:['SAVE','OFF','DISCOUNT','PERCENT'], flat:['FLAT','CASHBACK','CREDIT','AMOUNT'], free:['FREE','SHIPFREE','DELIVERFREE','ZERO']};
         
-        const currentType = type || formData.type;
+        const currentType = formData.type;
         const prefixes = typePrefixes[currentType] || ['PROMO', 'CODE', 'DEAL', 'OFFER'];
         const suffixes = ['10', '15', '20', '25', '30', '50', 'NOW', '24'];
         
@@ -121,8 +117,8 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
             generatedCode = `${randomPrefix}${randomSuffix}${randomNumber}`;
         }
         
-        setFormData(prev => ({ ...prev, code: generatedCode }));
-        if (errors.code) setErrors(prev => ({ ...prev, code: '' })); // Clear any existing code errors
+        setFormData((prev: any) => ({ ...prev, code: generatedCode }));
+        if (errors.code) setErrors(prev => ({ ...prev, code: '' }));
     };
 
 
@@ -144,7 +140,7 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
     };
 
     // Handle promo scope change
-    const handlePromoScopeChange = (scope: "all" | "specific") => setFormData(prev => ({ ...prev, promoScope: scope, eligibleUsers: [] }));
+    const handlePromoScopeChange = (scope: "all" | "specific") => setFormData((prev: any) => ({ ...prev, promoScope: scope, eligibleUsers: [] }));
 
     // Handle user selection
     const handleUserSelect = (user: any) => {
@@ -152,13 +148,10 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
         
         if (isSelected) {
             // Remove user
-            setFormData(prev => ({
-                ...prev,
-                eligibleUsers: prev.eligibleUsers.filter((id: string) => id !== user._id)
-            }));
+            setFormData((prev: any) => ({ ...prev, eligibleUsers: prev.eligibleUsers.filter((id: string) => id !== user._id) }));
         } else {
             // Add user
-            setFormData(prev => ({ ...prev, eligibleUsers: [...prev.eligibleUsers, user._id] }));
+            setFormData((prev: any) => ({ ...prev, eligibleUsers: [...prev.eligibleUsers, user._id] }));
         }
     };
 
@@ -167,10 +160,10 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
 
     // Handle service type change
     const handleServiceTypeChange = (serviceType: string) => {
-        setFormData(prev => {
+        setFormData((prev: any) => {
             const currentTypes = prev.applicableServiceTypes || [];
             if (currentTypes.includes(serviceType)) {
-                return { ...prev, applicableServiceTypes: currentTypes.filter(type => type !== serviceType) };
+                return { ...prev, applicableServiceTypes: currentTypes.filter((type: string) => type !== serviceType) };
             } else {
                 return { ...prev, applicableServiceTypes: [...currentTypes, serviceType] };
             }

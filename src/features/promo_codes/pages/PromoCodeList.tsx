@@ -1,12 +1,12 @@
 // PromoCodeList.tsx
 import Swal from "sweetalert2";
+// import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import PromoCodeStatsCards from "./promoCodeListPartials/PromoCodeStatsCards.tsx";
 import PromoCodeModal from "./promoCodeListPartials/PromoCodeModal.tsx";
-import promoCodeApi, { type PromoCodeFilters, type PromoCode } from "../services/promoCodeApi.ts";
+import promoCodeApi, { type PromoCodeFilters } from "../services/promoCodeApi.ts";
 
 export default function PromoCodeList() {
     const [page, setPage] = useState(1);
@@ -16,9 +16,9 @@ export default function PromoCodeList() {
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [metaData, setMetaData] = useState<any>(null);
-    const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
-    const [editPromoCode, setEditPromoCode] = useState<PromoCode | null>(null);
-    const [filters, setFilters] = useState<PromoCodeFilters>({search:"", type:"", status:"", promoScope:"", currency:""});
+    const [promoCodes, setPromoCodes] = useState<any[]>([]);
+    const [editPromoCode, setEditPromoCode] = useState<any | null>(null);
+    const [filters, setFilters] = useState<PromoCodeFilters>({search:"",type:"",status:"",promoScope:"",currency:""});
 
     // Extract the fetch function so it can be reused
 	const fetchPromoCodes = async () => {
@@ -63,20 +63,20 @@ export default function PromoCodeList() {
     };
 
     // Handle edit promo code
-    const handleEdit = (promoCode: PromoCode) => {
+    const handleEdit = (promoCode: any) => {
         setEditPromoCode(promoCode);
         setShowModal(true);
     };
 
     // NEW: Format eligible users count
-    const formatEligibleUsers = (promoCode: PromoCode) => {
+    const formatEligibleUsers = (promoCode: any) => {
         if (promoCode.promoScope === 'all') return 'All Users';
         const eligibleCount = promoCode.eligibleUsers?.length || 0;
         return `${eligibleCount} User${eligibleCount !== 1 ? 's' : ''}`;
     };
 
     // Handle save promo code
-    const handleSave = async (data: any) => {
+    const handleSave = async (data: any): Promise<void> => {
         try {
             if (editPromoCode) {
                 // Update existing
@@ -84,7 +84,8 @@ export default function PromoCodeList() {
                 if (response.code === 200 || response.code === 201) {
                     fetchPromoCodes();
                     Swal.fire({title: 'Success!', text: 'Promo code updated successfully', icon: 'success', confirmButtonText: 'OK'});
-                	return true;
+                    setShowModal(false); 
+                    setEditPromoCode(null); // Clear edit data
                 }
             } else {
                 // Create new
@@ -92,18 +93,18 @@ export default function PromoCodeList() {
                 if (response.code === 200 || response.code === 201) {
                     fetchPromoCodes();
                     Swal.fire({title: 'Success!', text: 'Promo code created successfully', icon: 'success', confirmButtonText: 'OK'});
-                	return true;
+                    setShowModal(false); 
                 };
             }
         } catch (err) {
             console.error("Failed to save promo code:", err);
-            Swal.fire({title:'Error!', text:(err?.response?.data?.message || 'Failed to save promo code'), icon:'error', confirmButtonText:'OK'});
+            Swal.fire({ title:'Error!', text:((err as any)?.response?.data?.message || 'Failed to save promo code'), icon:'error', confirmButtonText:'OK' });
             throw err;
         }
     };
 
     // Handle delete promo code
-    const handleDelete = async (promoCode: PromoCode) => {
+    const handleDelete = async (promoCode: any) => {
         const result = await Swal.fire({
             title: "Are you sure?",
             text: `You are about to delete promo code "${promoCode.code}". This action cannot be undone.`,
@@ -171,7 +172,7 @@ export default function PromoCodeList() {
     };
 
     // Format discount value
-    const formatDiscount = (promoCode: PromoCode) => {
+    const formatDiscount = (promoCode: any) => {
         switch (promoCode.type) {
             case 'percentage':
             	return (<>{promoCode.value}% {promoCode.maxDiscountAmount && (<small className=''>{' '}- (Min: {promoCode.minDiscountAmount} - Max: {promoCode.maxDiscountAmount})</small>)}</>);

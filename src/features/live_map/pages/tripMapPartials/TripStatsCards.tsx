@@ -1,5 +1,5 @@
 // TripStatsCards.tsx
-import { FaPlane, FaShip, FaRoad, FaChartLine, FaUsers } from "react-icons/fa";
+import { FaPlane, FaShip, FaChartLine, FaUsers } from "react-icons/fa";
 
 interface TripStatsCardsProps {
     metaData?: any;

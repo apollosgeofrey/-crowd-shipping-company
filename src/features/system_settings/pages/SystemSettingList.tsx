@@ -5,9 +5,9 @@ import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import systemPreferencesApi, {type UpdatePreferences } from "../services/systemPreferencesApi.ts";
 
 export default function SystemSettings() {
-    const [preferences, setPreferences] = useState<any | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [preferences, setPreferences] = useState<any | null>(null);
     const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
     // Fetch system preferences from API
@@ -38,10 +38,8 @@ export default function SystemSettings() {
             const response = await systemPreferencesApi.updatePreferences(updates);
             if (response.code === 200) {
                 setPreferences(response.data);
-                setSaveMessage({ type: 'success', message: 'Settings updated successfully!' });
-                
-                // Clear success message after 3 seconds
-                setTimeout(() => setSaveMessage(null), 3000);
+                setSaveMessage({ type: 'success', message: 'Settings updated successfully!' });                
+                setTimeout(() => setSaveMessage(null), 3000); // Clear success message after 3 seconds
             }
         } catch (err) {
             console.error("Failed to update preferences:", err);
@@ -52,7 +50,7 @@ export default function SystemSettings() {
     };
 
     // Toggle boolean setting
-    const toggleSetting = (key: keyof SystemPreferences) => {
+    const toggleSetting = (key: keyof typeof preferences) => {
         if (!preferences) return;
         
         const currentValue = preferences[key];
@@ -60,7 +58,7 @@ export default function SystemSettings() {
     };
 
     // Update select setting
-    const updateSelectSetting = (key: keyof SystemPreferences, value: string) => {
+    const updateSelectSetting = (key: keyof typeof preferences, value: string) => {
         updatePreference({ [key]: value });
     };
 

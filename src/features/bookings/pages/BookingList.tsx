@@ -1,6 +1,6 @@
 // BookingList.tsx
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import BookingStatsCards from "./bookingListPartials/BookingStatsCards.tsx";
@@ -58,7 +58,7 @@ export default function BookingList() {
     };
 
     // Handle view booking details
-    const handleView = (booking: Booking) => {
+    const handleView = (booking: any) => {
         setSelectedBooking(booking);
         setShowModal(true);
     };
@@ -414,7 +414,7 @@ export default function BookingList() {
                             </div>
                                 
                             {/* Pagination Bar */}
-                            <PaginationBar page={page} perPage={perPage} onPageChange={setPage} onPerPageChange={setPerPage}/>
+                            <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage}/>
 
                             {/* Booking Detail Modal - Pass the selected booking */}
                             <BookingDetailModal show={showModal} onClose={() => setShowModal(false)} booking={selectedBooking} />

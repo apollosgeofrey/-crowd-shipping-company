@@ -77,7 +77,7 @@ export interface PromoCodeSummary {
 /**
  * Create/Update Promo Code interface
  */
-export interface CreatePromoCode {
+export interface CreateOrUpdatePromoCode {
     code: string;
     description?: string;
     type: 'percentage' | 'flat' | 'free';
@@ -117,7 +117,7 @@ export const promoCodeApi = {
     /**
      * Create a new promo code
      */
-    createPromoCode: async (data: CreatePromoCode): Promise<ApiResponse<any>> => {
+    createPromoCode: async (data: CreateOrUpdatePromoCode): Promise<ApiResponse<any>> => {
         const response = await api.post('/v1/admin/promo-codes', data);
         return response.data;
     },
@@ -125,7 +125,7 @@ export const promoCodeApi = {
     /**
      * Update a promo code
      */
-    updatePromoCode: async (promoCodeId: string, data: Partial<CreatePromoCode>): Promise<ApiResponse<any>> => {
+    updatePromoCode: async (promoCodeId: string, data: Partial<CreateOrUpdatePromoCode>): Promise<ApiResponse<any>> => {
         const response = await api.put(`/v1/admin/promo-codes/${promoCodeId}`, data);
         return response.data;
     },

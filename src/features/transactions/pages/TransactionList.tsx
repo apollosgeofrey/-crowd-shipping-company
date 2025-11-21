@@ -365,7 +365,7 @@ export default function TransactionList() {
                                                     {/* Status */}
                                                     <td className="py-2 px-1 align-top">
                                                         <span className={`badge ${getStatusBadge(transaction.status)}`}>
-                                                            {capitalizeFirst(transaction?.status, 'unknown')}
+                                                            {capitalizeFirst(transaction?.status || 'unknown')}
                                                         </span>
                                                     </td>
                                                     

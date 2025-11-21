@@ -102,12 +102,12 @@ export default function BookingList() {
     // Get status badge color
     const getStatusBadge = (status: string) => {
         const statusMap: { [key: string]: string } = {
-            'PENDING': 'bg-warning text-dark',
-            'IN_PROGRESS': 'bg-primary text-white',
-            'ARRIVED_DESTINATION': 'bg-info text-white',
-            'DELIVERED': 'bg-success text-white',
-            'CANCELLED': 'bg-danger text-white',
-            'REJECTED': 'bg-secondary text-white'
+            'PENDING': 'bg-warning-subtle text-warning',
+            'IN_PROGRESS': 'bg-primary-subtle text-primary',
+            'ARRIVED_DESTINATION': 'bg-info-subtle text-info',
+            'DELIVERED': 'bg-success-subtle text-success',
+            'CANCELLED': 'bg-danger-subtle text-danger',
+            'REJECTED': 'bg-secondary-subtle text-secondary'
         };
         return statusMap[status] || 'bg-secondary text-white';
     };
@@ -126,9 +126,9 @@ export default function BookingList() {
     // Get fleet type badge
     const getFleetTypeBadge = (fleetType: string) => {
         const typeMap: { [key: string]: string } = {
-            'road': 'bg-primary text-white',
-            'air': 'bg-info text-white',
-            'maritime': 'bg-success text-white'
+            'road': 'bg-primary-subtle text-primary',
+            'air': 'bg-info-subtle text-info',
+            'maritime': 'bg-success-subtle text-success'
         };
         return typeMap[fleetType] || 'bg-secondary text-white';
     };

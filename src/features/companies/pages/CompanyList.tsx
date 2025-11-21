@@ -166,10 +166,10 @@ export default function CompanyList() {
                                             <th style={{ width: "2%" }} className="py-3">#</th>
                                             <th style={{ width: "20%" }} className="py-3">COMPANY</th>
                                             <th style={{ width: "20%" }} className="py-3">CONTACT INFORMATION</th>
-                                            <th style={{ width: "15%" }} className="py-3">DATES</th>
+                                            <th style={{ width: "16%" }} className="py-3">DATES</th>
                                             <th style={{ width: "18%" }} className="py-3">BUSINESS INFO</th>
-                                            <th style={{ width: "15%" }} className="py-3">STATUSES</th>
-                                            <th style={{ width: "10%" }} className="py-3">ACTIONS</th>
+                                            <th style={{ width: "16%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "8%" }} className="py-3">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">
@@ -188,12 +188,12 @@ export default function CompanyList() {
                                             companies.map((company, index) => (
                                                 <tr key={company._id}>
                                                     {/* Sequential Number */}
-                                                    <td className="text-muted py-2 px-1 text-center fw-bold">
+                                                    <td className="text-muted py-2 px-1 align-top text-center fw-bold">
                                                         {(page - 1) * perPage + index + 1}
                                                     </td>
                                                     
                                                     {/* Company Info */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <Link to={`/companies/${company?._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-0">
                                                             {company.name}
                                                         </Link>
@@ -203,7 +203,7 @@ export default function CompanyList() {
                                                     </td>
                                                     
                                                     {/* Contact Information */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <div className="d-flex align-items-center mb-0">
                                                             <a href={`mailto:${company.email}`} className="text-decoration-none text-primary" title={`Send email to ${company.email}`}>
                                                                 <i className="fa fa-envelope me-1" style={{ width: "16px" }}></i>
@@ -231,7 +231,7 @@ export default function CompanyList() {
                                                     </td>
                                                     
                                                     {/* Dates */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="col-sm-12">
                                                             <small className="fw-semibold me-1">CREATED:</small>
                                                             <small className="text-muted">
@@ -247,7 +247,7 @@ export default function CompanyList() {
                                                     </td>
                                                     
                                                     {/* Business Information */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <div className="d-flex flex-column align-items-start small">
                                                             <div className="text-muted mt-1">
                                                                 <b>Tax ID:</b> {company.taxId || "N/A"}
@@ -266,7 +266,7 @@ export default function CompanyList() {
                                                     </td>
                                                     
                                                     {/* Statuses */}
-                                                    <td className="py-2 px-1 small">
+                                                    <td className="py-2 px-1 align-top small">
                                                         <div className="text-muted">
                                                             <b>STATUS:</b>
                                                             <span className={`float-end ${getStatusTextColor(company.status)}`}>
@@ -290,7 +290,7 @@ export default function CompanyList() {
                                                     </td>
                                                     
                                                     {/* Actions */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="btn-group">
                                                             <Link to={`/companies/${company._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Company">
                                                                 <i className="fa fa-eye small"></i>View

@@ -104,8 +104,8 @@ export default function TransactionList() {
     // Get transaction type badge
     const getTypeBadge = (type: string) => {
         const typeMap: { [key: string]: string } = {
-            'credit': 'bg-success text-white',
-            'debit': 'bg-danger text-white'
+            'credit': 'bg-success-subtle text-success',
+            'debit': 'bg-danger-subtle text-danger'
         };
         return typeMap[type] || 'bg-secondary text-white';
     };
@@ -113,20 +113,20 @@ export default function TransactionList() {
     // Get status badge
     const getStatusBadge = (status: string) => {
         const statusMap: { [key: string]: string } = {
-            'completed': 'bg-success text-white',
-            'pending': 'bg-warning text-dark',
-            'failed': 'bg-danger text-white'
+            'completed': 'bg-success-subtle text-success',
+            'pending': 'bg-warning-subtle text-warning',
+            'failed': 'bg-danger-subtle text-danger'
         };
-        return statusMap[status] || 'bg-secondary text-white';
+        return statusMap[status] || 'bg-secondary-subtle text-secondary';
     };
 
     // Get purpose badge
     const getPurposeBadge = (purpose: string) => {
         const purposeMap: { [key: string]: string } = {
-            'payment': 'bg-primary text-white',
-            'wallet_funding': 'bg-info text-white',
-            'refund': 'bg-warning text-dark',
-            'transfer': 'bg-secondary text-white'
+            'payment': 'bg-primary-subtle text-primary',
+            'wallet_funding': 'bg-info-subtle text-info',
+            'refund': 'bg-warning-subtle textwarning',
+            'transfer': 'bg-secondary-subtle textsecondarye'
         };
         return purposeMap[purpose] || 'bg-secondary text-white';
     };

@@ -191,10 +191,10 @@ export default function PathfinderList() {
                                             <th style={{ width: "2%" }} className="py-3">#</th>
                                             <th style={{ width: "15%" }} className="py-3">PATHFINDER</th>
                                             <th style={{ width: "20%" }} className="py-3">CONTACT INFORMATION</th>
-                                            <th style={{ width: "19%" }} className="py-3">DATES</th>
+                                            <th style={{ width: "20%" }} className="py-3">DATES</th>
                                             <th style={{ width: "20%" }} className="py-3">WALLET</th>
-                                            <th style={{ width: "14%" }} className="py-3">STATUSES</th>
-                                            <th style={{ width: "10%" }} className="py-3">ACTIONS</th>
+                                            <th style={{ width: "15%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "8%" }} className="py-3">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">
@@ -213,12 +213,12 @@ export default function PathfinderList() {
                                             pathfinders.map((pathfinder, index) => (
                                                 <tr key={pathfinder._id}>
                                                     {/* Sequential Number */}
-                                                    <td className="text-muted py-2 px-1 text-center fw-bold">
+                                                    <td className="text-muted py-2 px-1 align-top text-center fw-bold ">
                                                         {(page - 1) * perPage + index + 1}
                                                     </td>
                                                     
                                                     {/* Pathfinder Info */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <Link to={`/pathfinders/${pathfinder._id}/show`} className="text-decoration-none btn-link text-primary fw-semibold d-block mb-0">
                                                             {pathfinder.fullName}
                                                         </Link>
@@ -228,7 +228,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Contact Information */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <div className="d-flex align-items-center mb-0">
                                                             <a href={`mailto:${pathfinder.email}`} className="text-decoration-none text-primary" title={`Send email to ${pathfinder.email}`}>
                                                                 <i className="fa fa-envelope me-1" style={{ width: "16px" }}></i>
@@ -248,7 +248,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Joined Date */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="col-sm-12">
                                                             <small className="fw-semibold me-1">JOINED:</small>
                                                             <small className="text-muted">
@@ -268,7 +268,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* KYC Status */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <div className="d-flex flex-column align-items-start small">
                                                             {pathfinder.wallet ? (
                                                                 <>
@@ -286,7 +286,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Account Statuses */}
-                                                    <td className="py-2 px-1 small">
+                                                    <td className="py-2 px-1 align-top small">
                                                         <div className="text-muted">
                                                             <b>KYC:</b>
                                                             <span className={`float-end ${getKycTextColor(pathfinder.kycStatus)}`}>
@@ -316,7 +316,7 @@ export default function PathfinderList() {
                                                     </td>
                                                     
                                                     {/* Actions */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="btn-group">
                                                             <Link to={`/pathfinders/${pathfinder._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Pathfinder">
                                                                 <i className="fa fa-eye small"></i>View

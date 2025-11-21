@@ -205,12 +205,12 @@ export default function VehicleOwnerList() {
                                     <thead className="table-light small">
                                         <tr>
                                             <th style={{ width: "2%" }} className="py-3">#</th>
-                                            <th style={{ width: "15%" }} className="py-3">VEHICLE OWNER</th>
+                                            <th style={{ width: "16%" }} className="py-3">VEHICLE OWNER</th>
                                             <th style={{ width: "20%" }} className="py-3">CONTACT INFORMATION</th>
                                             <th style={{ width: "18%" }} className="py-3">DATES</th>
                                             <th style={{ width: "20%" }} className="py-3">WALLET</th>
-                                            <th style={{ width: "15%" }} className="py-3">STATUSES</th>
-                                            <th style={{ width: "10%" }} className="py-3">ACTIONS</th>
+                                            <th style={{ width: "16%" }} className="py-3">STATUSES</th>
+                                            <th style={{ width: "8%" }} className="py-3">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody className="small">
@@ -231,12 +231,12 @@ export default function VehicleOwnerList() {
                                             vehicleOwners.map((vehicleOwner, index) => (
                                                 <tr key={vehicleOwner._id}>
                                                     {/* Sequential Number */}
-                                                    <td className="text-muted py-2 px-1 text-center fw-bold">
+                                                    <td className="text-muted py-2 px-1 align-top text-center fw-bold">
                                                         {(page - 1) * perPage + index + 1}
                                                     </td>
                                                     
                                                     {/* Vehicle Owner Info */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <Link to={`/vehicle-owners/${vehicleOwner._id}/show`} className="text-decoration-none text-primary fw-semibold d-block mb-0">
                                                             {vehicleOwner.fullName}
                                                         </Link>
@@ -246,7 +246,7 @@ export default function VehicleOwnerList() {
                                                     </td>
                                                     
                                                     {/* Contact Information */}
-                                                    <td className="py-2 px-1">
+                                                    <td className="py-2 px-1 align-top">
                                                         <div className="d-flex align-items-center mb-0">
                                                             <a href={`mailto:${vehicleOwner.email}`} className="text-decoration-none text-primary" title={`Send email to ${vehicleOwner.email}`}>
                                                                 <i className="fa fa-envelope me-2" style={{ width: "16px" }}></i>
@@ -266,7 +266,7 @@ export default function VehicleOwnerList() {
                                                     </td>
                                                     
                                                     {/* Joined Date */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="col-sm-12">
                                                             <small className="fw-semibold me-1">JOINED:</small>
                                                             <small className="text-muted">
@@ -286,7 +286,7 @@ export default function VehicleOwnerList() {
                                                     </td>
                                                     
                                                     {/* Wallert */}
-                                                    <td className="text-muted py-2 px-1 small">
+                                                    <td className="text-muted py-2 px-1 align-top small">
                                                         <span className="text-muted">
                                                             <strong className="me-1">Wallet ID:</strong> {vehicleOwner.walletId || 'N/A'}
                                                         </span>
@@ -296,7 +296,7 @@ export default function VehicleOwnerList() {
                                                     </td>
                                                     
                                                     {/* Account Status */}
-                                                    <td className="py-2 px-1 small">
+                                                    <td className="py-2 px-1 align-top small">
                                                         <div className="text-muted">
                                                             <b>KYC:</b>
                                                             <span className={`float-end ${getKycTextColor(vehicleOwner.kycStatus)}`}>
@@ -327,7 +327,7 @@ export default function VehicleOwnerList() {
 
                                                     
                                                     {/* Actions */}
-                                                    <td className="text-muted py-2 px-1">
+                                                    <td className="text-muted py-2 px-1 align-top">
                                                         <div className="btn-group">
                                                             <Link to={`/vehicle-owners/${vehicleOwner._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View User">
                                                                 <i className="fa fa-eye small"></i>View

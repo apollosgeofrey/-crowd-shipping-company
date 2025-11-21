@@ -217,11 +217,11 @@ export default function UserList() {
 						                <tr className="m-5">
 							                <th style={{ width: "2%" }} className="py-3">#</th>
 							                <th style={{ width: "18%" }} className="py-3">FULL NAME</th>
-							                <th style={{ width: "18%" }} className="py-3">CONTACT DETAILS</th>
+							                <th style={{ width: "20%" }} className="py-3">CONTACT DETAILS</th>
 							                <th style={{ width: "15%" }} className="py-3">JOINED DATE</th>
 							                <th style={{ width: "20%" }} className="py-3">WALLET</th>
 							                <th style={{ width: "15%" }} className="py-3">STATUSES</th>
-							                <th style={{ width: "12%" }} className="py-3">ACTION</th>
+							                <th style={{ width: "10%" }} className="py-3">ACTION</th>
 						                </tr>
 						             </thead>
 						             <tbody className="small">
@@ -242,10 +242,10 @@ export default function UserList() {
 						                  	) : (
 						                    users.map((user, index) => (
 						                      	<tr key={user._id}>
-							                        <td className="text-muted py-3 px-2">
+							                        <td className="text-muted py-3 px-2 align-top">
 							                        	{(page - 1) * perPage + index + 1}
 							                        </td>
-							                        <td className="text-muted py-3 px-2">
+							                        <td className="text-muted py-3 px-2 align-top">
 							                        	<Link to={`/users/${user._id}/show`} className="text-decoration-none text-primary fw-bold">
 							                        		{user.fullName}
 							                        	</Link>
@@ -253,7 +253,7 @@ export default function UserList() {
                                                             <b>ID:</b> {user.userId} - ({user?.userType?.toUpperCase() || "USER"})
                                                         </small>
 							                        </td>
-							                     	<td className="text-muted py-3 px-2">
+							                     	<td className="text-muted py-3 px-2 align-top">
 													    <a href={`mailto:${user.email}`} className="text-decoration-none text-primary" title={`Send email to ${user.email}`}>
 													        📧 {user.email}
 													    </a>
@@ -264,14 +264,14 @@ export default function UserList() {
 													        </a>
 													    </small>
 													</td>
-							                        <td className="text-muted py-3 px-2">
+							                        <td className="text-muted py-3 px-2 align-top">
 							                        	{formatDate(user.createdAt)}
 							                        	<br />
 							                        	<small className="text-muted">
 							                        		<><strong>• Last login:</strong> {user.lastLogin ? formatDate(user.lastLogin) : 'Never'}</>							                        		 
 							                        	</small>
 							                        </td>
-							                        <td className="text-muted py-3 px-2">
+							                        <td className="text-muted py-3 px-2 align-top">
 							                        	<span className="text-muted">
 							                        		<strong className="me-1">Wallet ID:</strong> {user.walletId || 'N/A'}
 							                        	</span>
@@ -280,7 +280,7 @@ export default function UserList() {
 							                        		<strong className="me-1">Balance:</strong> {user.wallet ? formatBalance(user.wallet.balance) : '₦0'}
 							                        	</small>
 							                        </td>
-                                                    <td className="py-3 px-2 small">
+                                                    <td className="py-3 px-2 small align-top">
                                                         <div className="text-muted small">
                                                             <b>KYC:</b>
                                                             <span className={`float-end ${getKycTextColor(user.kycStatus)}`}>
@@ -308,7 +308,7 @@ export default function UserList() {
                                                             )}
                                                         </div>
                                                     </td>
-							                        <td className="text-muted py-3 px-2">
+							                        <td className="text-muted py-3 px-2 align-top">
 							                        	<div className="btn-group">
 															<Link to={`/users/${user._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View User">
 																View <i className="fa fa-eye small"></i>

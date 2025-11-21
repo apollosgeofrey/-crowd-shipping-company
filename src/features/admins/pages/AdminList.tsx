@@ -200,10 +200,10 @@ export default function AdminList() {
 											<th style={{ width: "2%" }} className="py-3">#</th>
 											<th style={{ width: "18%" }} className="py-3">ADMIN DETAILS</th>
 											<th style={{ width: "15%" }} className="py-3">ID NUMBER</th>
-											<th style={{ width: "20%" }} className="py-3">CONTACT INFO</th>
+											<th style={{ width: "22%" }} className="py-3">CONTACT INFO</th>
 											<th style={{ width: "15%" }} className="py-3">ONBOARDING DATE</th>
 											<th style={{ width: "18%" }} className="py-3">ROLE & STATUSES</th>
-											<th style={{ width: "12%" }} className="py-3">ACTIONS</th>
+											<th style={{ width: "10%" }} className="py-3">ACTIONS</th>
 										</tr>
 									</thead>
 									<tbody className="small">
@@ -224,20 +224,20 @@ export default function AdminList() {
 											) : (
 												admins.map((admin, index) => (
 													<tr key={admin._id}>
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															{(page - 1) * perPage + index + 1}
 														</td>
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															<Link to={`/admins/${admin._id}/show`} className="text-decoration-none text-primary fw-bold">
 																{admin.fullName}
 															</Link>
 														</td>
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															<small className="text-muted">
 																{admin.userId ? admin.userId : 'N/A'}
 															</small>
 														</td>
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															<a href={`mailto:${admin.email}`} className="text-decoration-none text-primary" title={`Send email to ${admin.email}`}>
 																📧 {admin.email}
 															</a>
@@ -248,7 +248,7 @@ export default function AdminList() {
 																</a>
 															</small>
 														</td>
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															{formatDate(admin.createdAt)}
 															<br />
 															<small className="text-muted">
@@ -257,7 +257,7 @@ export default function AdminList() {
 														</td>
 
 														{/* Account Statuses */}
-	                                                    <td className="py-3 px-2 small">
+	                                                    <td className="py-3 px-2 small align-top">
 															<div className="text-muted">
 	                                                            <b>ROLE:</b>
 																<span className={`float-end badge ${admin.role === 'super-admin' ? 'bg-warning' : 'bg-info'} text-dark`}>
@@ -280,7 +280,7 @@ export default function AdminList() {
 	                                                        </div>
 	                                                    </td>
 
-														<td className="text-muted py-3 px-2">
+														<td className="text-muted py-3 px-2 align-top">
 															<div className="btn-group">
 																<Link to={`/admins/${admin._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Admin">
 																	View <i className="fa fa-eye small"></i>

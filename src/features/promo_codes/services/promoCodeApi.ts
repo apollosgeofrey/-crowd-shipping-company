@@ -31,6 +31,8 @@ export interface PromoCodeFilters {
     status?: string;
     dateFrom?: string;
     dateTo?: string;
+    promoScope?: string;
+    currency?: string;    
 }
 
 /**

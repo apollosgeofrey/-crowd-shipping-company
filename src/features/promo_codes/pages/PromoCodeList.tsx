@@ -18,7 +18,7 @@ export default function PromoCodeList() {
     const [metaData, setMetaData] = useState<any>(null);
     const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
     const [editPromoCode, setEditPromoCode] = useState<PromoCode | null>(null);
-    const [filters, setFilters] = useState<PromoCodeFilters>({search: "", type: "", status: ""});
+    const [filters, setFilters] = useState<PromoCodeFilters>({search:"", type:"", status:"", promoScope:"", currency:""});
 
     // Extract the fetch function so it can be reused
 	const fetchPromoCodes = async () => {
@@ -52,7 +52,7 @@ export default function PromoCodeList() {
 
     // Reset all filters
     const resetFilters = () => {
-        setFilters({ search: "", type: "", status: "" });
+        setFilters({search:"", type:"", status:"", promoScope:"", currency:""});
         setPage(1);
     };
 
@@ -66,6 +66,13 @@ export default function PromoCodeList() {
     const handleEdit = (promoCode: PromoCode) => {
         setEditPromoCode(promoCode);
         setShowModal(true);
+    };
+
+    // NEW: Format eligible users count
+    const formatEligibleUsers = (promoCode: PromoCode) => {
+        if (promoCode.promoScope === 'all') return 'All Users';
+        const eligibleCount = promoCode.eligibleUsers?.length || 0;
+        return `${eligibleCount} User${eligibleCount !== 1 ? 's' : ''}`;
     };
 
     // Handle save promo code
@@ -154,23 +161,22 @@ export default function PromoCodeList() {
         return typeMap[type] || 'bg-secondary-subtle text-secondary';
     };
 
+    // NEW: Get scope badge
+    const getScopeBadge = (scope: string) => {
+        const scopeMap: { [key: string]: string } = {
+            'all': 'bg-success-subtle text-success',
+            'specific': 'bg-warning-subtle text-warning'
+        };
+        return scopeMap[scope] || 'bg-secondary-subtle text-secondary';
+    };
+
     // Format discount value
     const formatDiscount = (promoCode: PromoCode) => {
         switch (promoCode.type) {
             case 'percentage':
-            	return (
-	                <>
-	                    {promoCode.value}%
-	                    {promoCode.maxDiscountAmount && (
-	                    	<small className=''>
-	                            {' '}- (Min: {promoCode.minDiscountAmount} - Max: {promoCode.maxDiscountAmount})
-	                    	</small>
-	                    )}
-	                </>
-	            );
-                // return `<>${promoCode.value}%${promoCode.maxDiscountAmount ? ` - (Min: ${promoCode.minDiscountAmount}) - (Max: ${promoCode.maxDiscountAmount})` : ''}<>`;
+            	return (<>{promoCode.value}% {promoCode.maxDiscountAmount && (<small className=''>{' '}- (Min: {promoCode.minDiscountAmount} - Max: {promoCode.maxDiscountAmount})</small>)}</>);
             case 'flat':
-                return `${promoCode.value} flat`;
+                return `${promoCode.value} flat - (${promoCode.currency})`;
             case 'free':
                 return 'Free';
             default:
@@ -251,6 +257,20 @@ export default function PromoCodeList() {
                                         </select>
                                     </div>
 
+                                    {/* NEW: Promo Scope Filter */}
+                                    <div className="d-flex align-items-center border-start px-2">
+                                        <select 
+                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
+                                            style={{ width: "auto" }}
+                                            value={filters.promoScope}
+                                            onChange={(e) => handleFilterChange("promoScope", e.target.value)}
+                                        >
+                                            <option value="">All Scopes</option>
+                                            <option value="all">All Users</option>
+                                            <option value="specific">Specific Users</option>
+                                        </select>
+                                    </div>
+
                                     {/* Reset Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
                                         <button className="btn btn-sm btn-light border-0 fw-semibold px-3 text-danger" onClick={resetFilters}>
@@ -275,13 +295,14 @@ export default function PromoCodeList() {
                                     <thead className="table-light small">
                                         <tr>
                                             <th style={{ width: "2%" }} className="py-3">#</th>
-                                            <th style={{ width: "14%" }} className="py-3">PROMO CODE</th>
-                                            <th style={{ width: "15%" }} className="py-3">DESCRIPTION</th>
-                                            <th style={{ width: "8%" }} className="py-3">TYPE</th>
-                                            <th style={{ width: "15%" }} className="py-3">DISCOUNT</th>
+                                            <th style={{ width: "12%" }} className="py-3">PROMO CODE</th>
+                                            <th style={{ width: "12%" }} className="py-3">DESCRIPTION</th>
+                                            <th style={{ width: "7%" }} className="py-3">TYPE</th>
+                                            <th style={{ width: "12%" }} className="py-3">DISCOUNT</th>
+                                            <th style={{ width: "8%" }} className="py-3">SCOPE</th>
                                             <th style={{ width: "10%" }} className="py-3">USAGE</th>
-                                            <th style={{ width: "12%" }} className="py-3">VALIDITY</th>
-                                            <th style={{ width: "8%" }} className="py-3">STATUS</th>
+                                            <th style={{ width: "10%" }} className="py-3">VALIDITY</th>
+                                            <th style={{ width: "7%" }} className="py-3">STATUS</th>
                                             <th style={{ width: "10%" }} className="py-3">CREATED</th>
                                             <th style={{ width: "6%" }} className="py-3">ACTIONS</th>
                                         </tr>
@@ -343,6 +364,19 @@ export default function PromoCodeList() {
                                                             {formatDiscount(promoCode)}
                                                         </div>
                                                     </td>
+
+                                                    {/* NEW: Scope */}
+                                                    <td className="py-2 px-1 align-top">
+                                                        <span className={`badge ${getScopeBadge(promoCode.promoScope)} mb-1 col-sm-12`}>
+                                                            {formatEligibleUsers(promoCode)}
+                                                        </span>
+                                                        {promoCode.promoScope === 'specific' && promoCode.eligibleUsersDetails && promoCode.eligibleUsersDetails.length > 0 && (
+                                                            <small className="text-muted">
+                                                                {promoCode.eligibleUsersDetails.slice(0, 2).map((user: any) => user.fullName).join(', ')}
+                                                                {promoCode.eligibleUsersDetails.length > 2 && '...'}
+                                                            </small>
+                                                        )}
+                                                    </td>
                                                     
                                                     {/* Usage */}
                                                     <td className="py-2 px-1 align-top">
@@ -352,7 +386,7 @@ export default function PromoCodeList() {
                                                             <div>Per user: {promoCode.maxUsagePerUser || '∞'}</div>
                                                         </div>
                                                     </td>
-                                                    
+                                                        
                                                     {/* Validity */}
                                                     <td className="py-2 px-1 align-top">
                                                         <div className="small text-muted">
@@ -360,14 +394,14 @@ export default function PromoCodeList() {
                                                             <div>To: {formatDate(promoCode.endDate)}</div>
                                                         </div>
                                                     </td>
-                                                    
+                                                        
                                                     {/* Status */}
                                                     <td className="py-2 px-1 align-top">
                                                         <span className={`badge ${getStatusBadge(promoCode.status)}`}>
-                                                            {promoCode.status.toUpperCase()}
+                                                             {promoCode.status.toUpperCase()}
                                                         </span>
                                                     </td>
-                                                    
+                                                        
                                                     {/* Created Date */}
                                                     <td className="py-2 px-1 align-top">
                                                         <div className="small text-muted">
@@ -377,22 +411,14 @@ export default function PromoCodeList() {
                                                             By: {promoCode.createdByUser?.fullName}
                                                         </small>
                                                     </td>
-                                                    
+                                                        
                                                     {/* Actions */}
                                                     <td className="text-muted py-2 px-1 align-top">
                                                         <div className="btn-group">
-                                                            <button 
-                                                                className="btn btn-sm px-2 py-1 btn-outline-primary" 
-                                                                title="Edit Promo Code"
-                                                                onClick={() => handleEdit(promoCode)}
-                                                            >
+                                                            <button className="btn btn-sm px-2 py-1 btn-outline-primary" title="Edit Promo Code" onClick={() => handleEdit(promoCode)}>
                                                                 <i className="fa fa-edit small"></i>
                                                             </button>
-                                                            <button 
-                                                                className="btn btn-sm px-2 py-1 btn-outline-danger" 
-                                                                title="Delete Promo Code"
-                                                                onClick={() => handleDelete(promoCode)}
-                                                            >
+                                                            <button className="btn btn-sm px-2 py-1 btn-outline-danger" title="Delete Promo Code" onClick={() => handleDelete(promoCode)}>
                                                                 <i className="fa fa-trash small"></i>
                                                             </button>
                                                         </div>
@@ -403,7 +429,7 @@ export default function PromoCodeList() {
                                     </tbody>
                                 </table>
                             </div>
-                                
+                                    
                             {/* Pagination Bar */}
                             <PaginationBar page={page} perPage={perPage} totalPages={totalPages} onPageChange={setPage} onPerPageChange={setPerPage}/>
 

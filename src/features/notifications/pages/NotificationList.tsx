@@ -169,7 +169,7 @@ export default function NotificationList() {
                             <div className="d-flex align-items-center px-2">
                                 <input 
                                     type="text"
-                                    className="form-control form-control-sm border-1 bg-transparent" 
+                                    className="form-control form-control-sm border-1 bg-transparent shadow-lg" 
                                     placeholder="Search notifications..."
                                     value={filters.search}
                                     onChange={(e) => handleFilterChange("search", e.target.value)}

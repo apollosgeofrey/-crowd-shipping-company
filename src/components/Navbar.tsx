@@ -57,12 +57,14 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 		"/admins/create": {title:"Create Admin", subtitle:"Admins > Creation", parent:{label:"Admins", path:"/admins"}},
 		"/admins": {title:"Manage Admin", subtitle:"Admin > View List", parent:{label:"Admin", path:"/admin"}},
 		
+		"/reports/:id/show": {title:"Report Details", subtitle:"Reports > Details", parent:{label:"Reports", path:"/reports"}},
+		"/reports": {title:"Reports", subtitle:"Reports > View List", parent:{label:"Reports", path:"/reports"}},
+
 		"/live-map": {title:"Live Map", subtitle:"Map > Tracking", parent: {label:"Map", path:"/live-map"}},
 		"/bookings": {title: "All Bookings", subtitle:"Bookings > View List", parent:{label:"Bookings", path:"/bookings"}},
 		"/transactions": {title:"Transactions", subtitle:"Finance > Transactions", parent:{label:"Finance", path:"/transactions"}},
 		"/promo-codes": {title:"Promo Codes", subtitle:"Discounts > Promo Codes", parent:{label:"Discounts", path:"/promo-codes"}},
 		"/trip-charges": {title:"Trip Charges", subtitle:"Trips > Charges", parent:{label:"Trips", path:"/trip-charges"}},
-		"/reports": {title:"Reports", subtitle:"Analytics > Reports", parent:{label:"Analytics", path:"/reports"}},
 		
 		"/ratings/:id/show": {title:"Rating Details", subtitle:"Ratings > Details", parent:{label:"Ratings", path:"/ratings"}},
 		"/ratings": {title: "Ratings", subtitle: "Feedback > Ratings", parent: { label: "Feedback", path: "/ratings"}},

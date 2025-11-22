@@ -1,6 +1,6 @@
 // RatingList.tsx
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import RatingStatsCards from "./ratingListPartials/RatingStatsCards.tsx";
@@ -49,9 +49,6 @@ export default function RatingList() {
         setFilters({ search: "", ratingType: "", minRating: "", maxRating: "", hasReview: "" });
         setPage(1);
     };
-
-    // Handle view rating details
-    const handleView = (rating: any) => navigate(`/ratings/${rating._id}/show`);
 
     // Handle export ratings
     const handleExport = async () => {
@@ -151,21 +148,12 @@ export default function RatingList() {
 
                                     {/* Search Input */}
                                     <div className="d-flex align-items-center px-2">
-                                        <input type="text" className="form-control form-control-sm border-1 bg-transparent" 
-                                            placeholder="Search reviews or names..."
-                                            value={filters.search}
-                                            onChange={(e) => handleFilterChange("search", e.target.value)}
-                                            style={{ minWidth: "200px" }}
-                                        />
+                                        <input type="text" className="form-control form-control-sm border-1 bg-transparent shadow-lg" placeholder="Search reviews or names..." value={filters.search} onChange={(e) => handleFilterChange("search", e.target.value)} style={{ minWidth: "200px" }}/>
                                     </div>
 
                                     {/* Rating Type Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
-                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
-                                            style={{ width: "auto" }}
-                                            value={filters.ratingType}
-                                            onChange={(e) => handleFilterChange("ratingType", e.target.value)}
-                                        >
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }} value={filters.ratingType} onChange={(e) => handleFilterChange("ratingType", e.target.value)}>
                                             <option value="">All Types</option>
                                             <option value="customer">Customer Ratings</option>
                                             <option value="driver">Driver Ratings</option>
@@ -174,11 +162,7 @@ export default function RatingList() {
 
                                     {/* Min Rating Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
-                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
-                                            style={{ width: "auto" }}
-                                            value={filters.minRating}
-                                            onChange={(e) => handleFilterChange("minRating", e.target.value)}
-                                        >
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }} value={filters.minRating} onChange={(e) => handleFilterChange("minRating", e.target.value)}>
                                             <option value="">Min Rating</option>
                                             <option value="1">1 Star</option>
                                             <option value="2">2 Stars</option>
@@ -190,12 +174,7 @@ export default function RatingList() {
 
                                     {/* Max Rating Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
-                                        <select 
-                                            className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
-                                            style={{ width: "auto" }}
-                                            value={filters.maxRating}
-                                            onChange={(e) => handleFilterChange("maxRating", e.target.value)}
-                                        >
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }} value={filters.maxRating} onChange={(e) => handleFilterChange("maxRating", e.target.value)}>
                                             <option value="">Max Rating</option>
                                             <option value="1">1 Star</option>
                                             <option value="2">2 Stars</option>
@@ -207,11 +186,7 @@ export default function RatingList() {
 
                                     {/* Has Review Filter */}
                                     <div className="d-flex align-items-center border-start px-2">
-                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" 
-                                            style={{ width: "auto" }}
-                                            value={filters.hasReview}
-                                            onChange={(e) => handleFilterChange("hasReview", e.target.value)}
-                                        >
+                                        <select className="form-select form-select-sm border-0 bg-transparent fw-semibold" style={{ width: "auto" }} value={filters.hasReview} onChange={(e) => handleFilterChange("hasReview", e.target.value)}>
                                             <option value="">All Reviews</option>
                                             <option value="yes">With Reviews</option>
                                             <option value="no">Without Reviews</option>
@@ -247,8 +222,8 @@ export default function RatingList() {
                                 <table className="table align-middle mb-0 table-sm table-striped">
                                     <thead className="table-light small">
                                         <tr>
-                                            <th style={{ width: "3%" }} className="py-3">#</th>
-                                            <th style={{ width: "15%" }} className="py-3">REFERENCE</th>
+                                            <th style={{ width: "2%" }} className="py-3">#</th>
+                                            <th style={{ width: "16%" }} className="py-3">REFERENCE</th>
                                             <th style={{ width: "18%" }} className="py-3">RATER & RATEE</th>
                                             <th style={{ width: "8%" }} className="py-3">RATING TYPE</th>
                                             <th style={{ width: "12%" }} className="py-3">RATING</th>
@@ -280,29 +255,27 @@ export default function RatingList() {
                                                     
                                                     {/* Booking Reference */}
                                                     <td className="py-2 px-1 align-top">
-                                                        <div className="fw-semibold text-primary">
-                                                            {rating.booking?.bookingRef ?? 'N/A'}
+                                                        <div className="fw-semibold text-primary mb-0">
+                                                            <Link to={`/ratings/${rating._id}/show`} className="mb-0 px-0 py-0 text-primary text-decoration-none" title="View Rating Details" >
+                                                                {rating.booking?.bookingRef ?? 'N/A'}
+                                                            </Link>        
                                                         </div>
-                                                        <small className="text-muted">
-                                                            FEE: &nbsp; {formatCurrency(rating.booking?.total, rating.booking?.currency)}
-                                                        </small>
+                                                        <small className="text-muted">FEE: &nbsp; {formatCurrency(rating.booking?.total, rating.booking?.currency)}</small>
                                                     </td>
                                                     
                                                     {/* Rater & Ratee */}
                                                     <td className="py-2 px-1 align-top">
                                                         <div className="mb-1">
-                                                            <div className="small">
-                                                            	<span className="fw-semibold text-muted me-1">Rater:</span>
-                                                                {rating.rater?.fullName ?? 'N/A'}
+                                                            <div className="small mb-0 pb-0">
+                                                            	<span className="fw-semibold text-muted me-1">Rater:</span> {rating?.rater?.fullName ?? 'N/A'}
                                                             </div>
-                                                            <small className="text-muted">{rating.rater?.email ?? ''}</small>
+                                                            <small className="text-muted mt-0 pt-0">{rating?.rater?.email ?? ''}</small>
                                                         </div>
                                                         <div>
                                                             <div className="small">
-                                                            	<span className="fw-semibold text-muted me-1">Ratee:</span>
-                                                                {rating.ratee?.fullName ?? 'N/A'}
+                                                            	<span className="fw-semibold text-muted me-1">Ratee:</span> {rating?.ratee?.fullName ?? 'N/A'}
                                                             </div>
-                                                            <small className="text-muted">{rating.rater?.email ?? ''}</small>
+                                                            <small className="text-muted">{rating?.rater?.email ?? ''}</small>
                                                         </div>
                                                     </td>
                                                     
@@ -360,9 +333,9 @@ export default function RatingList() {
                                                     {/* Actions */}
                                                     <td className="text-muted py-2 px-1 align-top">
                                                         <div className="btn-group">
-                                                            <button className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Rating Details" onClick={() => handleView(rating)}>
+                                                            <Link to={`/ratings/${rating._id}/show`} className="btn btn-sm px-1 py-0 btn-outline-primary" title="View Rating Details" >
                                                                 <i className="fa fa-eye small"></i> View
-                                                            </button>
+                                                            </Link>
                                                         </div>
                                                     </td>
                                                 </tr>

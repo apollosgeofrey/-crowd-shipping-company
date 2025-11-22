@@ -1,21 +1,21 @@
 // RatingList.tsx
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import RatingStatsCards from "./ratingListPartials/RatingStatsCards.tsx";
 import ratingApi, { type RatingFilters } from "../services/ratingApi.ts";
 
 export default function RatingList() {
-    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [metaData, setMetaData] = useState<any>(null);
     const [ratings, setRatings] = useState<any[]>([]);
-    const [filters, setFilters] = useState<RatingFilters>({search: "", ratingType: "", minRating: "", maxRating: "", hasReview: ""});
+    const [metaData, setMetaData] = useState<any>(null);
+    const [filters, setFilters] = useState<RatingFilters>({search:"", ratingType:"", minRating:"", maxRating:"", hasReview:""});
 
     // Fetch ratings from API
     useEffect(() => {
@@ -25,9 +25,9 @@ export default function RatingList() {
                 const response = await ratingApi.getRatings({page, limit: perPage, ...filters});
                 if (response.code === 200) {
                     setRatings(response.data.items);
+                    setMetaData(response.data.meta);
                     setTotalPages(response.data.meta.totalPages);
                     setTotalItems(response.data.meta.total);
-                    setMetaData(response.data.meta);
                 }
             } catch (err) {
                 console.error("Failed to fetch ratings:", err);

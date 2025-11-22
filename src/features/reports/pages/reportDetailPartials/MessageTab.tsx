@@ -2,8 +2,8 @@
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useUserData } from '../../../../hooks/useUserData';
-import reportApi, { type Message } from "../../services/reportApi.ts";
-import {FaPhoneAlt, FaVideo, FaPaperclip, FaSmile, FaPaperPlane, FaImage, FaFile, FaMicrophone, FaEdit, FaTrash, FaCheck, FaTimes} from "react-icons/fa";
+import reportApi, { type SendMessagePayload } from "../../services/reportApi.ts";
+import {FaPhoneAlt, FaVideo, FaPaperclip, FaSmile, FaPaperPlane, FaImage, FaFile, FaMicrophone, FaEdit, FaTrash} from "react-icons/fa";
 
 interface MessageTabProps {
     report: any;
@@ -18,7 +18,7 @@ export default function MessageTab({ report }: MessageTabProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<any[]>([]);
     const [isAppendingMoreMessages, setIsAppendingMoreMessages] = useState(false);
     const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
     const [editMessageText, setEditMessageText] = useState("");
@@ -47,7 +47,7 @@ export default function MessageTab({ report }: MessageTabProps) {
         try {
             const response = await reportApi.getConversationMessages(report._id, conversationId, { page, limit: 50 } );
             if (response.code === 200) {
-                const newMessages = response.data.items.filter((msg: Message) => !msg.isDeleted && msg.messageType === 'text').map((msg: Message) => ({ ...msg, text: (msg.message || '') }));                
+                const newMessages = response.data.items.filter((msg:any) => !msg.isDeleted && msg.messageType === 'text').map((msg:any) => ({ ...msg, text: (msg.message || '') }));                
                 if(append) {
                     setIsAppendingMoreMessages(true);
                     setMessages(prev => [...prev, ...newMessages]);
@@ -73,12 +73,12 @@ export default function MessageTab({ report }: MessageTabProps) {
             const response = await reportApi.sendMessage(report._id, conversationId, messageData);
 
             if (response.code === 201) {
-                const newMsg: Message = response.data;
+                const newMsg: SendMessagePayload = response.data;
                 const formattedMessage = {...newMsg, text: newMsg.message || '', sender: 'staff', senderName: 'Support Agent'};                
                 setMessages(prev => [formattedMessage, ...prev]);
                 setNewMessage("");
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Failed to send message:", err);
             Swal.fire("Error", (err?.response?.data?.message || "Failed to send message. Please try again."), "error");
         } finally {
@@ -87,7 +87,7 @@ export default function MessageTab({ report }: MessageTabProps) {
     };
 
     // Check if message can be edited/deleted (within 1 hour)
-    const canModifyMessage = (message: Message) => {
+    const canModifyMessage = (message: any) => {
         if (message.senderId !== currentUserId) return false;
         
         const messageTime = new Date(message.createdAt).getTime();
@@ -98,7 +98,7 @@ export default function MessageTab({ report }: MessageTabProps) {
     };
 
     // Delete message handler
-    const handleDeleteMessage = async (message: Message) => {
+    const handleDeleteMessage = async (message: any) => {
         if (!conversationId) return;
         const result = await Swal.fire({
             title: 'Delete Message?',
@@ -126,7 +126,7 @@ export default function MessageTab({ report }: MessageTabProps) {
     };
 
     // Start editing message
-    const handleStartEdit = (message: Message) => {
+    const handleStartEdit = (message: any) => {
         setEditingMessageId(message._id);
         setEditMessageText(message.message || '');
     };
@@ -138,7 +138,7 @@ export default function MessageTab({ report }: MessageTabProps) {
     };
 
     // Save edited message
-    const handleSaveEdit = async (message: Message) => {
+    const handleSaveEdit = async (message: any) => {
         if (!editMessageText.trim() || !conversationId) return;
 
         try {
@@ -327,7 +327,7 @@ export default function MessageTab({ report }: MessageTabProps) {
             {/* Message Input */}
             <div className="border-top p-3">
                 <div className="d-flex align-items-center gap-2 mb-0">
-                    <textarea placeholder="Type your message..." className="form-control shadow-lg" rows='3' value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={report?.status === 'resolved' || isSending}/>
+                    <textarea placeholder="Type your message..." className="form-control shadow-lg" rows={3} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={(report?.status==='resolved') || isSending}/>
                     {report?.status === 'pending' && (
                         <>
                             <button className="btn btn-light" title="Attach file" disabled={isSending}><FaPaperclip /></button>

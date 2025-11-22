@@ -1,7 +1,7 @@
 // ReportList.tsx
 import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
+// import { FaSearch } from "react-icons/fa";
 import PaginationBar from "../../../components/PaginationBar.tsx";
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import reportApi, { type ReportFilters } from "../services/reportApi.ts";

@@ -1,13 +1,12 @@
 // ResolutionTab.tsx
-import { useState } from "react";
+// import { useState } from "react";
 
 interface ResolutionTabProps {
     report: any;
     onReportUpdate?: (updatedReport: any) => void;
 }
 
-export default function ResolutionTab({ report, onReportUpdate }: ResolutionTabProps) {
-    const [isTakingAction, setIsTakingAction] = useState(false);
+export default function ResolutionTab({ report }: ResolutionTabProps) {
 
     const formatCurrency = (amount: number) => {
         if (amount === undefined || amount === null) return "N/A";
@@ -39,21 +38,6 @@ export default function ResolutionTab({ report, onReportUpdate }: ResolutionTabP
             });
         } catch (error) {
             return "Invalid Date";
-        }
-    };
-
-    const handleAction = async (action: string) => {
-        setIsTakingAction(true);
-        try {
-            // TODO: Implement API call for each action
-            console.log(`Performing action: ${action}`);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            alert(`Action "${action}" completed successfully!`);
-        } catch (error) {
-            console.error(`Failed to perform action ${action}:`, error);
-            alert(`Failed to perform action. Please try again.`);
-        } finally {
-            setIsTakingAction(false);
         }
     };
 
@@ -162,7 +146,7 @@ export default function ResolutionTab({ report, onReportUpdate }: ResolutionTabP
                             
                             <div className="mt-3">
                                 <strong>Resolution Notes:</strong>
-                                <textarea className="form-control bg-light p-2 rounded small" rows='5' readOnly value={report.resolutionNotes || ''} placeholder="N/A" />
+                                <textarea className="form-control bg-light p-2 rounded small" rows={5} readOnly value={report.resolutionNotes || ''} placeholder="N/A" />
                             </div>
                         </div>
                     </div>

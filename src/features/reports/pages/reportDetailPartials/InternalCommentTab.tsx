@@ -6,7 +6,7 @@ interface InternalCommentTabProps {
     onReportUpdate?: (updatedReport: any) => void;
 }
 
-export default function InternalCommentTab({ report, onReportUpdate }: InternalCommentTabProps) {
+export default function InternalCommentTab({ report }: InternalCommentTabProps) {
     const [internalComment, setInternalComment] = useState(report.resolutionNotes || "");
     const [isSaving, setIsSaving] = useState(false);
 

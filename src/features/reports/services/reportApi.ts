@@ -110,16 +110,14 @@ export const reportApi = {
         return response.data;
     },
 
-    // /**
-    //  * Export reports to CSV/Excel
-    //  */
-    // exportReports: async (params?: ReportFilters): Promise<Blob> => {
-    //     const response = await api.get('/v1/admin/reports/export', {
-    //         params,
-    //         responseType: 'blob'
-    //     });
-    //     return response.data;
-    // },
+    /** Export reports to CSV/Excel */
+    exportReports: async (params?: ReportFilters): Promise<Blob> => {
+        const response = await api.get('/v1/admin/reports/export', {
+            params,
+            responseType: 'blob'
+        });
+        return response.data;
+    },
 
 
     // Add these methods to your existing reportApi object:

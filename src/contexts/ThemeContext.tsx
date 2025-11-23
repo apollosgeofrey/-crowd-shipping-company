@@ -56,13 +56,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 		return () => mediaQuery.removeEventListener('change', handleChange);
 	}, [theme]);
 
-	const toggleTheme = () => {
-		setTheme(prev => {
-			if (prev === 'light') return 'dark';
-			if (prev === 'dark') return 'system';
-			return 'light';
-		});
-	};
+	const toggleTheme = () => setTheme(prev => (prev === 'light') ? 'dark' : 'light');
 
 	const setThemeDirect = (newTheme: Theme) => setTheme(newTheme);
 

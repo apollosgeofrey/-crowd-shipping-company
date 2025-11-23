@@ -52,16 +52,10 @@ export function StateError({ error, onRetry }: StateErrorProps) {
                     <p className="text-muted lead">{error}</p>
                 </div>
                 <div className="d-flex gap-3 mt-3">
-                    <button 
-                        onClick={() => window.location.reload()}
-                        className="btn btn-primary btn-lg px-4"
-                    >
+                    <button onClick={() => window.location.reload()} className="btn btn-primary btn-lg px-4">
                         Refresh Page
                     </button>
-                    <button 
-                        onClick={onRetry}
-                        className="btn btn-outline-secondary btn-lg px-4"
-                    >
+                    <button onClick={onRetry} className="btn btn-outline-secondary btn-lg px-4">
                         Try Again
                     </button>
                 </div>
@@ -85,10 +79,7 @@ export function StateEmpty({ onRetry, message = "We couldn't find any data to di
                     <h2 className="h3 fw-bold text-dark mb-3">No Data Available</h2>
                     <p className="text-muted">{message}</p>
                 </div>
-                <button 
-                    onClick={onRetry}
-                    className="btn btn-primary btn-lg px-4"
-                >
+                <button onClick={onRetry} className="btn btn-primary btn-lg px-4">
                     Refresh Data
                 </button>
             </div>

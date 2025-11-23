@@ -344,18 +344,18 @@ export default function PromoCodeModal({ show, onClose, onSave, initialData }: P
 
             {/* Usage Limits */}
             <div className="mb-5 col-sm-12 col-md-4">
-                <label className="form-label mb-0 fw-semibold small">Max Total Usage: <sup className="text-danger">(Optional)</sup></label>
+                <label className="form-label mb-0 fw-semibold small">Maximum Total Usage: <sup className="text-danger">(Optional)</sup></label>
                 <input type="number" className="form-control form-control-lg shadow-lg" name="maxUsageCount" value={formData.maxUsageCount} placeholder="Leave empty for unlimited" onChange={handleChange} disabled={isSubmitting} min="0"/>
             </div>
 
             <div className="mb-5 col-sm-12 col-md-4">
-                <label className="form-label mb-0 fw-semibold small">Max Usage Per User: <sup className="text-danger">(Optional)</sup></label>
+                <label className="form-label mb-0 fw-semibold small">Maximum Usage Per User: <sup className="text-danger">(Optional)</sup></label>
                 <input type="number" className="form-control form-control-lg shadow-lg" name="maxUsagePerUser" value={formData.maxUsagePerUser} placeholder="Leave empty for unlimited" onChange={handleChange} disabled={isSubmitting} min="0"/>
             </div>
 
             <div className="mb-5 col-sm-12 col-md-4">
                 <label className="form-label mb-0 fw-semibold small">Minimum Order Amount: <sup className="text-danger">(Optional)</sup></label>
-                <input type="number" className="form-control form-control-lg shadow-lg" name="minOrderAmount"  value={formData.minOrderAmount} placeholder={`Minimum order amount in ${formData.currency}`} onChange={handleChange} disabled={isSubmitting} min="0" step="0.01"/>
+                <input type="number" className="form-control form-control-lg shadow-lg" name="minOrderAmount"  value={formData.minOrderAmount} placeholder={`Min order amount in ${formData.currency}`} onChange={handleChange} disabled={isSubmitting} min="0" step="0.01"/>
             </div>
         </div>
     );

@@ -78,7 +78,7 @@ export default function MessageTab({ report }: MessageTabProps) {
                 setMessages(prev => [formattedMessage, ...prev]);
                 setNewMessage("");
             }
-        } catch (err: any) {
+        }   catch (err: any) {
             console.error("Failed to send message:", err);
             Swal.fire("Error", (err?.response?.data?.message || "Failed to send message. Please try again."), "error");
         } finally {

@@ -226,17 +226,12 @@ export default function SystemSettings() {
                                 <h6 className="fw-semibold mb-1">Language</h6>
                                 <p className="text-muted mb-0 small">Select your preferred language</p>
                             </div>
-                            <select 
-                                className="form-select form-select-sm w-auto fw-semibold" 
-                                value={preferences.language}
-                                onChange={(e) => updateSelectSetting('language', e.target.value)}
-                                disabled={isSaving}
-                            >
+                            <select className="form-select form-select-sm w-auto fw-semibold" value={preferences.language} onChange={(e) => updateSelectSetting('language', e.target.value)} disabled={isSaving}>
                                 <option value="en">English</option>
-                                <option value="fr">French</option>
-                                <option value="es">Spanish</option>
-                                <option value="de">German</option>
-                                <option value="pt">Portuguese</option>
+                                {/*<option value="fr">French</option>*/}
+                                {/*<option value="es">Spanish</option>*/}
+                                {/*<option value="de">German</option>*/}
+                                {/*<option value="pt">Portuguese</option>*/}
                             </select>
                         </div>
 

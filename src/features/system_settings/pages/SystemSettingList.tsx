@@ -1,6 +1,7 @@
 // SystemSettings.tsx
 import Swal from 'sweetalert2';
 import { useState, useEffect } from "react";
+import { useTheme } from '../../../contexts/ThemeContext';
 import DashboardLayout from "../../../layouts/DashboardLayout.tsx";
 import systemPreferencesApi, {type UpdatePreferences } from "../services/systemPreferencesApi.ts";
 
@@ -9,6 +10,9 @@ export default function SystemSettings() {
     const [isLoading, setIsLoading] = useState(true);
     const [preferences, setPreferences] = useState<any | null>(null);
     const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+    
+    // Get theme from context
+    const { theme, setTheme, actualTheme } = useTheme();
 
     // Fetch system preferences from API
     useEffect(() => {
@@ -16,9 +20,7 @@ export default function SystemSettings() {
             setIsLoading(true);
             try {
                 const response = await systemPreferencesApi.getPreferences();
-                if (response.code === 200) {
-                    setPreferences(response.data);
-                }
+                if (response.code === 200) setPreferences(response.data);
             } catch (err) {
                 console.error("Failed to fetch system preferences:", err);
                 setSaveMessage({ type: 'error', message: 'Failed to load system preferences' });
@@ -38,8 +40,12 @@ export default function SystemSettings() {
             const response = await systemPreferencesApi.updatePreferences(updates);
             if (response.code === 200) {
                 setPreferences(response.data);
+                
+                // If theme was updated, sync with context for immediate UI change
+                if (updates.theme) setTheme(updates.theme as 'light' | 'dark');
+                
                 setSaveMessage({ type: 'success', message: 'Settings updated successfully!' });                
-                setTimeout(() => setSaveMessage(null), 3000); // Clear success message after 3 seconds
+                setTimeout(() => setSaveMessage(null), 3000);
             }
         } catch (err) {
             console.error("Failed to update preferences:", err);
@@ -60,6 +66,15 @@ export default function SystemSettings() {
     // Update select setting
     const updateSelectSetting = (key: keyof typeof preferences, value: string) => {
         updatePreference({ [key]: value });
+    };
+
+    // Handle theme change with immediate feedback
+    const handleThemeChange = (newTheme: string) => {
+        // Immediately update the context for instant UI change
+          setTheme(newTheme as 'light' | 'dark' | 'system');
+        
+        // Then save to database
+        updatePreference({ theme: newTheme });
     };
 
     // Reset to defaults with SweetAlert
@@ -86,6 +101,9 @@ export default function SystemSettings() {
                 const response = await systemPreferencesApi.resetPreferences();
                 if (response.code === 200) {
                     setPreferences(response.data);
+                    
+                    // Sync theme with context
+                    if (response.data.theme) setTheme(response.data.theme);
                     
                     // Show success message with SweetAlert
                     await Swal.fire({
@@ -157,10 +175,7 @@ export default function SystemSettings() {
                             <i className="fa fa-exclamation-triangle fa-3x text-warning mb-3"></i>
                             <h4>Unable to Load Settings</h4>
                             <p className="text-muted">Failed to load system preferences. Please try again.</p>
-                            <button 
-                                className="btn btn-primary"
-                                onClick={() => window.location.reload()}
-                            >
+                            <button className="btn btn-primary" onClick={() => window.location.reload()}>
                                 Retry
                             </button>
                         </div>
@@ -179,11 +194,7 @@ export default function SystemSettings() {
                         <h3 className="fw-bold mb-0 ps-0">
                             <span className="fa fa-cog pe-3"></span>System Settings
                         </h3>
-                        <button 
-                            className="btn btn-outline-secondary btn-sm"
-                            onClick={handleResetDefaults}
-                            disabled={isSaving}
-                        >
+                        <button className="btn btn-outline-secondary btn-sm"onClick={handleResetDefaults}disabled={isSaving}>
                             <i className="fa fa-undo me-1"></i> Reset Defaults
                         </button>
                     </div>
@@ -192,13 +203,20 @@ export default function SystemSettings() {
                     {saveMessage && (
                         <div className={`alert alert-${saveMessage.type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`}>
                             {saveMessage.message}
-                            <button 
-                                type="button" 
-                                className="btn-close" 
-                                onClick={() => setSaveMessage(null)}
-                            ></button>
+                            <button type="button" className="btn-close" onClick={() => setSaveMessage(null)}></button>
                         </div>
                     )}
+
+                    {/* Current Theme Status */}
+                    <div className="alert alert-info d-flex align-items-center mb-4">
+                        <i className="fa fa-palette me-2"></i>
+                        <div>
+                            <strong>Current Theme:</strong> {theme === 'system' && ` (${actualTheme})`}
+                            <span className="text-muted ms-2">
+                                ({localStorage.getItem('theme') ? 'User Preference' : 'Database Default'})
+                            </span>
+                        </div>
+                    </div>
 
                     {/* Settings List */}
                     <div className="list-group border rounded shadow-sm">
@@ -208,12 +226,7 @@ export default function SystemSettings() {
                                 <h6 className="fw-semibold mb-1">Appearance Theme</h6>
                                 <p className="text-muted mb-0 small">Customize how your theme looks on your device</p>
                             </div>
-                            <select 
-                                className="form-select form-select-sm w-auto fw-semibold" 
-                                value={preferences.theme}
-                                onChange={(e) => updateSelectSetting('theme', e.target.value)}
-                                disabled={isSaving}
-                            >
+                            <select className="form-select form-select-sm w-auto fw-semibold" value={theme} onChange={(e) => handleThemeChange(e.target.value)} disabled={isSaving}>
                                 <option value="light">Light</option>
                                 <option value="dark">Dark</option>
                                 <option value="system">System Default</option>
@@ -241,13 +254,9 @@ export default function SystemSettings() {
                                 <h6 className="fw-semibold mb-1">Timezone</h6>
                                 <p className="text-muted mb-0 small">Set your local timezone</p>
                             </div>
-                            <select 
-                                className="form-select form-select-sm w-auto fw-semibold" 
-                                value={preferences.timezone}
-                                onChange={(e) => updateSelectSetting('timezone', e.target.value)}
-                                disabled={isSaving}
-                            >
-                                <option value="UTC">UTC</option>
+                            <select className="form-select form-select-sm w-auto fw-semibold" value={preferences.timezone} onChange={(e) => updateSelectSetting('timezone', e.target.value)} disabled={isSaving}>
+                                <option value="Africa/Lagos">Lagos (WAT)</option>
+                                {/*<option value="UTC">UTC</option>
                                 <option value="America/New_York">Eastern Time (ET)</option>
                                 <option value="America/Chicago">Central Time (CT)</option>
                                 <option value="America/Denver">Mountain Time (MT)</option>
@@ -255,8 +264,7 @@ export default function SystemSettings() {
                                 <option value="Europe/London">London (GMT)</option>
                                 <option value="Europe/Paris">Paris (CET)</option>
                                 <option value="Asia/Tokyo">Tokyo (JST)</option>
-                                <option value="Asia/Dubai">Dubai (GST)</option>
-                                <option value="Africa/Lagos">Lagos (WAT)</option>
+                                <option value="Asia/Dubai">Dubai (GST)</option>*/}
                             </select>
                         </div>
 
@@ -267,13 +275,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Keep your account secure by enabling 2FA</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.twoFactorEnabled} 
-                                    onChange={() => toggleSetting('twoFactorEnabled')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.twoFactorEnabled} onChange={() => toggleSetting('twoFactorEnabled')} disabled={isSaving}/>
                             </div>
                         </div>
 
@@ -284,13 +286,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Receive important updates via email</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.enableEmail} 
-                                    onChange={() => toggleSetting('enableEmail')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.enableEmail} onChange={() => toggleSetting('enableEmail')}disabled={isSaving}/>
                             </div>
                         </div>
 
@@ -301,13 +297,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Receive SMS alerts for critical updates</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.enableSms} 
-                                    onChange={() => toggleSetting('enableSms')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.enableSms} onChange={() => toggleSetting('enableSms')}disabled={isSaving}/>
                             </div>
                         </div>
 
@@ -318,13 +308,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Receive push notifications on mobile devices</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.enablePushMobile} 
-                                    onChange={() => toggleSetting('enablePushMobile')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.enablePushMobile} onChange={() => toggleSetting('enablePushMobile')}disabled={isSaving}/>
                             </div>
                         </div>
 
@@ -335,13 +319,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Receive push notifications on desktop</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.enablePushDesktop} 
-                                    onChange={() => toggleSetting('enablePushDesktop')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.enablePushDesktop} onChange={() => toggleSetting('enablePushDesktop')}disabled={isSaving}/>
                             </div>
                         </div>
 
@@ -352,13 +330,7 @@ export default function SystemSettings() {
                                 <p className="text-muted mb-0 small">Receive promotional emails and updates</p>
                             </div>
                             <div className="form-check form-switch">
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    checked={preferences.receiveMarketing} 
-                                    onChange={() => toggleSetting('receiveMarketing')}
-                                    disabled={isSaving}
-                                />
+                                <input className="form-check-input" type="checkbox" checked={preferences.receiveMarketing} onChange={() => toggleSetting('receiveMarketing')}disabled={isSaving}/>
                             </div>
                         </div>
                     </div>

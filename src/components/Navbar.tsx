@@ -4,6 +4,7 @@ import { useLocation, matchPath, Link } from "react-router-dom";
 import { useLogout } from "../features/auth/hooks/useLogout";
 import { useState, useRef, useEffect } from "react";
 import { useUserData } from '../hooks/useUserData';
+import { useTheme } from "../contexts/ThemeContext"; // Import theme hook
 
 interface NavbarProps {
 	sidebarWidth: number;
@@ -17,6 +18,7 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	const { pathname } = useLocation();
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const { actualTheme } = useTheme(); // Get current theme
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
@@ -26,7 +28,14 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	    document.addEventListener('mousedown', handleClickOutside);
 	    return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, []);
-	// console.log('user:', user); 
+
+	// Theme-based styles
+	const themeStyles = {
+		light: {bg: "#ffffff",text: "#212529",textMuted: "#6c757d",border: "#e5e7eb",hoverBg: "#f8f9fa",inputBg: "#f8f9fa",badgeBg: "#dc3545",primary: "#f97316"},
+		dark: {bg: "#1f2937",text: "#ffffff", textMuted: "#d1d5db",border: "#374151",hoverBg: "#374151",inputBg: "#374151",badgeBg: "#ef4444",primary: "#f97316"}
+	};
+
+	const current = themeStyles[actualTheme];
 
 	// Unified route configuration
 	const routeConfig: Record<string, { title: string; subtitle?: string; parent?: { label: string; path: string } }> = {
@@ -72,8 +81,6 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 		"/support-data": {title: "Support Data", subtitle: "Support > Data", parent: { label: "Support", path: "/support-data"}},
 		"/system-settings": {title: "System Settings", subtitle: "System > Settings", parent: { label: "System", path: "/system-settings"}},
 		"/notifications": {title:"Notifications", subtitle:"System > Notifications", parent: {label:"System", path:"/notifications"}}
-
-		// ...other routes
 	};
 
 	// Helpers for fallback
@@ -90,94 +97,111 @@ export default function Navbar({ sidebarWidth, sidebarCollapsed, isMobile }: Nav
 	    subtitle: pathname === "/dashboard" ? defaultSubtitle : titleCase(pathname.split("/").filter(Boolean)[0] || "") 
 	};
 
-	// if you want the base name: /pathfinders/:id/edit -> "pathfinders"
-	// const baseSegment = pathname.split("/").filter(Boolean)[0] || "";
-  	const getNavbarStyles = () => isMobile ? {left:"0", width:"100%", marginLeft:"0"} : {left:`${sidebarWidth}px`, width:`calc(100% - ${sidebarWidth}px)`, marginLeft:"0"};
+	const getNavbarStyles = () => isMobile ? {left:"0", width:"100%", marginLeft:"0"} : {left:`${sidebarWidth}px`, width:`calc(100% - ${sidebarWidth}px)`, marginLeft:"0"};
 
 	return (
-		<header className="bg-white border-bottom shadow-sm position-fixed" style={{borderBottomColor: "#e5e7eb", top: 0,zIndex: 1030,
-			transition: "left 0.3s ease, width 0.3s ease", ...getNavbarStyles(),
-		}} >
+		<header className="border-bottom shadow-sm position-fixed" style={{backgroundColor: current.bg,borderBottomColor: current.border, top: 0,zIndex: 1030,transition: "left 0.3s ease, width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease", ...getNavbarStyles()}} >
 			<div className="container-fluid px-3 px-lg-4 py-3">
 				<div className="d-flex align-items-center justify-content-between">
 					{/* Left: Title + Subtitle */}
 					<div style={{ marginLeft: isMobile ? "48px" : "0" }}>
-						<h1 className="h4 fw-semibold text-dark mb-1">{pageConfig.title}</h1>
+						<h1 className="h4 fw-semibold mb-1" style={{ color: current.text }}>
+							{pageConfig.title}
+						</h1>
 
 			            {pageConfig.subtitle && pageConfig.parent ? (
-			             	<p className="small text-muted mb-0 d-flex align-items-center">
-			                	<Link to={pageConfig.parent.path} className="text-decoration-none fw-semibold text-primary">
+			             	<p className="small mb-0 d-flex align-items-center" style={{ color: current.textMuted }}>
+			                	<Link to={pageConfig.parent.path} className="text-decoration-none fw-semibold" style={{ color: current.primary }}>
 			                  		{pageConfig.parent.label}
 			                	</Link>
-			                	<i className="fa fa-angle-right mx-2 text-muted"></i>
+			                	<i className="fa fa-angle-right mx-2" style={{ color: current.textMuted }}></i>
 			                	<span>{pageConfig.subtitle.split(">")[1]?.trim()}</span>
 			             	</p>
 			            ) : ( // fallback if no parent is defined
-			              	<p className="small text-muted mb-0">{pageConfig.subtitle}</p>
+			              	<p className="small mb-0" style={{ color: current.textMuted }}>{pageConfig.subtitle}</p>
 			            )}
 					</div>
 
-					{/* Right side (Search, Notifications, Profile) same as before */}
+					{/* Right side (Search, Notifications, Profile) */}
 					<div className="d-flex align-items-center gap-2 gap-lg-3">
 						{/* Search */}
 						<div className="position-relative d-none d-md-block">
-							<Search size={16} className="position-absolute text-muted" style={{ left: "12px", top: "50%", transform: "translateY(-50%)" }}/>
+							<Search size={16} className="position-absolute" style={{ left: "12px", top: "50%", transform: "translateY(-50%)",color: current.textMuted }}/>
 							<input type="text" placeholder="Search..." className="form-control form-control-sm" style={{
-								paddingLeft: "40px", backgroundColor: "#f8f9fa", border: "1px solid #e9ecef", borderRadius: "8px", width: sidebarCollapsed ? "250px" : "200px",
-							fontSize: "14px", transition: "width 0.3s ease",}}/>
+								paddingLeft: "40px", backgroundColor: current.inputBg, border: `1px solid ${current.border}`, borderRadius: "8px", width: sidebarCollapsed ? "250px" : "200px",fontSize: "14px", transition: "width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease",color: current.text
+							}}/>
 						</div>
 
 						{/* Mobile Search */}
-						<button className="btn btn-sm btn-outline-secondary d-md-none">
+						<button className="btn btn-sm d-md-none" style={{ backgroundColor: "transparent", border: `1px solid ${current.border}`, color: current.textMuted}}>
 							<Search size={18} />
 						</button>
 
 						{/* Notifications */}
-						<button className="btn btn-sm position-relative" style={{ backgroundColor: "transparent", border: "none", color: "#6c757d" }}>
+						<button className="btn btn-sm position-relative" style={{ backgroundColor: "transparent", border: "none", color: current.textMuted }}>
 							<Bell size={20} />
-							<span className="position-absolute badge rounded-pill" style={{ backgroundColor: "#dc3545", fontSize: "8px", top: "8px", right: "8px", width: "8px",
-							height: "8px", padding: 0}}/>
+							<span className="position-absolute badge rounded-pill" style={{ backgroundColor: current.badgeBg, fontSize: "8px", top: "8px", right: "8px", width: "8px",height: "8px", padding: 0}}/>
 						</button>
 
 						{/* User Profile Dropdown */}
 			            <div className="dropdown" ref={dropdownRef}>
 				            <button className="btn d-flex align-items-center gap-2 border-0 bg-transparent" onClick={() => setDropdownOpen(!dropdownOpen)} style={{ cursor: 'pointer' }}>
-				                <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ 
-				                width: "32px", height: "32px", backgroundColor: "#f97316", color: "white", fontSize: "14px", fontWeight: "500"}}>
+				                <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ width: "32px", height: "32px", backgroundColor: current.primary, color: "white", fontSize: "14px", fontWeight: "500"}}>
 				                  	{ user?.fullName ? user.fullName.split(' ').slice(0, 2).map((word: string) => word.charAt(0)).join('') : 'CS' }
-
 				                </div>
 				                <div className="d-none d-sm-block text-start">
-				                  	<p className="mb-0 fw-medium" style={{ fontSize: "14px", color: "#212529" }}>
+				                  	<p className="mb-0 fw-medium" style={{ fontSize: "14px", color: current.text }}>
 				                    	{ user?.fullName || 'Crowdshipping' }
 				                  	</p>
-				                  	<p className="mb-0 text-muted" style={{ fontSize: "12px" }}>
+				                  	<p className="mb-0" style={{ fontSize: "12px", color: current.textMuted }}>
 				                    	{ user?.userType || 'Admin' }
 				                  	</p>
 				                </div>
-				                <ChevronDown size={16} className="text-muted" style={{transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease'}}/>
+				                <ChevronDown size={16} style={{color: current.textMuted, transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',  transition: 'transform 0.2s ease'}}/>
 				            </button>
 
 				            {/* Dropdown Menu */}
 				            {dropdownOpen && (
 				                <div className="dropdown-menu show shadow border-0" style={{
-				                  	position: 'absolute', right: 0, top: '100%', minWidth: '200px', zIndex: 1050, borderRadius: '8px', border: '1px solid #e5e7eb'
+				                  	position: 'absolute', 
+				                  	right: 0, 
+				                  	top: '100%', 
+				                  	minWidth: '200px', 
+				                  	zIndex: 1050, 
+				                  	borderRadius: '8px', 
+				                  	border: `1px solid ${current.border}`,
+				                  	backgroundColor: current.bg,
+				                  	color: current.text,
+				                  	transition: 'background-color 0.3s ease, border-color 0.3s ease'
 				                }}>
 				                  	{/* Profile Link */}
-				                  	<Link to="/profile" className="dropdown-item d-flex align-items-center gap-2 py-2" onClick={() => setDropdownOpen(false)} style={{ fontSize: '14px' }}>
+				                  	<Link to="/profile" className="dropdown-item d-flex align-items-center gap-2 py-2" onClick={() => setDropdownOpen(false)} 
+				                  		style={{ fontSize: '14px',color: current.text,backgroundColor: 'transparent'}}
+				                  		onMouseEnter={(e) => e.currentTarget.style.backgroundColor = current.hoverBg}
+				                  		onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+				                  	>
 				                    	<User size={16} /> My Profile
 				                  	</Link>
 				                  
 				                  	{/* Settings Link */}
-				                  	<Link to="/settings" className="dropdown-item d-flex align-items-center gap-2 py-2" onClick={() => setDropdownOpen(false)} style={{ fontSize: '14px' }}>
+				                  	<Link to="/system-settings" className="dropdown-item d-flex align-items-center gap-2 py-2" onClick={() => setDropdownOpen(false)} 
+				                  		style={{ fontSize: '14px', color: current.text, backgroundColor: 'transparent'}}
+				                  		onMouseEnter={(e) => e.currentTarget.style.backgroundColor = current.hoverBg}
+				                  		onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+				                  	>
 				                    	<Settings size={16} /> Settings
 				                  	</Link>
 				                  
-				                  	<div className="dropdown-divider my-1"></div>
+				                  	<div className="dropdown-divider my-1" style={{ backgroundColor: current.border }}></div>
 				                  
 				                  	{/* Logout Button */}
-				                  	<button onClick={() => { handleLogout(); setDropdownOpen(false); }} className="dropdown-item d-flex align-items-center gap-2 py-2 text-danger"
-				                    style={{ fontSize: '14px', border: 'none', background: 'none', width: '100%' }}>
+				                  	<button 
+				                  		onClick={() => { handleLogout(); setDropdownOpen(false); }} 
+				                  		className="dropdown-item d-flex align-items-center gap-2 py-2 text-danger"
+				                    	style={{ fontSize: '14px', border: 'none', background: 'none', width: '100%'}}
+				                    	onMouseEnter={(e) => e.currentTarget.style.backgroundColor = current.hoverBg}
+				                  		onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+				                  	>
 				                    	<LogOut size={16} /> Logout
 				                  	</button>
 				                </div>

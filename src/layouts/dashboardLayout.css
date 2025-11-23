@@ -1,0 +1,22 @@
+/* dashboardLayout.css */
+.dashboard-layout {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-content {
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.content-area {
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+}
+
+/* Ensure smooth transitions for all theme-affected elements */
+.dashboard-layout * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

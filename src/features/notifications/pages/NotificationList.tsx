@@ -254,8 +254,8 @@ export default function NotificationList() {
                                         <div className="d-flex justify-content-between align-items-start">
                                             <div className="flex-grow-1">
                                                 <div className="d-flex align-items-center gap-2 mb-2">
-                                                    {!notification.isRead && ( <span className="badge bg-warning-subtle text-warning">New</span> )}
-                                                    <span className={`badge bg-${getNotificationTypeColor(notification.type, index)}-subtle text-${getNotificationTypeColor(notification.type, index)}`}>
+                                                    {!notification.isRead && ( <span className="small text-warning">New</span> )}
+                                                    <span className={`badge text-${getNotificationTypeColor(notification.type, index)}`}>
                                                         <span className='me-1'>TYPE:</span> {getSafeValue(notification.type).toUpperCase()}
                                                     </span>
                                                     {/*<span className="badge bg-secondary-subtle text-secondary">

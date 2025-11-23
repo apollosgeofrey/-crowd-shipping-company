@@ -1,4 +1,5 @@
 // components/Sidebar.tsx
+import { useTheme } from '../contexts/ThemeContext';
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { useLogout } from "../features/auth/hooks/useLogout";
@@ -98,8 +99,8 @@ export default function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 	const isCompany = useIsCompany();
 	const handleLogout = useLogout();
 
+	const { actualTheme, toggleTheme } = useTheme();
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [theme, setTheme] = useState<"dark" | "light">("light");
 	const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
 	const isActive = (path?: string, isChild: boolean = false) => {
 	  	if (!path) return false;	  
@@ -179,7 +180,7 @@ export default function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
     	dark: {sidebarBg: "#1f2937", sidebarText: "#d1d5db", hoverBg: "#374151", hoverText: "#ffffff", border: "#374151", headerText: "#ffffff"},
     	light: {sidebarBg: "#ffffff", sidebarText: "#000000", hoverBg: "#f3f4f6", hoverText: "#111827", border: "#e5e7eb", headerText: "#111827"}
   	};
-  	const current = colors[theme];
+  	const current = colors[actualTheme];
 
   	return (
 	    <>
@@ -204,8 +205,8 @@ export default function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 		          	{!collapsed && (
 		            	<h6 className="mb-0 fw-semibold text-primary" style={{ color: current.headerText }}>
 		              		{/* Theme toggle button */}
-		              		<button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="btn btn-sm p-1 text-primary" style={{ backgroundColor: "transparent", border: "none", color: current.sidebarText }} title="Toggle theme">
-		                		{theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+		              		<button onClick={toggleTheme} className="btn btn-sm p-1 text-primary" style={{ backgroundColor: "transparent", border: "none", color: current.sidebarText }} title="Toggle theme">
+		                		{actualTheme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
 		              		</button>
 		              		CROWDSHIPPING
 		            	</h6>
